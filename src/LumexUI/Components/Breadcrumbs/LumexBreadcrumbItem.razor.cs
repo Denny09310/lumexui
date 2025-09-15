@@ -133,8 +133,8 @@ public partial class LumexBreadcrumbItem : LumexComponentBase,
 		IsDisabled = Context.Owner.IsDisabled ?? IsDisabled;
 		HideSeparator = Context.Owner.HideSeparator ?? HideSeparator;
 
-		Color = Context.Owner.Color != BreadcrumbsConstants.DefaultColor ? Context.Owner.Color : Color;
-		Size = Context.Owner.Size != BreadcrumbsConstants.DefaultSize ? Context.Owner.Size : Size;
+		Color = Context.Owner.Color ?? Color;
+		Size = Context.Owner.Size ?? Size;
 	}
 
 	[ExcludeFromCodeCoverage]
@@ -147,9 +147,9 @@ public partial class LumexBreadcrumbItem : LumexComponentBase,
 
 		return slot switch
 		{
-			nameof( BreadcrumbItemSlots.Base ) => styles( Class ),
-			nameof( BreadcrumbItemSlots.Item ) => styles( Class ),
-			nameof( BreadcrumbItemSlots.Separator ) => styles( Class ),
+			nameof( BreadcrumbItemSlots.Base ) => styles( Context.Owner.ItemClasses?.Base, Class ),
+			nameof( BreadcrumbItemSlots.Item ) => styles( Context.Owner.ItemClasses?.Item, Class ),
+			nameof( BreadcrumbItemSlots.Separator ) => styles(Context.Owner.ItemClasses?.Separator, Class ),
 			_ => throw new NotImplementedException()
 		};
 	}

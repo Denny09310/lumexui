@@ -40,7 +40,7 @@ public partial class LumexBreadcrumbs : LumexComponentBase, ISlotComponent<Bread
 	/// <remarks>
 	/// The default value is <see cref="ThemeColor.Default"/>.
 	/// </remarks>
-	[Parameter] public ThemeColor Color { get; set; }
+	[Parameter] public ThemeColor? Color { get; set; }
 
 	/// <summary>
 	/// Gets or sets the size of the <see cref="LumexBreadcrumbs"/>.
@@ -48,7 +48,7 @@ public partial class LumexBreadcrumbs : LumexComponentBase, ISlotComponent<Bread
 	/// <remarks>
 	/// The default value is <see cref="Size.Medium"/>.
 	/// </remarks>
-	[Parameter] public Size Size { get; set; }
+	[Parameter] public Size? Size { get; set; }
 
 	/// <summary>
 	/// Gets or sets the radius of the <see cref="LumexBreadcrumbs"/>.
@@ -95,9 +95,6 @@ public partial class LumexBreadcrumbs : LumexComponentBase, ISlotComponent<Bread
 		_context = new BreadcrumbsContext( this );
 
 		As = "nav";
-
-		Color = BreadcrumbsConstants.DefaultColor;
-		Size = BreadcrumbsConstants.DefaultSize;
 	}
 
 	/// <inheritdoc/>
@@ -107,8 +104,8 @@ public partial class LumexBreadcrumbs : LumexComponentBase, ISlotComponent<Bread
 		_slots = breadcrumbs( new()
 		{
 			[nameof( Radius )] = Radius.ToString(),
-			[nameof( Size )] = Size.ToString(),
-			[nameof( Variant )] = Variant.ToString()
+			[nameof( Variant )] = Variant.ToString(),
+			[nameof( Size )] = Size?.ToString() ?? "",
 		} );
 	}
 
