@@ -17,6 +17,30 @@ namespace LumexUI;
 public partial class LumexBreadcrumbs : LumexComponentBase, ISlotComponent<BreadcrumbsSlots>
 {
 	/// <summary>
+	/// Gets or sets the size of the <see cref="LumexBreadcrumbs"/>.
+	/// </summary>
+	/// <remarks>
+	/// The default value is <see cref="Size.Medium"/>.
+	/// </remarks>
+	[Parameter] public Size Size { get; set; } = Size.Medium;
+
+	/// <summary>
+	/// Gets or sets the radius of the <see cref="LumexBreadcrumbs"/>.
+	/// </summary>
+	/// <remarks>
+	/// The default value is <see cref="Radius.Small"/>.
+	/// </remarks>
+	[Parameter] public Radius Radius { get; set; } = Radius.Small;
+
+	/// <summary>
+	/// Gets or sets the variant of the <see cref="LumexBreadcrumbs"/>.
+	/// </summary>
+	/// <remarks>
+	/// The default value is <see cref="Variant.Light"/>.
+	/// </remarks>
+	[Parameter] public Variant Variant { get; set; } = Variant.Light;
+
+	/// <summary>
 	/// Gets or sets the CSS class names for the breadcrumbs slots.
 	/// </summary>
 	[Parameter] public BreadcrumbsSlots? Classes { get; set; }
@@ -27,7 +51,12 @@ public partial class LumexBreadcrumbs : LumexComponentBase, ISlotComponent<Bread
 	protected override void OnParametersSet()
 	{
 		var breadcrumbs = Styles.Breadcrumbs.Style( TwMerge );
-		_slots = breadcrumbs();
+		_slots = breadcrumbs( new()
+		{
+			[nameof( Radius )] = Radius.ToString(),
+			[nameof( Size )] = Size.ToString(),
+			[nameof( Variant )] = Variant.ToString()
+		} );
 	}
 
 	[ExcludeFromCodeCoverage]
