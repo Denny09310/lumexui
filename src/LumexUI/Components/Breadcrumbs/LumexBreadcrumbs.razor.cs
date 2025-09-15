@@ -30,9 +30,9 @@ public partial class LumexBreadcrumbs : LumexComponentBase, ISlotComponent<Bread
 	/// Gets or sets the variant of the <see cref="LumexBreadcrumbs"/>.
 	/// </summary>
 	/// <remarks>
-	/// The default value is <see cref="Variant.Solid"/>.
+	/// The default value is <see cref="Variant.Light"/>.
 	/// </remarks>
-	[Parameter] public Variant Variant { get; set; } = Variant.Solid;
+	[Parameter] public Variant Variant { get; set; } = Variant.Light;
 
 	/// <summary>
 	/// Gets or sets the variant of the <see cref="LumexBreadcrumbs"/>.
@@ -40,7 +40,7 @@ public partial class LumexBreadcrumbs : LumexComponentBase, ISlotComponent<Bread
 	/// <remarks>
 	/// The default value is <see cref="ThemeColor.Default"/>.
 	/// </remarks>
-	[Parameter] public ThemeColor Color { get; set; } = ThemeColor.Default;
+	[Parameter] public ThemeColor Color { get; set; }
 
 	/// <summary>
 	/// Gets or sets the size of the <see cref="LumexBreadcrumbs"/>.
@@ -48,7 +48,7 @@ public partial class LumexBreadcrumbs : LumexComponentBase, ISlotComponent<Bread
 	/// <remarks>
 	/// The default value is <see cref="Size.Medium"/>.
 	/// </remarks>
-	[Parameter] public Size Size { get; set; } = Size.Medium;
+	[Parameter] public Size Size { get; set; }
 
 	/// <summary>
 	/// Gets or sets the radius of the <see cref="LumexBreadcrumbs"/>.
@@ -95,6 +95,9 @@ public partial class LumexBreadcrumbs : LumexComponentBase, ISlotComponent<Bread
 		_context = new BreadcrumbsContext( this );
 
 		As = "nav";
+
+		Color = BreadcrumbsConstants.DefaultColor;
+		Size = BreadcrumbsConstants.DefaultSize;
 	}
 
 	/// <inheritdoc/>

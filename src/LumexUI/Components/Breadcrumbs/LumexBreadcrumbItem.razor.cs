@@ -122,16 +122,19 @@ public partial class LumexBreadcrumbItem : LumexComponentBase,
 		var breadcrumbItem = Styles.BreadcrumbItem.Style( TwMerge );
 		_slots = breadcrumbItem( new()
 		{
+			[nameof( IsCurrent )] = IsCurrent.ToString(),
+			[nameof( IsLast )] = IsLast.ToString(),
+			[nameof( IsDisabled )] = IsDisabled.ToString(),
 			[nameof( Color )] = Color.ToString(),
 			[nameof( Size )] = Size.ToString(),
 			[nameof( Underline )] = Underline.ToString(),
-			[nameof( IsCurrent )] = IsCurrent.ToString(),
-			[nameof( IsDisabled )] = IsDisabled.ToString()
 		} );
-
 
 		IsDisabled = Context.Owner.IsDisabled ?? IsDisabled;
 		HideSeparator = Context.Owner.HideSeparator ?? HideSeparator;
+
+		Color = Context.Owner.Color != BreadcrumbsConstants.DefaultColor ? Context.Owner.Color : Color;
+		Size = Context.Owner.Size != BreadcrumbsConstants.DefaultSize ? Context.Owner.Size : Size;
 	}
 
 	[ExcludeFromCodeCoverage]
