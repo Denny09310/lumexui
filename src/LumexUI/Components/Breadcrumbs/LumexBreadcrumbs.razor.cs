@@ -17,6 +17,11 @@ namespace LumexUI;
 public partial class LumexBreadcrumbs : LumexComponentBase, ISlotComponent<BreadcrumbsSlots>
 {
 	/// <summary>
+	/// Gets or sets content to be rendered inside the component.
+	/// </summary>
+	[Parameter] public RenderFragment? ChildContent { get; set; }
+
+	/// <summary>
 	/// Gets or sets the size of the <see cref="LumexBreadcrumbs"/>.
 	/// </summary>
 	/// <remarks>
