@@ -22,7 +22,7 @@ public partial class LumexBreadcrumbs : LumexComponentBase, ISlotComponent<Bread
 	[Parameter] public RenderFragment? ChildContent { get; set; }
 
 	/// <summary>
-	/// Gets or sets content to be rendered inside the component.
+	/// Gets or sets the separator element rendered between each breadcrumb item.
 	/// </summary>
 	[Parameter] public RenderFragment? SeparatorContent { get; set; }
 
@@ -35,7 +35,7 @@ public partial class LumexBreadcrumbs : LumexComponentBase, ISlotComponent<Bread
 	[Parameter] public Variant Variant { get; set; } = Variant.Light;
 
 	/// <summary>
-	/// Gets or sets the variant of the <see cref="LumexBreadcrumbs"/>.
+	/// Gets or sets the color scheme of the <see cref="LumexBreadcrumbs"/>.
 	/// </summary>
 	/// <remarks>
 	/// The default value is <see cref="ThemeColor.Default"/>.
@@ -66,16 +66,34 @@ public partial class LumexBreadcrumbs : LumexComponentBase, ISlotComponent<Bread
 	/// </remarks>
 	[Parameter] public Underline Underline { get; set; } = Underline.None;
 
+	/// <summary>
+	/// Gets or sets the maximum number of breadcrumb items to display before collapsing.
+	/// </summary>
 	[Parameter] public int MaxItems { get; set; }
 
+	/// <summary>
+	/// Gets or sets the number of items to display before the collapsed section.
+	/// </summary>
 	[Parameter] public int ItemsBeforeCollapse { get; set; }
 
+	/// <summary>
+	/// Gets or sets the number of items to display after the collapsed section.
+	/// </summary>
 	[Parameter] public int ItemsAfterCollapse { get; set; }
 
+	/// <summary>
+	/// Gets or sets a value indicating whether the <see cref="LumexBreadcrumbs"/> is disabled.
+	/// </summary>
 	[Parameter] public bool? IsDisabled { get; set; }
 
+	/// <summary>
+	/// Gets or sets a value indicating whether the separator between breadcrumb items should be hidden.
+	/// </summary>
 	[Parameter] public bool? HideSeparator { get; set; }
 
+	/// <summary>
+	/// Gets or sets the CSS class names for individual breadcrumb items.
+	/// </summary>
 	[Parameter] public BreadcrumbItemSlots? ItemClasses { get; set; }
 
 	/// <summary>
