@@ -1,9 +1,16 @@
 @namespace LumexUI
 @inherits LumexComponentBase
 
-<LumexComponent As="@As"
-				Class="@RootClass"
-				Style="@RootStyle"
-				@attributes="@AdditionalAttributes">
-	@ChildContent
-</LumexComponent>
+@using S = BreadcrumbsSlots
+
+<CascadingValue TValue="BreadcrumbsContext" Value="@_context" IsFixed="true">
+	<LumexComponent As="@As"
+					Class="@GetStyles( nameof( S.Base ) )"
+					Style="@RootStyle"
+					data-slot="base"
+					@attributes="@AdditionalAttributes">
+		<ol class="@GetStyles( nameof(S.List) )" data-slot="list">
+			@ChildContent
+		</ol>
+	</LumexComponent>
+</CascadingValue>

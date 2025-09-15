@@ -22,5 +22,15 @@ public enum Underline
 	/// <summary>
 	/// Underline always visible.
 	/// </summary>
-	Always
+	Always,
+
+	/// <summary>
+	/// Undeline when active.
+	/// </summary>
+	Active,
+
+	/// <summary>
+	/// Undeline when focused.
+	/// </summary>
+	Focus
 }

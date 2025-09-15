@@ -1,3 +1,20 @@
 @namespace LumexUI
 @inherits LumexComponentBase
 
+@using S = BreadcrumbItemSlots;
+
+<LumexComponent As="@As"
+				Class="@GetStyles( nameof( S.Base ) )"
+				Style="@RootStyle"
+				@attributes="AdditionalAttributes">
+	<span class="@GetStyles( nameof( S.Item ))">
+		@ChildContent
+	</span>
+
+	@if (!HideSeparator && !IsLast)
+	{
+		<span class="@GetStyles( nameof( S.Separator ))">
+			@SeparatorContent
+		</span>		
+	}
+</LumexComponent>

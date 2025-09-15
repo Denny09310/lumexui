@@ -22,6 +22,27 @@ public partial class LumexBreadcrumbs : LumexComponentBase, ISlotComponent<Bread
 	[Parameter] public RenderFragment? ChildContent { get; set; }
 
 	/// <summary>
+	/// Gets or sets content to be rendered inside the component.
+	/// </summary>
+	[Parameter] public RenderFragment? SeparatorContent { get; set; }
+
+	/// <summary>
+	/// Gets or sets the variant of the <see cref="LumexBreadcrumbs"/>.
+	/// </summary>
+	/// <remarks>
+	/// The default value is <see cref="Variant.Solid"/>.
+	/// </remarks>
+	[Parameter] public Variant Variant { get; set; } = Variant.Solid;
+
+	/// <summary>
+	/// Gets or sets the variant of the <see cref="LumexBreadcrumbs"/>.
+	/// </summary>
+	/// <remarks>
+	/// The default value is <see cref="ThemeColor.Default"/>.
+	/// </remarks>
+	[Parameter] public ThemeColor Color { get; set; } = ThemeColor.Default;
+
+	/// <summary>
 	/// Gets or sets the size of the <see cref="LumexBreadcrumbs"/>.
 	/// </summary>
 	/// <remarks>
@@ -38,19 +59,43 @@ public partial class LumexBreadcrumbs : LumexComponentBase, ISlotComponent<Bread
 	[Parameter] public Radius Radius { get; set; } = Radius.Small;
 
 	/// <summary>
-	/// Gets or sets the variant of the <see cref="LumexBreadcrumbs"/>.
+	/// Gets or sets the underline style for the <see cref="LumexBreadcrumbs"/>.
 	/// </summary>
 	/// <remarks>
-	/// The default value is <see cref="Variant.Light"/>.
+	/// The default value is <see cref="Underline.None"/>.
 	/// </remarks>
-	[Parameter] public Variant Variant { get; set; } = Variant.Light;
+	[Parameter] public Underline Underline { get; set; } = Underline.None;
+
+	[Parameter] public int MaxItems { get; set; }
+
+	[Parameter] public int ItemsBeforeCollapse { get; set; }
+
+	[Parameter] public int ItemsAfterCollapse { get; set; }
+
+	[Parameter] public bool? IsDisabled { get; set; }
+
+	[Parameter] public bool? HideSeparator { get; set; }
+
+	[Parameter] public BreadcrumbItemSlots? ItemClasses { get; set; }
 
 	/// <summary>
 	/// Gets or sets the CSS class names for the breadcrumbs slots.
 	/// </summary>
 	[Parameter] public BreadcrumbsSlots? Classes { get; set; }
 
+	private readonly BreadcrumbsContext _context;
+
 	private Dictionary<string, ComponentSlot> _slots = [];
+
+	/// <summary>
+	/// Initializes a new instance of the <see cref="LumexBreadcrumbs"/>.
+	/// </summary>
+	public LumexBreadcrumbs()
+	{
+		_context = new BreadcrumbsContext( this );
+
+		As = "nav";
+	}
 
 	/// <inheritdoc/>
 	protected override void OnParametersSet()
