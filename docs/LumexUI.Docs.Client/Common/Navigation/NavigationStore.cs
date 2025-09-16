@@ -64,6 +64,7 @@ public class NavigationStore
 			.Add( new( nameof( LumexCheckbox ) ) )
 			.Add( new( nameof( LumexCheckboxGroup ) ) )
 			.Add( new( nameof( LumexChip ) ) )
+			.Add( new( nameof( LumexCode ) ) )
 			.Add( new( nameof( LumexCollapse ) ) )
 			.Add( new( nameof( LumexComponent ) ) )
 			//.Add( nameof( LumexComponentBase ) )
