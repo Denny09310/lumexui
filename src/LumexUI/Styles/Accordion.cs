@@ -7,187 +7,125 @@ using System.Diagnostics.CodeAnalysis;
 using LumexUI.Common;
 using LumexUI.Utilities;
 
+using TailwindMerge;
+
 namespace LumexUI.Styles;
 
 [ExcludeFromCodeCoverage]
-internal readonly record struct Accordion
+internal static class Accordion
 {
-    private readonly static string _fullWidth = ElementClass.Empty()
-        .Add( "w-full" )
-        .ToString();
+	private static ComponentVariant? _variant;
 
-    private static ElementClass GetVariantStyles( AccordionVariant variant )
-    {
-        return ElementClass.Empty()
-            .Add( "", when: variant is AccordionVariant.Light )
-            .Add( "px-4 shadow-small rounded-medium bg-surface1", when: variant is AccordionVariant.Shadow )
-            .Add( "px-4 border border-divider rounded-medium", when: variant is AccordionVariant.Bordered )
-            .Add( "group is-splitted flex flex-col gap-2", when: variant is AccordionVariant.Splitted );
-    }
+	public static ComponentVariant Style( TwMerge twMerge )
+	{
+		var twVariants = new TwVariants( twMerge );
 
-    public static string GetStyles( LumexAccordion accordion )
-    {
-        return ElementClass.Empty()
-            .Add( _fullWidth, when: accordion.FullWidth )
-            .Add( GetVariantStyles( accordion.Variant ) )
-            .Add( accordion.Class )
-            .ToString();
-    }
+		return _variant ??= twVariants.Create( new VariantConfig()
+		{
+			Base = "px-2",
+
+			Variants = new VariantCollection
+			{
+				[nameof( LumexAccordion.FullWidth )] = new VariantValueCollection
+				{
+					[bool.TrueString] = new SlotCollection
+					{
+						[nameof( SlotBase.Base )] = "w-full"
+					}
+				},
+
+				[nameof( LumexAccordion.Variant )] = new VariantValueCollection
+				{
+					[nameof( AccordionVariant.Light )] = new SlotCollection
+					{
+						[nameof( SlotBase.Base )] = ""
+					},
+					[nameof( AccordionVariant.Shadow )] = new SlotCollection
+					{
+						[nameof( SlotBase.Base )] = "px-4 shadow-small rounded-medium bg-surface1"
+					},
+					[nameof( AccordionVariant.Bordered )] = new SlotCollection
+					{
+						[nameof( SlotBase.Base )] = "px-4 border border-divider rounded-medium"
+					},
+					[nameof( AccordionVariant.Splitted )] = new SlotCollection
+					{
+						[nameof( SlotBase.Base )] = "group is-splitted flex flex-col gap-2"
+					},
+				}
+			}
+		} );
+	}
 }
 
 [ExcludeFromCodeCoverage]
-internal readonly record struct AccordionItem
+internal static class AccordionItem
 {
-    private readonly static string _base = ElementClass.Empty()
-        .Add( "group-[.is-splitted]:px-4" )
-        .Add( "group-[.is-splitted]:bg-surface1" )
-        .Add( "group-[.is-splitted]:shadow-small" )
-        .Add( "group-[.is-splitted]:rounded-medium" )
-        .ToString();
+	private static ComponentVariant? _variant;
 
-    private readonly static string _trigger = ElementClass.Empty()
-        .Add( "flex" )
-        .Add( "py-4" )
-        .Add( "gap-3" )
-        .Add( "w-full" )
-        .Add( "items-center" )
-        .Add( "outline-hidden" )
-        .Add( "cursor-pointer" )
-        .ToString();
+	public static ComponentVariant Style( TwMerge twMerge )
+	{
+		var twVariants = new TwVariants( twMerge );
 
-    private readonly static string _startContent = ElementClass.Empty()
-        .Add( "flex-shrink-0" )
-        .ToString();
+		return _variant ??= twVariants.Create( new VariantConfig()
+		{
+			Slots = new SlotCollection
+			{
+				[nameof( AccordionItemSlots.Base )] = ElementClass.Empty()
+					.Add( "group-[.is-splitted]:px-4" )
+					.Add( "group-[.is-splitted]:bg-surface1" )
+					.Add( "group-[.is-splitted]:shadow-small" )
+					.Add( "group-[.is-splitted]:rounded-medium" ),
 
-    private readonly static string _titleWrapper = ElementClass.Empty()
-        .Add( "flex" )
-        .Add( "flex-1" )
-        .Add( "flex-col" )
-        .Add( "text-start" )
-        .ToString();
+				[nameof( AccordionItemSlots.Heading )] = "",
 
-    private readonly static string _title = ElementClass.Empty()
-        .Add( "text-foreground" )
-        .ToString();
+				[nameof( AccordionItemSlots.Trigger )] = ElementClass.Empty()
+					.Add( "flex" )
+					.Add( "py-4" )
+					.Add( "gap-3" )
+					.Add( "w-full" )
+					.Add( "items-center" )
+					.Add( "outline-hidden" )
+					.Add( "cursor-pointer" ),
 
-    private readonly static string _subtitle = ElementClass.Empty()
-        .Add( "text-foreground-500" )
-        .Add( "text-small" )
-        .ToString();
+				[nameof(AccordionItemSlots.StartContent)] = ElementClass.Empty()
+					.Add( "flex-shrink-0" ),
 
-    private readonly static string _indicator = ElementClass.Empty()
-        .Add( "text-default-400" )
-        .Add( "rotate-0" )
-        .Add( "data-[opened]:-rotate-90" )
-        .Add( "transition-transform" )
-        .ToString();
+				[nameof(AccordionItemSlots.TitleWrapper)] = ElementClass.Empty()
+					.Add( "flex" )
+					.Add( "flex-1" )
+					.Add( "flex-col" )
+					.Add( "text-start" ),
 
-    private readonly static string _content = ElementClass.Empty()
-        .Add( "pb-4" )
-        .ToString();
+				[nameof(AccordionItemSlots.Title)] = ElementClass.Empty()
+					.Add( "text-foreground" ),
 
-    private readonly static string _disabled = ElementClass.Empty()
-        .Add( "opacity-disabled" )
-        .Add( "pointer-events-none" )
-        .ToString();
+				[nameof(AccordionItemSlots.Subtitle)]= ElementClass.Empty()
+					.Add( "text-foreground-500" )
+					.Add( "text-small" ),
 
-    public static string GetStyles( LumexAccordionItem accordionItem )
-    {
-        var accordion = accordionItem.Context.Owner;
+				[nameof(AccordionItemSlots.Indicator)]= ElementClass.Empty()
+					.Add( "text-default-400" )
+					.Add( "rotate-0" )
+					.Add( "data-[opened]:-rotate-90" )
+					.Add( "transition-transform" ),
 
-        return ElementClass.Empty()
-            .Add( _base )
-            .Add( _disabled, when: accordionItem.GetDisabledState() )
-            .Add( accordion.ItemClasses?.Base )
-            .Add( accordionItem.Classes?.Base )
-            .Add( accordionItem.Class )
-            .ToString();
-    }
+				[nameof(AccordionItemSlots.Content)]= ElementClass.Empty()
+					.Add( "pb-4" ),
+			},
 
-    public static string GetHeadingStyles( LumexAccordionItem accordionItem )
-    {
-        var accordion = accordionItem.Context.Owner;
-
-        return ElementClass.Empty()
-            .Add( accordion.ItemClasses?.Heading )
-            .Add( accordionItem.Classes?.Heading )
-            .ToString();
-    }
-
-    public static string GetTriggerStyles( LumexAccordionItem accordionItem )
-    {
-        var accordion = accordionItem.Context.Owner;
-
-        return ElementClass.Empty()
-            .Add( _trigger )
-            .Add( accordion.ItemClasses?.Trigger )
-            .Add( accordionItem.Classes?.Trigger )
-            .ToString();
-    }
-
-    public static string GetStartContentStyles( LumexAccordionItem accordionItem )
-    {
-        var accordion = accordionItem.Context.Owner;
-
-        return ElementClass.Empty()
-            .Add( _startContent )
-            .Add( accordion.ItemClasses?.StartContent )
-            .Add( accordionItem.Classes?.StartContent )
-            .ToString();
-    }
-
-    public static string GetTitleWrapperStyles( LumexAccordionItem accordionItem )
-    {
-        var accordion = accordionItem.Context.Owner;
-
-        return ElementClass.Empty()
-            .Add( _titleWrapper )
-            .Add( accordion.ItemClasses?.TitleWrapper )
-            .Add( accordionItem.Classes?.TitleWrapper )
-            .ToString();
-    }
-
-    public static string GetTitleStyles( LumexAccordionItem accordionItem )
-    {
-        var accordion = accordionItem.Context.Owner;
-
-        return ElementClass.Empty()
-            .Add( _title )
-            .Add( accordion.ItemClasses?.Title )
-            .Add( accordionItem.Classes?.Title )
-            .ToString();
-    }
-
-    public static string GetSubtitleStyles( LumexAccordionItem accordionItem )
-    {
-        var accordion = accordionItem.Context.Owner;
-
-        return ElementClass.Empty()
-            .Add( _subtitle )
-            .Add( accordion.ItemClasses?.Subtitle )
-            .Add( accordionItem.Classes?.Subtitle )
-            .ToString();
-    }
-
-    public static string GetIndicatorStyles( LumexAccordionItem accordionItem )
-    {
-        var accordion = accordionItem.Context.Owner;
-
-        return ElementClass.Empty()
-            .Add( _indicator )
-            .Add( accordion.ItemClasses?.Indicator )
-            .Add( accordionItem.Classes?.Indicator )
-            .ToString();
-    }
-
-    public static string GetContentStyles( LumexAccordionItem accordionItem )
-    {
-        var accordion = accordionItem.Context.Owner;
-
-        return ElementClass.Empty()
-            .Add( _content )
-            .Add( accordion.ItemClasses?.Content )
-            .Add( accordionItem.Classes?.Content )
-            .ToString();
-    }
+			Variants = new VariantCollection
+			{
+				[nameof(LumexAccordionItem.Disabled)] = new VariantValueCollection
+				{
+					[bool.TrueString] = new SlotCollection
+					{
+						[nameof(AccordionItemSlots.Base)] = ElementClass.Empty()
+							.Add( "opacity-disabled" )
+							.Add( "pointer-events-none" ),
+					}
+				}
+			}
+		} );
+	}
 }

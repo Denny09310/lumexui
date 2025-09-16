@@ -2,7 +2,7 @@
 @inherits LumexComponentBase
 
 <CascadingValue TValue="AccordionContext" Value="@_context" IsFixed="@true">
-    <LumexComponent Class="@RootClass"
+    <LumexComponent Class="@GetStyles( "Base" )"
                     Style="@RootStyle"
                     @attributes="@AdditionalAttributes">
         @ChildContent

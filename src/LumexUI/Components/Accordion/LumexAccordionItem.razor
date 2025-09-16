@@ -1,27 +1,29 @@
 ﻿@namespace LumexUI
 @inherits LumexComponentBase
 
-<LumexComponent Class="@RootClass"
+@using S = AccordionItemSlots;
+
+<LumexComponent Class="@GetStyles( nameof( S.Base ) )"
                 Style="@RootStyle"
                 data-slot="base"
                 data-opened="@_expanded"
                 @attributes="@AdditionalAttributes">
-    <h2 class="@HeadingClass" data-slot="heading">
+    <h2 class="@GetStyles( nameof ( S.Heading ) )" data-slot="heading">
         <button type="button"
-                class="@TriggerClass"
+                class="@GetStyles(nameof(S.Trigger) )"
                 disabled="@_disabled"
                 data-slot="trigger"
                 @onclick="@ToggleExpansionAsync">
             @if( StartContent is not null )
             {
-                <div class="@StartContentClass" data-slot="start-content">
+                <div class="@GetStyles(nameof(S.StartContent) )" data-slot="start-content">
                     @StartContent
                 </div>
             }
-            <div class="@TitleWrapperClass" data-slot="title-wrapper">
+            <div class="@GetStyles( nameof ( S.TitleWrapper ) )" data-slot="title-wrapper">
                 @if( !string.IsNullOrEmpty( Title ) || TitleContent is not null )
                 {
-                    <span class="@TitleClass" data-slot="title">
+                    <span class="@GetStyles( nameof ( S.Title ) )" data-slot="title">
                         @if( !string.IsNullOrEmpty( Title ) )
                         {
                             @Title
@@ -34,7 +36,7 @@
                 }
                 @if( !string.IsNullOrEmpty( Subtitle ) || SubtitleContent is not null )
                 {
-                    <span class="@SubtitleClass" data-slot="subtitle">
+                    <span class="@GetStyles( nameof ( S.Subtitle ) )" data-slot="subtitle">
                         @if( !string.IsNullOrEmpty( Subtitle ) )
                         {
                             @Subtitle
@@ -48,7 +50,7 @@
             </div>
             @if( Context.Owner.ShowIndicators )
             {
-                <span class="@IndicatorClass"
+                <span class="@GetStyles( nameof ( S.Indicator ) )"
                       data-slot="indicator"
                       data-opened="@_expanded">
                     @IndicatorContent( _expanded )
@@ -58,7 +60,7 @@
     </h2>
 
     <LumexCollapse As="section" Expanded="@_expanded">
-        <div class="@ContentClass" data-slot="content">
+        <div class="@GetStyles( nameof ( S.Content ) )" data-slot="content">
             @ChildContent
         </div>
     </LumexCollapse>

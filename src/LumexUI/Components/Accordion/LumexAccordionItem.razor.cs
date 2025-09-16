@@ -2,9 +2,11 @@
 // LumexUI licenses this file to you under the MIT license
 // See the license here https://github.com/LumexUI/lumexui/blob/main/LICENSE
 
+using System.Diagnostics.CodeAnalysis;
+
 using LumexUI.Common;
-using LumexUI.Styles;
 using LumexUI.Shared.Icons;
+using LumexUI.Utilities;
 
 using Microsoft.AspNetCore.Components;
 
@@ -80,32 +82,7 @@ public partial class LumexAccordionItem : LumexComponentBase,
 
 	[CascadingParameter] internal AccordionContext Context { get; set; } = default!;
 
-	private protected override string? RootClass =>
-		TwMerge.Merge( AccordionItem.GetStyles( this ) );
-
-	private string? HeadingClass =>
-		TwMerge.Merge( AccordionItem.GetHeadingStyles( this ) );
-
-	private string? TriggerClass =>
-		TwMerge.Merge( AccordionItem.GetTriggerStyles( this ) );
-
-	private string? StartContentClass =>
-		TwMerge.Merge( AccordionItem.GetStartContentStyles( this ) );
-
-	private string? TitleWrapperClass =>
-		TwMerge.Merge( AccordionItem.GetTitleWrapperStyles( this ) );
-
-	private string? TitleClass =>
-		TwMerge.Merge( AccordionItem.GetTitleStyles( this ) );
-
-	private string? SubtitleClass =>
-		TwMerge.Merge( AccordionItem.GetSubtitleStyles( this ) );
-
-	private string? IndicatorClass =>
-		TwMerge.Merge( AccordionItem.GetIndicatorStyles( this ) );
-
-	private string? ContentClass =>
-		TwMerge.Merge( AccordionItem.GetContentStyles( this ) );
+	private Dictionary<string, ComponentSlot> _slots = [];
 
 	private static readonly RenderFragment<bool> _renderDefaultIndicator = _ => builder =>
 	{
@@ -173,6 +150,12 @@ public partial class LumexAccordionItem : LumexComponentBase,
 
 		_expanded = Expanded || Context.Owner.ExpandedItems.Contains( Id ) || Context.Owner.Expanded;
 		_disabled = Disabled || Context.Owner.DisabledItems.Contains( Id ) || Context.Owner.Disabled;
+
+		var accordionItem = Styles.AccordionItem.Style( TwMerge );
+		_slots = accordionItem( new()
+		{
+			[nameof(Disabled)] = _disabled.ToString(),
+		} );
 	}
 
 	private async Task ToggleExpansionAsync()
@@ -194,6 +177,31 @@ public partial class LumexAccordionItem : LumexComponentBase,
 		StateHasChanged();
 
 		return ExpandedChanged.InvokeAsync( _expanded );
+	}
+
+	[ExcludeFromCodeCoverage]
+	private string? GetStyles( string slot )
+	{
+		if( !_slots.TryGetValue( slot, out var styles ) )
+		{
+			throw new NotImplementedException();
+		}
+
+		var classes = Context.Owner.ItemClasses;
+
+		return slot switch
+		{
+			nameof( AccordionItemSlots.Base ) => styles( classes?.Base, Class ),
+			nameof( AccordionItemSlots.Heading ) => styles( classes?.Heading ),
+			nameof( AccordionItemSlots.Trigger ) => styles( classes?.Trigger ),
+			nameof( AccordionItemSlots.TitleWrapper ) => styles( classes?.TitleWrapper ),
+			nameof( AccordionItemSlots.Title ) => styles( classes?.Title ),
+			nameof( AccordionItemSlots.Subtitle ) => styles( classes?.Subtitle ),
+			nameof( AccordionItemSlots.StartContent ) => styles( classes?.StartContent ),
+			nameof( AccordionItemSlots.Indicator ) => styles( classes?.Indicator ),
+			nameof( AccordionItemSlots.Content ) => styles( classes?.Content ),
+			_ => throw new NotImplementedException()
+		};
 	}
 
 	/// <inheritdoc />

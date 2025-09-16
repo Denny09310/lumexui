@@ -2,8 +2,10 @@
 // LumexUI licenses this file to you under the MIT license
 // See the license here https://github.com/LumexUI/lumexui/blob/main/LICENSE
 
+using System.Diagnostics.CodeAnalysis;
+
 using LumexUI.Common;
-using LumexUI.Styles;
+using LumexUI.Utilities;
 
 using Microsoft.AspNetCore.Components;
 
@@ -81,10 +83,9 @@ public partial class LumexAccordion : LumexComponentBase
 	/// </summary>
 	[Parameter] public AccordionItemSlots? ItemClasses { get; set; }
 
-	private protected override string? RootClass =>
-		TwMerge.Merge( Accordion.GetStyles( this ) );
-
 	private readonly AccordionContext _context;
+	
+	private Dictionary<string, ComponentSlot> _slots = [];
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="LumexAccordion"/>.
@@ -92,5 +93,31 @@ public partial class LumexAccordion : LumexComponentBase
 	public LumexAccordion()
 	{
 		_context = new AccordionContext( this );
+	}
+
+	/// <inheritdoc />
+	protected override void OnParametersSet()
+	{
+				var accordion = Styles.Accordion.Style( TwMerge );
+		_slots = accordion( new()
+		{
+			[nameof( FullWidth )] = FullWidth.ToString(),
+			[nameof( Variant )] = Variant.ToString()
+		} );
+	}
+
+	[ExcludeFromCodeCoverage]
+	private string? GetStyles( string slot )
+	{
+		if( !_slots.TryGetValue( slot, out var styles ) )
+		{
+			throw new NotImplementedException();
+		}
+
+		return slot switch
+		{
+			nameof( SlotBase.Base ) => styles( Class ),
+			_ => throw new NotImplementedException()
+		};
 	}
 }
