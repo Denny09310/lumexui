@@ -112,6 +112,7 @@ public partial class LumexButton : LumexComponentBase
 			[nameof( Color )] = Color.ToString(),
 			[nameof( Size )] = Size.ToString(),
 			[nameof( Radius )] = Radius.ToString(),
+			[nameof( FullWidth )] = FullWidth.ToString(),
 			[nameof( Disabled )] = Disabled.ToString(),
 			[nameof( IconOnly )] = IconOnly.ToString(),
 		} );

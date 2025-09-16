@@ -125,6 +125,14 @@ internal static class Button
 					},
 				},
 
+				[nameof( LumexButton.FullWidth )] = new VariantValueCollection
+				{
+					[bool.TrueString] = new SlotCollection
+					{
+						[nameof( SlotBase.Base )] = "w-full"
+					}
+				},
+
 				[nameof( LumexButton.Disabled )] = new VariantValueCollection
 				{
 					[bool.TrueString] = new SlotCollection
