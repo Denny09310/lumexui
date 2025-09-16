@@ -22,9 +22,7 @@ internal static class Divider
 
 		return _variant ??= twVariants.Create( new VariantConfig()
 		{
-			Base = ElementClass.Empty()
-				.Add( "bg-divider" )
-				.Add( "border-none" ),
+			Base = "bg-divider border-none",
 
 			Variants = new VariantCollection
 			{

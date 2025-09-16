@@ -200,11 +200,7 @@ internal static class DataGrid
 				{
 					[bool.TrueString] = new SlotCollection
 					{
-						[nameof( DataGridSlots.Thead )] = ElementClass.Empty()
-							.Add( "sticky" )
-							.Add( "top-0" )
-							.Add( "z-20" )
-							.Add( "[&>tr]:first:shadow-small" )
+						[nameof( DataGridSlots.Thead )] = "sticky top-0 z-20 [&>tr]:first:shadow-small"
 					}
 				},
 

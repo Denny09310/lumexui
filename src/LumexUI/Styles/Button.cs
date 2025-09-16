@@ -137,7 +137,7 @@ internal static class Button
 				{
 					[bool.TrueString] = new SlotCollection
 					{
-						[nameof( SlotBase.Base )] = "opacity-disabled pointer-events-none"
+						[nameof( SlotBase.Base )] = Utils.Disabled
 					}
 				},
 

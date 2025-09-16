@@ -33,59 +33,57 @@ internal static class Link
 
 			Variants = new VariantCollection
 			{
-				[nameof(LumexLink.Disabled)] = new VariantValueCollection
+				[nameof( LumexLink.Disabled )] = new VariantValueCollection
 				{
 					[bool.TrueString] = new SlotCollection
 					{
-						[nameof(SlotBase.Base)] = ElementClass.Empty()
-							.Add( "opacity-disabled" )
-							.Add( "pointer-events-none" )
+						[nameof( SlotBase.Base )] = Utils.Disabled
 					}
 				},
 
-				[nameof(LumexLink.Color)] = new VariantValueCollection
+				[nameof( LumexLink.Color )] = new VariantValueCollection
 				{
-					[nameof(ThemeColor.Default)] = new SlotCollection
+					[nameof( ThemeColor.Default )] = new SlotCollection
 					{
-						[nameof(SlotBase.Base)] = "text-default"
+						[nameof( SlotBase.Base )] = "text-default"
 					},
-					[nameof(ThemeColor.Primary)] = new SlotCollection
+					[nameof( ThemeColor.Primary )] = new SlotCollection
 					{
-						[nameof(SlotBase.Base)] = "text-primary"
+						[nameof( SlotBase.Base )] = "text-primary"
 					},
-					[nameof(ThemeColor.Secondary)] = new SlotCollection
+					[nameof( ThemeColor.Secondary )] = new SlotCollection
 					{
-						[nameof(SlotBase.Base)] = "text-secondary"
+						[nameof( SlotBase.Base )] = "text-secondary"
 					},
-					[nameof(ThemeColor.Success)] = new SlotCollection
+					[nameof( ThemeColor.Success )] = new SlotCollection
 					{
-						[nameof(SlotBase.Base)] = "text-success"
+						[nameof( SlotBase.Base )] = "text-success"
 					},
-					[nameof(ThemeColor.Warning)] = new SlotCollection
+					[nameof( ThemeColor.Warning )] = new SlotCollection
 					{
-						[nameof(SlotBase.Base)] = "text-warning"
+						[nameof( SlotBase.Base )] = "text-warning"
 					},
-					[nameof(ThemeColor.Danger)] = new SlotCollection
+					[nameof( ThemeColor.Danger )] = new SlotCollection
 					{
-						[nameof(SlotBase.Base)] = "text-danger"
+						[nameof( SlotBase.Base )] = "text-danger"
 					},
-					[nameof(ThemeColor.Info)] = new SlotCollection
+					[nameof( ThemeColor.Info )] = new SlotCollection
 					{
-						[nameof(SlotBase.Base)] = "text-info"
+						[nameof( SlotBase.Base )] = "text-info"
 					},
 				},
 
-				[nameof(LumexLink.Underline)] = new VariantValueCollection
+				[nameof( LumexLink.Underline )] = new VariantValueCollection
 				{
-					[nameof(Underline.None)] = new SlotCollection
+					[nameof( Underline.None )] = new SlotCollection
 					{
 						[nameof( SlotBase.Base )] = "no-underline"
 					},
-					[nameof(Underline.Hover)] = new SlotCollection
+					[nameof( Underline.Hover )] = new SlotCollection
 					{
 						[nameof( SlotBase.Base )] = "hover:underline underline-offset-4"
 					},
-					[nameof(Underline.Always)] = new SlotCollection
+					[nameof( Underline.Always )] = new SlotCollection
 					{
 						[nameof( SlotBase.Base )] = "underline underline-offset-4"
 					},

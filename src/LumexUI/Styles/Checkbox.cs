@@ -89,7 +89,7 @@ internal static class Checkbox
 				{
 					[bool.TrueString] = new SlotCollection
 					{
-						[nameof( CheckboxSlots.Base )] = "opacity-disabled pointer-events-none"
+						[nameof( CheckboxSlots.Base )] = Utils.Disabled
 					}
 				},
 
@@ -193,24 +193,10 @@ internal static class CheckboxGroup
 		{
 			Slots = new SlotCollection
 			{
-				[nameof( CheckboxGroupSlots.Base )] = ElementClass.Empty()
-					.Add( "flex" )
-					.Add( "flex-col" )
-					.Add( "gap-2" ),
-
-				[nameof( CheckboxGroupSlots.Label )] = ElementClass.Empty()
-					.Add( "text-medium" )
-					.Add( "text-foreground-500" ),
-
-				[nameof( CheckboxGroupSlots.Wrapper )] = ElementClass.Empty()
-					.Add( "flex" )
-					.Add( "flex-col" )
-					.Add( "flex-wrap" )
-					.Add( "gap-2" ),
-
-				[nameof( CheckboxGroupSlots.Description )] = ElementClass.Empty()
-					.Add( "text-small" )
-					.Add( "text-foreground-400" )
+				[nameof( CheckboxGroupSlots.Base )] = "flex flex-col gap-2",
+				[nameof( CheckboxGroupSlots.Label )] = "text-medium text-foreground-500",
+				[nameof( CheckboxGroupSlots.Wrapper )] = "flex flex-col flex-wrap gap-2",
+				[nameof( CheckboxGroupSlots.Description )] = "text-small text-foreground-400"
 			}
 		} );
 	}
