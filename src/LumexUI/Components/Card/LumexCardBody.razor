@@ -1,7 +1,9 @@
 ﻿@namespace LumexUI
 @inherits LumexComponentBase
 
-<LumexComponent Class="@RootClass"
+@using S = CardSlots;
+
+<LumexComponent Class="@GetStyles( nameof( S.Body ) )"
                 Style="@RootStyle"
                 data-slot="body"
                 @attributes="@AdditionalAttributes">

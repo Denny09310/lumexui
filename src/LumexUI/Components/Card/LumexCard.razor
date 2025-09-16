@@ -1,8 +1,10 @@
 ﻿@namespace LumexUI
 @inherits LumexComponentBase
 
+@using S = CardSlots;
+
 <CascadingValue TValue="CardContext" Value="@_context" IsFixed="@true">
-    <LumexComponent Class="@RootClass"
+    <LumexComponent Class="@GetStyles( nameof( S.Base ) )"
                     Style="@RootStyle"
                     data-slot="base"
                     @attributes="@AdditionalAttributes">
