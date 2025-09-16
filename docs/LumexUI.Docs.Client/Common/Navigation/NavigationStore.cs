@@ -72,6 +72,7 @@ public class NavigationStore
 			.Add( new( nameof( LumexDropdown ) ) )
 			.Add( new( nameof( LumexDropdownItem ) ) )
 			.Add( new( nameof( LumexDropdownMenu ) ) )
+			.Add( new( nameof( LumexKbd ) ) )
 			//.Add( nameof( LumexInputBase<T> ) )
 			//.Add( nameof( LumexInputFieldBase<T> ) )
 			.Add( new( nameof( LumexLink ) ) )
