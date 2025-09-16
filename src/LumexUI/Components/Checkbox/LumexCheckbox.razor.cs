@@ -2,8 +2,10 @@
 // LumexUI licenses this file to you under the MIT license
 // See the license here https://github.com/LumexUI/lumexui/blob/main/LICENSE
 
+using System.Diagnostics.CodeAnalysis;
+
 using LumexUI.Common;
-using LumexUI.Styles;
+using LumexUI.Utilities;
 
 using Microsoft.AspNetCore.Components;
 
@@ -34,19 +36,9 @@ public partial class LumexCheckbox : LumexBooleanInputBase, ISlotComponent<Check
 
 	[CascadingParameter] internal CheckboxGroupContext? Context { get; set; }
 
-	private protected override string? RootClass =>
-		TwMerge.Merge( Checkbox.GetStyles( this ) );
-
-	private string? WrapperClass =>
-		TwMerge.Merge( Checkbox.GetWrapperStyles( this ) );
-
-	private string? IconClass =>
-		TwMerge.Merge( Checkbox.GetIconStyles( this ) );
-
-	private string? LabelClass =>
-		TwMerge.Merge( Checkbox.GetLabelStyles( this ) );
-
 	private readonly RenderFragment _renderCheckIcon;
+
+	private Dictionary<string, ComponentSlot> _slots = [];
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="LumexCheckbox"/>.
@@ -77,6 +69,35 @@ public partial class LumexCheckbox : LumexBooleanInputBase, ISlotComponent<Check
 		{
 			Radius = Context.Owner.Radius;
 		}
+
+		var checkbox = Styles.Checkbox.Style( TwMerge );
+		_slots = checkbox( new()
+		{
+			[nameof( Disabled )] = GetDisabledState().ToString(),
+			[nameof( Radius )] = Radius.ToString(),
+			[nameof( Size )] = Size.ToString(),
+			[nameof( Color )] = Color.ToString(),
+		} );
+	}
+
+	[ExcludeFromCodeCoverage]
+	private string? GetStyles( string slot )
+	{
+		if( !_slots.TryGetValue( slot, out var styles ) )
+		{
+			throw new NotImplementedException();
+		}
+
+		var classes = Context?.Owner.CheckboxClasses;
+
+		return slot switch
+		{
+			nameof( CheckboxSlots.Base ) => styles( classes?.Base, Classes?.Base, Class ),
+			nameof( CheckboxSlots.Wrapper ) => styles( classes?.Wrapper, Classes?.Wrapper ),
+			nameof( CheckboxSlots.Icon ) => styles( classes?.Icon, Classes?.Icon ),
+			nameof( CheckboxSlots.Label ) => styles( classes?.Label, Classes?.Label ),
+			_ => throw new NotImplementedException()
+		};
 	}
 
 	/// <inheritdoc />

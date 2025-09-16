@@ -1,25 +1,27 @@
 ﻿@namespace LumexUI
 @inherits LumexComponentBase
 
+@using S = CheckboxGroupSlots;
+
 <CascadingValue TValue="CheckboxGroupContext" Value="@_context" IsFixed="@true">
-    <div class="@RootClass" 
+    <div class="@GetStyles( nameof( S.Base ) )" 
          style="@RootStyle" 
          data-slot="base"
          @attributes="@AdditionalAttributes">
         @if( !string.IsNullOrEmpty( Label ) )
         {
-            <span class="@LabelClass" data-slot="label">
+            <span class="@GetStyles( nameof( S.Label ) )" data-slot="label">
                 @Label
             </span>
         }
 
-        <div class="@WrapperClass" data-slot="wrapper">
+        <div class="@GetStyles( nameof( S.Wrapper ) )" data-slot="wrapper">
             @ChildContent
         </div>
 
         @if( !string.IsNullOrEmpty( Description ) )
         {
-            <div class="@DescriptionClass" data-slot="description">
+            <div class="@GetStyles( nameof( S.Description ) )" data-slot="description">
                 @Description
             </div>
         }

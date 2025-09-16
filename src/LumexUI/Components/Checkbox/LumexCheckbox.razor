@@ -1,8 +1,10 @@
 ﻿@namespace LumexUI
 @inherits LumexBooleanInputBase
 
+@using S = CheckboxSlots;
+
 <LumexComponent As="label"
-                Class="@RootClass"
+                Class="@GetStyles( nameof( S.Base ) )"
                 Style="@RootStyle"
                 tabindex="0"
                 data-slot="base"
@@ -11,7 +13,7 @@
                 data-readonly="@GetReadOnlyState().ToAttributeValue()"
                 @attributes="@AdditionalAttributes"
                 @onclick:stopPropagation="@true">
-    <span class="@WrapperClass" data-slot="wrapper">
+    <span class="@GetStyles( nameof( S.Wrapper) )" data-slot="wrapper">
         <span class="@StyleUtils.VisuallyHidden">
             <input type="checkbox"
                    value="@true"
@@ -20,7 +22,7 @@
                    @onchange="@OnChangeAsync" />
         </span>
 
-        <span class="@IconClass" data-slot="icon">
+        <span class="@GetStyles( nameof( S.Icon ) )" data-slot="icon">
             @if( IconContent is not null )
             {
                 @IconContent
@@ -35,7 +37,7 @@
 
     @if( ChildContent is not null )
     {
-        <span class="@LabelClass" data-slot="label">
+        <span class="@GetStyles( nameof( S.Label ) )" data-slot="label">
             @ChildContent
         </span>
     }

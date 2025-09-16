@@ -120,9 +120,7 @@ internal static class AccordionItem
 				{
 					[bool.TrueString] = new SlotCollection
 					{
-						[nameof(AccordionItemSlots.Base)] = ElementClass.Empty()
-							.Add( "opacity-disabled" )
-							.Add( "pointer-events-none" ),
+						[nameof(AccordionItemSlots.Base)] = "opacity-disabled pointer-events-none"
 					}
 				}
 			}

@@ -2,8 +2,11 @@
 // LumexUI licenses this file to you under the MIT license
 // See the license here https://github.com/LumexUI/lumexui/blob/main/LICENSE
 
+using System;
+using System.Diagnostics.CodeAnalysis;
+
 using LumexUI.Common;
-using LumexUI.Styles;
+using LumexUI.Utilities;
 
 using Microsoft.AspNetCore.Components;
 
@@ -73,19 +76,9 @@ public partial class LumexCheckboxGroup : LumexComponentBase, ISlotComponent<Che
 	/// </summary>
 	[Parameter] public CheckboxSlots? CheckboxClasses { get; set; }
 
-	private protected override string? RootClass =>
-		TwMerge.Merge( CheckboxGroup.GetStyles( this ) );
-
-	private string? LabelClass =>
-		TwMerge.Merge( CheckboxGroup.GetLabelStyles( this ) );
-
-	private string? WrapperClass =>
-		TwMerge.Merge( CheckboxGroup.GetWrapperStyles( this ) );
-
-	private string? DescriptionClass =>
-		TwMerge.Merge( CheckboxGroup.GetDescriptionStyles( this ) );
-
 	private readonly CheckboxGroupContext _context;
+
+	private Dictionary<string, ComponentSlot> _slots = [];
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="LumexCheckboxGroup"/>.
@@ -93,5 +86,30 @@ public partial class LumexCheckboxGroup : LumexComponentBase, ISlotComponent<Che
 	public LumexCheckboxGroup()
 	{
 		_context = new CheckboxGroupContext( this );
+	}
+
+	/// <inheritdoc />
+	protected override void OnParametersSet()
+	{
+		var checkboxGroup = Styles.CheckboxGroup.Style( TwMerge );
+		_slots = checkboxGroup();
+	}
+
+	[ExcludeFromCodeCoverage]
+	private string? GetStyles( string slot )
+	{
+		if( !_slots.TryGetValue( slot, out var styles ) )
+		{
+			throw new NotImplementedException();
+		}
+
+		return slot switch
+		{
+			nameof( CheckboxGroupSlots.Base ) => styles( Classes?.Base, Class ),
+			nameof( CheckboxGroupSlots.Wrapper ) => styles( Classes?.Wrapper ),
+			nameof( CheckboxGroupSlots.Description ) => styles( Classes?.Description ),
+			nameof( CheckboxGroupSlots.Label ) => styles( Classes?.Label ),
+			_ => throw new NotImplementedException()
+		};
 	}
 }
