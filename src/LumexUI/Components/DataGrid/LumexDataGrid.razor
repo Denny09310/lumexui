@@ -5,6 +5,8 @@
 @using LumexUI.DataGrid.Core
 @using LumexUI.DataGrid.Interfaces
 
+@using S = DataGridSlots;
+
 <CascadingValue TValue="DataGridContext<T>" Value="@_context" IsFixed="@true">
     @{
         StartCollectingColumns();
@@ -23,7 +25,7 @@
         }
         <_ColumnsCollectedNotifier T="T" />
 
-        <div class="@Slots.Base"
+        <div class="@GetStyles( nameof( S.Base ) )"
              style="@RootStyle"
              data-slot="base"
              @ref="@_ref"
@@ -32,15 +34,15 @@
 
             @ToolbarContent
 
-            <div class="@Slots.Wrapper" data-slot="wrapper">
-                <table class="@Slots.Table" data-slot="table">
-                    <thead class="@Slots.Thead" data-slot="thead">
-                        <tr class="@Slots.Tr" data-slot="tr">
+            <div class="@GetStyles( nameof( S.Wrapper ) )" data-slot="wrapper">
+                <table class="@GetStyles( nameof( S.Table ) )" data-slot="table">
+                    <thead class="@GetStyles( nameof( S.Thead ) )" data-slot="thead">
+                        <tr class="@GetStyles( nameof( S.Tr ) )" data-slot="tr">
                             @_renderColumnHeaders
                         </tr>
                         <tr style="display:block; width:1px; height:1px; margin-top:0.25rem;" />
                     </thead>
-                    <tbody class="@Slots.Tbody" data-slot="tbody">
+                    <tbody class="@GetStyles( nameof( S.Tbody ) )" data-slot="tbody">
                         @if( ( Data is null || !Data.Any() ) && DataSource is null )
                         {
                             @_renderEmptyContent
@@ -78,7 +80,7 @@
     {
         foreach( var column in _columns )
         {
-            <th class="@Slots.Th"
+            <th class="@GetStyles( nameof( S.Th ) )"
                 scope="col"
                 data-slot="th"
                 data-align="@column.Align.ToLowerInvariant()"
@@ -108,7 +110,7 @@
         var selected = SelectedItems.Contains( item );
         var disabled = DisabledItems.Contains( item );
 
-        <tr class="@Slots.Tr"
+        <tr class="@GetStyles( nameof( S.Tr ) )"
             style="@RowStyles"
             data-slot="tr"
             data-disabled="@Utils.GetDataAttributeValue(disabled)"
@@ -118,7 +120,7 @@
             @onclick="@(() => OnRowClickedAsync(item, rowIndex, disabled))">
             @foreach( var column in _columns )
             {
-                <td class="@Slots.Td"
+                <td class="@GetStyles( nameof( S.Td ) )"
                     data-slot="td"
                     data-align="@column.Align.ToLowerInvariant()"
                     data-selected="@Utils.GetDataAttributeValue(selected)"
@@ -136,13 +138,13 @@
 
     private void RenderPlaceholderRow( RenderTreeBuilder __builder, PlaceholderContext placeholderContext )
     {
-        <tr class="@Slots.Tr"
+        <tr class="@GetStyles( nameof( S.Tr ) )"
             style="@RowStyles"
             data-slot="tr"
             aria-rowindex="@(placeholderContext.Index + 1)">
             @foreach( var column in _columns )
             {
-                <td class="@Slots.Placeholder"
+                <td class="@GetStyles( nameof( S.Placeholder ) )"
                     data-slot="placeholder"
                     data-align="@column.Align.ToLowerInvariant()"
                     @key="@column">
@@ -157,7 +159,7 @@
     private void RenderLoadingContent( RenderTreeBuilder __builder )
     {
         <tr>
-            <td class="@Slots.LoadingWrapper"
+            <td class="@GetStyles( nameof( S.LoadingWrapper ) )"
                 colspan="@(_columns.Count)"
                 data-slot="loading-wrapper">
                 @if( LoadingContent is not null )
@@ -172,7 +174,7 @@
 
             @if( Data is null || !Data.Any() )
             {
-                <td class="@Slots.EmptyWrapper" data-slot="empty-wrapper" />
+                <td class="@GetStyles( nameof( S.EmptyWrapper ) )" data-slot="empty-wrapper" />
             }
         </tr>
     }
@@ -180,7 +182,7 @@
     private void RenderEmptyContent( RenderTreeBuilder __builder )
     {
         <tr>
-            <td class="@Slots.EmptyWrapper"
+            <td class="@GetStyles( nameof( S.EmptyWrapper ) )"
                 colspan="@(_columns.Count)"
                 data-slot="empty-wrapper">
                 @if( EmptyContent is not null )
