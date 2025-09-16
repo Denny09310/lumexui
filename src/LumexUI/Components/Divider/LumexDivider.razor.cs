@@ -2,8 +2,10 @@
 // LumexUI licenses this file to you under the MIT license
 // See the license here https://github.com/LumexUI/lumexui/blob/main/LICENSE
 
+using System.Diagnostics.CodeAnalysis;
+
 using LumexUI.Common;
-using LumexUI.Styles;
+using LumexUI.Utilities;
 
 using Microsoft.AspNetCore.Components;
 
@@ -22,8 +24,32 @@ public partial class LumexDivider : LumexComponentBase
 	/// </remarks>
 	[Parameter] public Orientation Orientation { get; set; }
 
-	private protected override string? RootClass =>
-		TwMerge.Merge( Divider.GetStyles( this ) );
+	private Dictionary<string, ComponentSlot> _slots = [];
 
 	private new string As => Orientation is Orientation.Horizontal ? "hr" : "div";
+
+	/// <inheritdoc />
+	protected override void OnParametersSet()
+	{
+		var divider = Styles.Divider.Style( TwMerge );
+		_slots = divider(new()
+		{
+			[nameof(Orientation)] = Orientation.ToString(),
+		} );
+	}
+
+	[ExcludeFromCodeCoverage]
+	private string? GetStyles( string slot )
+	{
+		if( !_slots.TryGetValue( slot, out var styles ) )
+		{
+			throw new NotImplementedException();
+		}
+
+		return slot switch
+		{
+			nameof( SlotBase.Base ) => styles( Class ),
+			_ => throw new NotImplementedException()
+		};
+	}
 }

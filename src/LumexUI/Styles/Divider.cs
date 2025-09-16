@@ -7,31 +7,39 @@ using System.Diagnostics.CodeAnalysis;
 using LumexUI.Common;
 using LumexUI.Utilities;
 
+using TailwindMerge;
+
 namespace LumexUI.Styles;
 
 [ExcludeFromCodeCoverage]
-internal readonly record struct Divider
+internal static class Divider
 {
-    private readonly static string _base = ElementClass.Empty()
-        .Add( "bg-divider" )
-        .Add( "border-none" )
-        .ToString();
+	private static ComponentVariant? _variant;
 
-    private static ElementClass GetOrientationStyles( Orientation orientation )
-    {
-        return ElementClass.Empty()
-            .Add( "w-full h-px", when: orientation is Orientation.Horizontal )
-            .Add( "h-full w-px", when: orientation is Orientation.Vertical );
-    }
+	public static ComponentVariant Style( TwMerge twMerge )
+	{
+		var twVariants = new TwVariants( twMerge );
 
-    public static string GetStyles( LumexDivider divider )
-    {
-        var styles = new ElementClass()
-            .Add( _base )
-            .Add( GetOrientationStyles( divider.Orientation ) )
-            .Add( divider.Class )
-            .ToString();
+		return _variant ??= twVariants.Create( new VariantConfig()
+		{
+			Base = ElementClass.Empty()
+				.Add( "bg-divider" )
+				.Add( "border-none" ),
 
-        return styles;
-    }
+			Variants = new VariantCollection
+			{
+				[nameof( LumexDivider.Orientation )] = new VariantValueCollection
+				{
+					[nameof( Orientation.Horizontal )] = new SlotCollection
+					{
+						[nameof( SlotBase.Base )] = "w-full h-px"
+					},
+					[nameof( Orientation.Vertical )] = new SlotCollection
+					{
+						[nameof( SlotBase.Base )] = "h-full w-px"
+					}
+				}
+			}
+		} );
+	}
 }
