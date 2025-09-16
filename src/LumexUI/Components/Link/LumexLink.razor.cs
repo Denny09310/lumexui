@@ -2,8 +2,10 @@
 // LumexUI licenses this file to you under the MIT license
 // See the license here https://github.com/LumexUI/lumexui/blob/main/LICENSE
 
+using System.Diagnostics.CodeAnalysis;
+
 using LumexUI.Common;
-using LumexUI.Styles;
+using LumexUI.Utilities;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
@@ -62,8 +64,6 @@ public partial class LumexLink : LumexComponentBase
 	/// </remarks>
 	[Parameter] public bool External { get; set; }
 
-	private protected override string? RootClass =>
-		TwMerge.Merge( Link.GetStyles( this ) );
 
 	private IReadOnlyDictionary<string, object> Attributes
 	{
@@ -92,11 +92,39 @@ public partial class LumexLink : LumexComponentBase
 		}
 	}
 
+	private Dictionary<string, ComponentSlot> _slots = [];
+
 	/// <summary>
 	/// Initializes a new instance of the <see cref="LumexLink"/>.
 	/// </summary>
 	public LumexLink()
 	{
 		As = "a";
+	}
+
+	protected override void OnParametersSet()
+	{
+		var link = Styles.Link.Style( TwMerge );
+		_slots = link( new()
+		{
+			[nameof( Disabled )] = Disabled.ToString(),
+			[nameof( Color )] = Color.ToString(),
+			[nameof( Underline )] = Underline.ToString(),
+		} );
+	}
+
+	[ExcludeFromCodeCoverage]
+	private string? GetStyles( string slot )
+	{
+		if( !_slots.TryGetValue( slot, out var styles ) )
+		{
+			throw new NotImplementedException();
+		}
+
+		return slot switch
+		{
+			nameof( SlotBase.Base ) => styles( Class ),
+			_ => throw new NotImplementedException()
+		};
 	}
 }

@@ -2,7 +2,7 @@
 @inherits LumexComponentBase
 
 <InternalNavLink Match="@Match"
-                 class="@RootClass"
+                 class="@GetStyles( "Base" )"
                  style="@RootStyle"
                  data-disabled="@Utils.GetDataAttributeValue( Disabled )"
                  @attributes="@Attributes">

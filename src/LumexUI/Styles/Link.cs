@@ -7,58 +7,90 @@ using System.Diagnostics.CodeAnalysis;
 using LumexUI.Common;
 using LumexUI.Utilities;
 
+using TailwindMerge;
+
 namespace LumexUI.Styles;
 
 [ExcludeFromCodeCoverage]
-internal class Link
+internal static class Link
 {
-    private readonly static string _base = ElementClass.Empty()
-        .Add( "inline-flex" )
-        .Add( "items-center" )
-        .Add( "hover:opacity-hover" )
-        .Add( "active:opacity-60" )
-        .Add( "transition-opacity" )
-        .ToString();
+	private static ComponentVariant? _variant;
 
-    private readonly static string _disabled = ElementClass.Empty()
-        .Add( "opacity-disabled" )
-        .Add( "pointer-events-none" )
-        .ToString();
+	public static ComponentVariant Style(TwMerge twMerge)
+	{
+		var twVariants = new TwVariants( twMerge );
 
-    private readonly static string _active = ElementClass.Empty()
-        .Add( "data-[active=true]:font-semibold" )
-        .ToString();
-    
-    private static ElementClass GetColorStyles( ThemeColor color )
-    {
-        return ElementClass.Empty()
-            .Add( "text-default", when: color is ThemeColor.Default )
-            .Add( "text-primary", when: color is ThemeColor.Primary )
-            .Add( "text-secondary", when: color is ThemeColor.Secondary )
-            .Add( "text-success", when: color is ThemeColor.Success )
-            .Add( "text-warning", when: color is ThemeColor.Warning )
-            .Add( "text-danger", when: color is ThemeColor.Danger )
-            .Add( "text-info", when: color is ThemeColor.Info );
-    }
+		return _variant ??= twVariants.Create( new VariantConfig()
+		{
+			Base = ElementClass.Empty()
+				.Add( "inline-flex" )
+				.Add( "items-center" )
+				.Add( "hover:opacity-hover" )
+				.Add( "active:opacity-60" )
+				.Add( "transition-opacity" )
+				// active
+				.Add( "data-[active=true]:font-semibold" ),
 
-    private static ElementClass GetUnderlineStyles( Underline underline )
-    {
-        return ElementClass.Empty()
-            .Add( "no-underline", when: underline is Underline.None )
-            .Add( "hover:underline", when: underline is Underline.Hover )
-            .Add( "underline", when: underline is Underline.Always )
-            .Add( "underline-offset-4", when: underline is not Underline.None );
-    }
+			Variants = new VariantCollection
+			{
+				[nameof(LumexLink.Disabled)] = new VariantValueCollection
+				{
+					[bool.TrueString] = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = ElementClass.Empty()
+							.Add( "opacity-disabled" )
+							.Add( "pointer-events-none" )
+					}
+				},
 
-    public static string GetStyles( LumexLink link )
-    {
-        return ElementClass.Empty()
-            .Add( _base )
-            .Add( _active )
-            .Add( _disabled, when: link.Disabled )
-            .Add( GetColorStyles( link.Color ) )
-            .Add( GetUnderlineStyles( link.Underline ) )
-            .Add( link.Class )
-            .ToString();
-    }
+				[nameof(LumexLink.Color)] = new VariantValueCollection
+				{
+					[nameof(ThemeColor.Default)] = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = "text-default"
+					},
+					[nameof(ThemeColor.Primary)] = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = "text-primary"
+					},
+					[nameof(ThemeColor.Secondary)] = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = "text-secondary"
+					},
+					[nameof(ThemeColor.Success)] = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = "text-success"
+					},
+					[nameof(ThemeColor.Warning)] = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = "text-warning"
+					},
+					[nameof(ThemeColor.Danger)] = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = "text-danger"
+					},
+					[nameof(ThemeColor.Info)] = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = "text-info"
+					},
+				},
+
+				[nameof(LumexLink.Underline)] = new VariantValueCollection
+				{
+					[nameof(Underline.None)] = new SlotCollection
+					{
+						[nameof( SlotBase.Base )] = "no-underline"
+					},
+					[nameof(Underline.Hover)] = new SlotCollection
+					{
+						[nameof( SlotBase.Base )] = "hover:underline underline-offset-4"
+					},
+					[nameof(Underline.Always)] = new SlotCollection
+					{
+						[nameof( SlotBase.Base )] = "underline underline-offset-4"
+					},
+				}
+			}
+		} );
+	}
 }
