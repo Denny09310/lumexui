@@ -2,13 +2,13 @@
 // LumexUI licenses this file to you under the MIT license
 // See the license here https://github.com/LumexUI/lumexui/blob/main/LICENSE
 
+using System.Diagnostics.CodeAnalysis;
+
 using LumexUI.Common;
-using LumexUI.Styles;
+using LumexUI.Utilities;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-
-using TailwindMerge;
 
 namespace LumexUI;
 
@@ -22,60 +22,60 @@ public partial class LumexButton : LumexComponentBase
 	/// </summary>
 	[Parameter] public RenderFragment? ChildContent { get; set; }
 
-    /// <summary>
-    /// Gets or sets content to be rendered before the label of the button.
-    /// </summary>
-    [Parameter] public RenderFragment? StartContent { get; set; }
+	/// <summary>
+	/// Gets or sets content to be rendered before the label of the button.
+	/// </summary>
+	[Parameter] public RenderFragment? StartContent { get; set; }
 
-    /// <summary>
-    /// Gets or sets content to be rendered after the label of the button.
-    /// </summary>
-    [Parameter] public RenderFragment? EndContent { get; set; }
+	/// <summary>
+	/// Gets or sets content to be rendered after the label of the button.
+	/// </summary>
+	[Parameter] public RenderFragment? EndContent { get; set; }
 
-    /// <summary>
-    /// Gets or sets the type of the button.
-    /// </summary>
-    /// <remarks>
-    /// Default value is <see cref="ButtonType.Button"/>
-    /// </remarks>
-    [Parameter] public ButtonType Type { get; set; }
+	/// <summary>
+	/// Gets or sets the type of the button.
+	/// </summary>
+	/// <remarks>
+	/// Default value is <see cref="ButtonType.Button"/>
+	/// </remarks>
+	[Parameter] public ButtonType Type { get; set; }
 
-    /// <summary>
-    /// Gets or sets an appearance style of the button.
-    /// </summary>
-    /// <remarks>
-    /// Default value is <see cref="Variant.Solid"/>
-    /// </remarks>
-    [Parameter] public Variant Variant { get; set; }
+	/// <summary>
+	/// Gets or sets an appearance style of the button.
+	/// </summary>
+	/// <remarks>
+	/// Default value is <see cref="Variant.Solid"/>
+	/// </remarks>
+	[Parameter] public Variant Variant { get; set; }
 
-    /// <summary>
-    /// Gets or sets a color of the button.
-    /// </summary>
-    /// <remarks>
-    /// Default value is <see cref="ThemeColor.Default"/>
-    /// </remarks>
-    [Parameter] public ThemeColor Color { get; set; } = ThemeColor.Default;
+	/// <summary>
+	/// Gets or sets a color of the button.
+	/// </summary>
+	/// <remarks>
+	/// Default value is <see cref="ThemeColor.Default"/>
+	/// </remarks>
+	[Parameter] public ThemeColor Color { get; set; } = ThemeColor.Default;
 
-    /// <summary>
-    /// Gets or sets the size of the button.
-    /// </summary>
-    /// <remarks>
-    /// Default value is <see cref="Size.Medium"/>
-    /// </remarks>
-    [Parameter] public Size Size { get; set; } = Size.Medium;
+	/// <summary>
+	/// Gets or sets the size of the button.
+	/// </summary>
+	/// <remarks>
+	/// Default value is <see cref="Size.Medium"/>
+	/// </remarks>
+	[Parameter] public Size Size { get; set; } = Size.Medium;
 
-    /// <summary>
-    /// Gets or sets the radius of the button.
-    /// </summary>
-    /// <remarks>
-    /// Default value is <see cref="Radius.Medium"/>
-    /// </remarks>
-    [Parameter] public Radius Radius { get; set; } = Radius.Medium;
+	/// <summary>
+	/// Gets or sets the radius of the button.
+	/// </summary>
+	/// <remarks>
+	/// Default value is <see cref="Radius.Medium"/>
+	/// </remarks>
+	[Parameter] public Radius Radius { get; set; } = Radius.Medium;
 
-    /// <summary>
-    /// Gets or sets a value indicating whether the button is disabled.
-    /// </summary>
-    [Parameter] public bool Disabled { get; set; }
+	/// <summary>
+	/// Gets or sets a value indicating whether the button is disabled.
+	/// </summary>
+	[Parameter] public bool Disabled { get; set; }
 
 	/// <summary>
 	/// Gets or sets a value indicating whether the button is full-width.
@@ -92,19 +92,48 @@ public partial class LumexButton : LumexComponentBase
 	/// </summary>
 	[Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
 
-	private protected override string? RootClass => 
-        TwMerge.Merge( Button.GetStyles( this ) );
+	private Dictionary<string, ComponentSlot> _slots = [];
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="LumexButton"/>.
-    /// </summary>
-    public LumexButton()
-    {
-        As = "button";
-    }
+	/// <summary>
+	/// Initializes a new instance of the <see cref="LumexButton"/>.
+	/// </summary>
+	public LumexButton()
+	{
+		As = "button";
+	}
 
-    private protected virtual Task OnClickAsync( MouseEventArgs args )
-    {
-        return Disabled ? Task.CompletedTask : OnClick.InvokeAsync( args );
-    }
+	/// <inheritdoc />
+	protected override void OnParametersSet()
+	{
+		var button = Styles.Button.Style( TwMerge );
+		_slots = button( new()
+		{
+			[nameof( Variant )] = Variant.ToString(),
+			[nameof( Color )] = Color.ToString(),
+			[nameof( Size )] = Size.ToString(),
+			[nameof( Radius )] = Radius.ToString(),
+			[nameof( Disabled )] = Disabled.ToString(),
+			[nameof( IconOnly )] = IconOnly.ToString(),
+		} );
+	}
+
+	private protected virtual Task OnClickAsync( MouseEventArgs args )
+	{
+		return Disabled ? Task.CompletedTask : OnClick.InvokeAsync( args );
+	}
+
+	[ExcludeFromCodeCoverage]
+	private string? GetStyles( string slot )
+	{
+		if( !_slots.TryGetValue( slot, out var styles ) )
+		{
+			throw new NotImplementedException();
+		}
+
+		return slot switch
+		{
+			nameof( BadgeSlots.Base ) => styles( Class ),
+			_ => throw new NotImplementedException()
+		};
+	}
 }
