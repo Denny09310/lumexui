@@ -123,12 +123,12 @@ public partial class LumexRadio<TValue> : LumexComponentBase, ISlotComponent<Rad
 	/// <inheritdoc />
 	protected override void OnParametersSet()
 	{
-		var navbar = Styles.Radio.Style( TwMerge );
-		_slots = navbar( new()
+		var radio = Styles.Radio.Style( TwMerge );
+		_slots = radio( new()
 		{
-			[nameof(Disabled)] = Disabled.ToString(),
-			[nameof(Color)] = Color.ToString(),
-			[nameof(Size)] = Size.ToString(),
+			[nameof( Disabled )] = Disabled.ToString(),
+			[nameof( Color )] = Color.ToString(),
+			[nameof( Size )] = Size.ToString(),
 		} );
 	}
 
@@ -140,14 +140,16 @@ public partial class LumexRadio<TValue> : LumexComponentBase, ISlotComponent<Rad
 			throw new NotImplementedException();
 		}
 
+		var classes = Context.Owner.RadioClasses;
+
 		return slot switch
 		{
-			nameof( RadioSlots.Base ) => styles( Classes?.Base, Class ),
-			nameof( RadioSlots.ControlWrapper ) => styles( Classes?.ControlWrapper ),
-			nameof( RadioSlots.LabelWrapper ) => styles( Classes?.LabelWrapper ),
-			nameof( RadioSlots.Control ) => styles( Classes?.Control ),
-			nameof( RadioSlots.Label ) => styles( Classes?.Label ),
-			nameof( RadioSlots.Description ) => styles( Classes?.Description ),
+			nameof( RadioSlots.Base ) => styles( classes?.Base, Classes?.Base, Class ),
+			nameof( RadioSlots.Control ) => styles( classes?.Control, Classes?.Control ),
+			nameof( RadioSlots.ControlWrapper ) => styles( classes?.ControlWrapper, Classes?.ControlWrapper ),
+			nameof( RadioSlots.Label ) => styles( classes?.Label, Classes?.Label ),
+			nameof( RadioSlots.LabelWrapper ) => styles( classes?.LabelWrapper, Classes?.LabelWrapper ),
+			nameof( RadioSlots.Description ) => styles( classes?.Description, Classes?.Description ),
 			_ => throw new NotImplementedException()
 		};
 	}
