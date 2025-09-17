@@ -2,6 +2,7 @@
 // LumexUI licenses this file to you under the MIT license
 // See the license here https://github.com/LumexUI/lumexui/blob/main/LICENSE
 
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 using LumexUI.Common;
@@ -12,291 +13,546 @@ using TailwindMerge;
 namespace LumexUI.Styles;
 
 [ExcludeFromCodeCoverage]
-internal class Tabs
+internal static class Tabs
 {
-	private static readonly string _base = ElementClass.Empty()
-		.Add( "inline-flex" )
-		.ToString();
+	private static ComponentVariant? _variant;
 
-	private static readonly string _tabList = ElementClass.Empty()
-		.Add( "flex" )
-		.Add( "h-fit" )
-		.Add( "p-1" )
-		.Add( "gap-2" )
-		.Add( "items-center" )
-		.Add( "flex-nowrap" )
-		.Add( "overflow-x-scroll" )
-		.Add( "scrollbar-hide" )
-		.Add( "bg-default-100" )
-		.ToString();
-
-	private static readonly string _tab = ElementClass.Empty()
-		.Add( "z-0" )
-		.Add( "group" )
-		.Add( "relative" )
-		.Add( "w-full" )
-		.Add( "flex" )
-		.Add( "px-3" )
-		.Add( "py-1" )
-		.Add( "justify-center" )
-		.Add( "items-center" )
-		.Add( "cursor-pointer" )
-		.Add( "data-[disabled=true]:!opacity-disabled" )
-		.Add( "data-[disabled=true]:cursor-not-allowed" )
-		.Add( "data-[selected=false]:hover:opacity-hover" )
-		// transition
-		.Add( "transition-opacity" )
-		// focus ring
-		.Add( Utils.FocusVisible )
-		.ToString();
-
-	private static readonly string _tabContent = ElementClass.Empty()
-		.Add( "z-10" )
-		.Add( "relative" )
-		.Add( "text-inherit" )
-		.Add( "whitespace-nowrap" )
-		.Add( "text-default-500" )
-		.Add( "group-data-[selected=true]:text-foreground" )
-		// transition
-		.Add( "transition-colors" )
-		.ToString();
-
-	private static readonly string _tabPanel = ElementClass.Empty()
-		.Add( "px-1" )
-		.Add( "py-3" )
-		// focus ring
-		.Add( Utils.FocusVisible )
-		.ToString();
-
-	private static readonly string _cursor = ElementClass.Empty()
-		.Add( "z-0" )
-		.Add( "absolute" )
-		.Add( "bg-white" )
-		.ToString();
-
-	public static TabsSlots GetStyles( LumexTabs tabs, TwMerge twMerge )
+	public static ComponentVariant Style( TwMerge twMerge )
 	{
-		return new TabsSlots()
+		var twVariants = new TwVariants( twMerge );
+
+		return _variant ??= twVariants.Create( new VariantConfig()
 		{
-			Base = twMerge.Merge(
-				ElementClass.Empty()
-					.Add( _base )
-					.Add( GetFullWidthStyles( tabs.FullWidth, slot: nameof( _base ) ) )
-					.Add( tabs.Classes?.Base )
-					.Add( tabs.Class )
-					.ToString() ),
+			Slots = new SlotCollection
+			{
+				[nameof( TabsSlots.Base )] = ElementClass.Empty()
+					.Add( "inline-flex" ),
 
-			TabList = twMerge.Merge(
-				ElementClass.Empty()
-					.Add( _tabList )
-					.Add( GetSizeStyles( tabs.Size, slot: nameof( _tabList ) ) )
-					.Add( GetRadiusStyles( tabs.Radius, slot: nameof( _tabList ) ) )
-					.Add( GetVariantStyles( tabs.Variant, slot: nameof( _tabList ) ) )
-					.Add( GetDisabledStyles( tabs.Disabled, slot: nameof( _tabList ) ) )
-					.Add( GetFullWidthStyles( tabs.FullWidth, slot: nameof( _tabList ) ) )
-					.Add( tabs.Classes?.TabList )
-					.ToString() ),
+				[nameof( TabsSlots.TabList )] = ElementClass.Empty()
+					.Add( "flex" )
+					.Add( "h-fit" )
+					.Add( "p-1" )
+					.Add( "gap-2" )
+					.Add( "items-center" )
+					.Add( "flex-nowrap" )
+					.Add( "overflow-x-scroll" )
+					.Add( "scrollbar-hide" )
+					.Add( "bg-default-100" ),
 
-			Tab = twMerge.Merge(
-				ElementClass.Empty()
-					.Add( _tab )
-					.Add( GetSizeStyles( tabs.Size, slot: nameof( _tab ) ) )
-					.Add( GetRadiusStyles( tabs.Radius, slot: nameof( _tab ) ) )
-					.Add( tabs.Classes?.Tab )
-					.ToString() ),
+				[nameof( TabsSlots.Tab )] = ElementClass.Empty()
+					.Add( "z-0" )
+					.Add( "group" )
+					.Add( "relative" )
+					.Add( "w-full" )
+					.Add( "flex" )
+					.Add( "px-3" )
+					.Add( "py-1" )
+					.Add( "justify-center" )
+					.Add( "items-center" )
+					.Add( "cursor-pointer" )
+					.Add( "data-[disabled=true]:!opacity-disabled" )
+					.Add( "data-[disabled=true]:cursor-not-allowed" )
+					.Add( "data-[selected=false]:hover:opacity-hover" )
+					// transition
+					.Add( "transition-opacity" )
+					// focus ring
+					.Add( Utils.FocusVisible ),
 
-			TabContent = twMerge.Merge(
-				ElementClass.Empty()
-					.Add( _tabContent )
-					.Add( GetCompoundStyles( tabs.Variant, tabs.Color, slot: nameof( _tabContent ) ) )
-					.Add( tabs.Classes?.TabContent )
-					.ToString() ),
+				[nameof( TabsSlots.TabContent )] = ElementClass.Empty()
+					.Add( "z-10" )
+					.Add( "relative" )
+					.Add( "text-inherit" )
+					.Add( "whitespace-nowrap" )
+					.Add( "text-default-500" )
+					.Add( "group-data-[selected=true]:text-foreground" )
+					// transition
+					.Add( "transition-colors" ),
 
-			TabPanel = twMerge.Merge(
-				ElementClass.Empty()
-					.Add( _tabPanel )
-					.Add( tabs.Classes?.TabPanel )
-					.ToString() ),
+				[nameof( TabsSlots.TabPanel )] = ElementClass.Empty()
+					.Add( "px-1" )
+					.Add( "py-3" )
+					// focus ring
+					.Add( Utils.FocusVisible ),
 
-			Cursor = twMerge.Merge(
-				ElementClass.Empty()
-					.Add( _cursor )
-					.Add( GetSizeStyles( tabs.Size, slot: nameof( _cursor ) ) )
-					.Add( GetRadiusStyles( tabs.Radius, slot: nameof( _cursor ) ) )
-					.Add( GetVariantStyles( tabs.Variant, slot: nameof( _cursor ) ) )
-					.Add( GetCompoundStyles( tabs.Variant, tabs.Color, slot: nameof( _cursor ) ) )
-					.Add( tabs.Classes?.Cursor )
-					.ToString() )
-		};
-	}
+				[nameof( TabsSlots.Cursor )] = ElementClass.Empty()
+					.Add( "z-0" )
+					.Add( "absolute" )
+					.Add( "bg-white" )
+			},
 
-	private static ElementClass GetVariantStyles( TabVariant variant, string slot )
-	{
-		return variant switch
-		{
-			TabVariant.Solid => ElementClass.Empty()
-				.Add( "inset-0", when: slot is nameof( _cursor ) ),
+			Variants = new VariantCollection
+			{
+				[nameof( LumexTabs.FullWidth )] = new VariantValueCollection
+				{
+					[bool.TrueString] = new SlotCollection
+					{
+						[nameof( TabsSlots.Base )] = "w-full",
+						[nameof( TabsSlots.TabList )] = "w-full",
+					}
+				},
 
-			TabVariant.Outlined => ElementClass.Empty()
-				.Add( "bg-transparent border-2 border-default-200 shadow-xs", when: slot is nameof( _tabList ) )
-				.Add( "inset-0", when: slot is nameof( _cursor ) ),
+				[nameof( LumexTabs.Disabled )] = new VariantValueCollection
+				{
+					[bool.TrueString] = new SlotCollection
+					{
+						[nameof( TabsSlots.TabList )] = Utils.Disabled,
+					}
+				},
 
-			TabVariant.Underlined => ElementClass.Empty()
-				.Add( "bg-transparent", when: slot is nameof( _tabList ) )
-				.Add( "h-[2px] w-[80%] bottom-0 shadow-[0_1px_0px_0_rgba(0,0,0,0.05)]", when: slot is nameof( _cursor ) ),
+				[nameof( LumexTabs.Size )] = new VariantValueCollection
+				{
+					[nameof( Size.Small )] = new SlotCollection
+					{
+						[nameof( TabsSlots.TabList )] = "rounded-medium",
+						[nameof( TabsSlots.Tab )] = "h-7 text-tiny rounded-small",
+						[nameof( TabsSlots.Cursor )] = "rounded-small",
+					},
+					[nameof( Size.Medium )] = new SlotCollection
+					{
+						[nameof( TabsSlots.TabList )] = "rounded-medium",
+						[nameof( TabsSlots.Tab )] = "h-8 text-small rounded-small",
+						[nameof( TabsSlots.Cursor )] = "rounded-small",
+					},
+					[nameof( Size.Large )] = new SlotCollection
+					{
+						[nameof( TabsSlots.TabList )] = "rounded-large",
+						[nameof( TabsSlots.Tab )] = "h-9 text-medium rounded-medium",
+						[nameof( TabsSlots.Cursor )] = "rounded-medium",
+					},
+				},
 
-			TabVariant.Light => ElementClass.Empty()
-				.Add( "bg-transparent", when: slot is nameof( _tabList ) )
-				.Add( "inset-0", when: slot is nameof( _cursor ) ),
+				[nameof( LumexTabs.Variant )] = new VariantValueCollection
+				{
+					[nameof( TabVariant.Solid )] = new SlotCollection
+					{
+						[nameof( TabsSlots.Cursor )] = "inset-0"
+					},
+					[nameof( TabVariant.Outlined )] = new SlotCollection
+					{
+						[nameof( TabsSlots.TabList )] = "bg-transparent border-2 border-default-200 shadow-xs",
+						[nameof( TabsSlots.Cursor )] = "inset-0"
+					},
+					[nameof( TabVariant.Underlined )] = new SlotCollection
+					{
+						[nameof( TabsSlots.TabList )] = "bg-transparent",
+						[nameof( TabsSlots.Cursor )] = "h-[2px] w-[80%] bottom-0 shadow-[0_1px_0px_0_rgba(0,0,0,0.05)]"
+					},
+					[nameof( TabVariant.Light )] = new SlotCollection
+					{
+						[nameof( TabsSlots.TabList )] = "bg-transparent",
+						[nameof( TabsSlots.Cursor )] = "inset-0"
+					},
+				},
 
-			_ => ElementClass.Empty()
-		};
-	}
+				[nameof( LumexTabs.Radius )] = new VariantValueCollection
+				{
+					[nameof( Radius.None )] = new SlotCollection
+					{
+						[nameof( TabsSlots.TabList )] = "rounded-none",
+						[nameof( TabsSlots.Tab )] = "rounded-none",
+						[nameof( TabsSlots.Cursor )] = "rounded-none",
+					},
+					[nameof( Radius.Small )] = new SlotCollection
+					{
+						[nameof( TabsSlots.TabList )] = "rounded-small",
+						[nameof( TabsSlots.Tab )] = "rounded-small",
+						[nameof( TabsSlots.Cursor )] = "rounded-small",
+					},
+					[nameof( Radius.Medium )] = new SlotCollection
+					{
+						[nameof( TabsSlots.TabList )] = "rounded-medium",
+						[nameof( TabsSlots.Tab )] = "rounded-medium",
+						[nameof( TabsSlots.Cursor )] = "rounded-medium",
+					},
+					[nameof( Radius.Large )] = new SlotCollection
+					{
+						[nameof( TabsSlots.TabList )] = "rounded-large",
+						[nameof( TabsSlots.Tab )] = "rounded-large",
+						[nameof( TabsSlots.Cursor )] = "rounded-large",
+					},
+					[nameof( Radius.Full )] = new SlotCollection
+					{
+						[nameof( TabsSlots.TabList )] = "rounded-full",
+						[nameof( TabsSlots.Tab )] = "rounded-full",
+						[nameof( TabsSlots.Cursor )] = "rounded-full",
+					}
+				}
+			},
 
-	private static ElementClass GetSizeStyles( Size size, string slot )
-	{
-		return size switch
-		{
-			Size.Small => ElementClass.Empty()
-				.Add( "rounded-medium", when: slot is nameof( _tabList ) )
-				.Add( "h-7 text-tiny rounded-small", when: slot is nameof( _tab ) )
-				.Add( "rounded-small", when: slot is nameof( _cursor ) ),
+			CompoundVariants =
+			[
+				// Solid
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Solid),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Default),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = "bg-background dark:bg-default shadow-small",
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-default-foreground",
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Solid),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Primary),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = ColorVariants.Solid[ThemeColor.Primary],
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-primary-foreground",
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Solid),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Secondary),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = ColorVariants.Solid[ThemeColor.Secondary],
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-secondary-foreground",
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Solid),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Success),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = ColorVariants.Solid[ThemeColor.Success],
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-success-foreground",
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Solid),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Warning),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = ColorVariants.Solid[ThemeColor.Warning],
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-warning-foreground",
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Solid),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Danger),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = ColorVariants.Solid[ThemeColor.Danger],
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-danger-foreground",
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Solid),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Info),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = ColorVariants.Solid[ThemeColor.Info],
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-info-foreground",
+					}
+				},
 
-			Size.Medium => ElementClass.Empty()
-				.Add( "rounded-medium", when: slot is nameof( _tabList ) )
-				.Add( "h-8 text-small rounded-small", when: slot is nameof( _tab ) )
-				.Add( "rounded-small", when: slot is nameof( _cursor ) ),
+				// Outlined
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Outlined),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Default),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = "bg-background dark:bg-default shadow-small",
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-default-foreground",
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Outlined),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Primary),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = ColorVariants.Solid[ThemeColor.Primary],
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-primary-foreground",
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Outlined),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Secondary),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = ColorVariants.Solid[ThemeColor.Secondary],
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-secondary-foreground",
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Outlined),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Success),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = ColorVariants.Solid[ThemeColor.Success],
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-success-foreground",
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Outlined),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Warning),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = ColorVariants.Solid[ThemeColor.Warning],
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-warning-foreground",
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Outlined),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Danger),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = ColorVariants.Solid[ThemeColor.Danger],
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-danger-foreground",
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Outlined),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Info),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = ColorVariants.Solid[ThemeColor.Info],
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-info-foreground",
+					}
+				},
 
-			Size.Large => ElementClass.Empty()
-				.Add( "rounded-large", when: slot is nameof( _tabList ) )
-				.Add( "h-9 text-medium rounded-medium", when: slot is nameof( _tab ) )
-				.Add( "rounded-medium", when: slot is nameof( _cursor ) ),
+				// Light
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Light),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Default),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = "bg-background dark:bg-default shadow-small",
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-default-foreground",
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Light),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Primary),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = ColorVariants.Solid[ThemeColor.Primary],
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-primary-foreground",
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Light),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Secondary),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = ColorVariants.Solid[ThemeColor.Secondary],
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-secondary-foreground",
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Light),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Success),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = ColorVariants.Solid[ThemeColor.Success],
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-success-foreground",
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Light),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Warning),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = ColorVariants.Solid[ThemeColor.Warning],
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-warning-foreground",
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Light),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Danger),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = ColorVariants.Solid[ThemeColor.Danger],
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-danger-foreground",
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Light),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Info),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = ColorVariants.Solid[ThemeColor.Info],
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-info-foreground",
+					}
+				},
 
-			_ => ElementClass.Empty()
-		};
-	}
-
-	private static ElementClass GetRadiusStyles( Radius radius, string slot )
-	{
-		return radius switch
-		{
-			Radius.None => ElementClass.Empty()
-				.Add( "rounded-none", when: slot is nameof( _tabList ) )
-				.Add( "rounded-none", when: slot is nameof( _tab ) )
-				.Add( "rounded-none", when: slot is nameof( _cursor ) ),
-
-			Radius.Small => ElementClass.Empty()
-				.Add( "rounded-medium", when: slot is nameof( _tabList ) )
-				.Add( "rounded-small", when: slot is nameof( _tab ) )
-				.Add( "rounded-small", when: slot is nameof( _cursor ) ),
-
-			Radius.Medium => ElementClass.Empty()
-				.Add( "rounded-medium", when: slot is nameof( _tabList ) )
-				.Add( "rounded-small", when: slot is nameof( _tab ) )
-				.Add( "rounded-small", when: slot is nameof( _cursor ) ),
-
-			Radius.Large => ElementClass.Empty()
-				.Add( "rounded-large", when: slot is nameof( _tabList ) )
-				.Add( "rounded-medium", when: slot is nameof( _tab ) )
-				.Add( "rounded-medium", when: slot is nameof( _cursor ) ),
-
-			Radius.Full => ElementClass.Empty()
-				.Add( "rounded-full", when: slot is nameof( _tabList ) )
-				.Add( "rounded-full", when: slot is nameof( _tab ) )
-				.Add( "rounded-full", when: slot is nameof( _cursor ) ),
-
-			_ => ElementClass.Empty()
-		};
-	}
-
-	private static ElementClass GetFullWidthStyles( bool isFullWidth, string slot )
-	{
-		return isFullWidth switch
-		{
-			true => ElementClass.Empty()
-				.Add( "w-full", when: slot is nameof( _base ) )
-				.Add( "w-full", when: slot is nameof( _tabList ) ),
-
-			_ => ElementClass.Empty()
-		};
-	}
-
-	private static ElementClass GetDisabledStyles( bool isDisabled, string slot )
-	{
-		return isDisabled switch
-		{
-			true => ElementClass.Empty()
-				.Add( "opacity-disabled pointer-events-none", when: slot is nameof( _tabList ) ),
-
-			_ => ElementClass.Empty()
-		};
-	}
-
-	private static ElementClass GetCompoundStyles( TabVariant variant, ThemeColor color, string slot )
-	{
-		return (variant, color) switch
-		{
-			// solid / outlined / light && color
-
-			(TabVariant.Solid or TabVariant.Outlined or TabVariant.Light, ThemeColor.Default ) => ElementClass.Empty()
-				.Add( "bg-background dark:bg-default shadow-small", when: slot is nameof( _cursor ) )
-				.Add( "group-data-[selected=true]:text-default-foreground", when: slot is nameof( _tabContent ) ),
-
-			(TabVariant.Solid or TabVariant.Outlined or TabVariant.Light, ThemeColor.Primary ) => ElementClass.Empty()
-				.Add( ColorVariants.Solid[ThemeColor.Primary], when: slot is nameof( _cursor ) )
-				.Add( "group-data-[selected=true]:text-primary-foreground", when: slot is nameof( _tabContent ) ),
-
-			(TabVariant.Solid or TabVariant.Outlined or TabVariant.Light, ThemeColor.Secondary ) => ElementClass.Empty()
-				.Add( ColorVariants.Solid[ThemeColor.Secondary], when: slot is nameof( _cursor ) )
-				.Add( "group-data-[selected=true]:text-secondary-foreground", when: slot is nameof( _tabContent ) ),
-
-			(TabVariant.Solid or TabVariant.Outlined or TabVariant.Light, ThemeColor.Success ) => ElementClass.Empty()
-				.Add( ColorVariants.Solid[ThemeColor.Success], when: slot is nameof( _cursor ) )
-				.Add( "group-data-[selected=true]:text-success-foreground", when: slot is nameof( _tabContent ) ),
-
-			(TabVariant.Solid or TabVariant.Outlined or TabVariant.Light, ThemeColor.Warning ) => ElementClass.Empty()
-				.Add( ColorVariants.Solid[ThemeColor.Warning], when: slot is nameof( _cursor ) )
-				.Add( "group-data-[selected=true]:text-warning-foreground", when: slot is nameof( _tabContent ) ),
-
-			(TabVariant.Solid or TabVariant.Outlined or TabVariant.Light, ThemeColor.Danger ) => ElementClass.Empty()
-				.Add( ColorVariants.Solid[ThemeColor.Danger], when: slot is nameof( _cursor ) )
-				.Add( "group-data-[selected=true]:text-danger-foreground", when: slot is nameof( _tabContent ) ),
-
-			(TabVariant.Solid or TabVariant.Outlined or TabVariant.Light, ThemeColor.Info ) => ElementClass.Empty()
-				.Add( ColorVariants.Solid[ThemeColor.Info], when: slot is nameof( _cursor ) )
-				.Add( "group-data-[selected=true]:text-info-foreground", when: slot is nameof( _tabContent ) ),
-
-			// underlined && color
-
-			(TabVariant.Underlined, ThemeColor.Default ) => ElementClass.Empty()
-				.Add( "bg-foreground", when: slot is nameof( _cursor ) )
-				.Add( "group-data-[selected=true]:text-foreground", when: slot is nameof( _tabContent ) ),
-
-			(TabVariant.Underlined, ThemeColor.Primary ) => ElementClass.Empty()
-				.Add( "bg-primary", when: slot is nameof( _cursor ) )
-				.Add( "group-data-[selected=true]:text-primary", when: slot is nameof( _tabContent ) ),
-
-			(TabVariant.Underlined, ThemeColor.Secondary ) => ElementClass.Empty()
-				.Add( "bg-secondary", when: slot is nameof( _cursor ) )
-				.Add( "group-data-[selected=true]:text-secondary", when: slot is nameof( _tabContent ) ),
-
-			(TabVariant.Underlined, ThemeColor.Success ) => ElementClass.Empty()
-				.Add( "bg-success", when: slot is nameof( _cursor ) )
-				.Add( "group-data-[selected=true]:text-success", when: slot is nameof( _tabContent ) ),
-
-			(TabVariant.Underlined, ThemeColor.Warning ) => ElementClass.Empty()
-				.Add( "bg-warning", when: slot is nameof( _cursor ) )
-				.Add( "group-data-[selected=true]:text-warning", when: slot is nameof( _tabContent ) ),
-
-			(TabVariant.Underlined, ThemeColor.Danger ) => ElementClass.Empty()
-				.Add( "bg-danger", when: slot is nameof( _cursor ) )
-				.Add( "group-data-[selected=true]:text-danger", when: slot is nameof( _tabContent ) ),
-
-			(TabVariant.Underlined, ThemeColor.Info ) => ElementClass.Empty()
-				.Add( "bg-info", when: slot is nameof( _cursor ) )
-				.Add( "group-data-[selected=true]:text-info", when: slot is nameof( _tabContent ) ),
-
-			_ => ElementClass.Empty()
-		};
+				// Underlined
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Underlined),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Default),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = "bg-foreground",
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-foreground",
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Underlined),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Primary),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = "bg-primary",
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-primary",
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Underlined),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Secondary),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = "bg-secondary",
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-secondary",
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Underlined),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Success),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = "bg-success",
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-success",
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Underlined),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Warning),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = "bg-warning",
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-warning",
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Underlined),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Danger),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = "bg-danger",
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-danger",
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexTabs.Variant)] = nameof(TabVariant.Underlined),
+						[nameof(LumexTabs.Color)] = nameof(ThemeColor.Info),
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(TabsSlots.Cursor)] = "bg-info",
+						[nameof(TabsSlots.TabContent)] = "group-data-[selected=true]:text-info",
+					}
+				}
+			]
+		} );
 	}
 }

@@ -1,10 +1,12 @@
 ﻿@namespace LumexUI.Internal
 @inherits LumexComponentBase
 
+@using S = TabsSlots
+
 @if( SelectedTab?.ChildContent is not null )
 {
     <LumexComponent As="@As"
-                    Class="@Slots.TabPanel"
+                    Class="@GetStyles( nameof( S.TabPanel ) )"
                     data-slot="tab-panel">
         @SelectedTab?.ChildContent
     </LumexComponent>

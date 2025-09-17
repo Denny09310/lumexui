@@ -1,6 +1,8 @@
 ﻿@namespace LumexUI
 @inherits LumexComponentBase
 
+@using S = TabsSlots;
+
 <CascadingValue TValue="TabsContext" Value="@_context" IsFixed="@true">
     @* Unfortunate hack to make `LumexTab` always re-render when the `SelectedTab` changes to prevent its removal. *@
     <CascadingValue TValue="LumexTab" Value="@_context.GetSelectedTab()">
@@ -13,9 +15,9 @@
             @{
                 _context.StopCollectingTabs();
             }
-            <div class="@Slots.Base" data-slot="base">
+            <div class="@GetStyles( nameof( S.Base ) )" data-slot="base">
                 <LumexComponent As="@As"
-                                Class="@Slots.TabList"
+                                Class="@GetStyles( nameof( S.TabList ) )"
                                 Style="@Style"
                                 data-slot="tab-list"
                                 @attributes="@AdditionalAttributes">

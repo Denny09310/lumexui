@@ -48,7 +48,6 @@ public partial class LumexTab : LumexComponentBase
 
 	[Inject] private NavigationManager NavigationManager { get; set; } = default!;
 
-	private TabsSlots Slots => Context.Owner.Slots;
 	private bool Selected => Context.GetSelectedTab() == this;
 
 	private readonly MotionProps _motionProps;
@@ -135,4 +134,6 @@ public partial class LumexTab : LumexComponentBase
 		Disabled ||
 		Context.Owner.Disabled ||
 		Context.Owner.DisabledItems?.Contains( Id ) is true;
+
+	private string? GetStyles( string slot ) => Context.Owner.GetStyles( slot, Class );
 }

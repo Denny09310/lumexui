@@ -27,11 +27,11 @@ public partial class TabPanel : LumexComponentBase
 
 	[CascadingParameter] internal TabsContext Context { get; set; } = default!;
 
-	private TabsSlots Slots => Context.Owner.Slots;
-
 	/// <inheritdoc />
 	protected override void OnInitialized()
 	{
 		ContextNullException.ThrowIfNull( Context, nameof( TabPanel ) );
 	}
+
+	private string? GetStyles( string slot ) => Context.Owner.GetStyles( slot, Class );
 }

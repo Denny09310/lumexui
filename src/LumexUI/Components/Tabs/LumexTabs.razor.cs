@@ -2,8 +2,9 @@
 // LumexUI licenses this file to you under the MIT license
 // See the license here https://github.com/LumexUI/lumexui/blob/main/LICENSE
 
+using System.Diagnostics.CodeAnalysis;
+
 using LumexUI.Common;
-using LumexUI.Styles;
 using LumexUI.Utilities;
 
 using Microsoft.AspNetCore.Components;
@@ -82,12 +83,12 @@ public partial class LumexTabs : LumexComponentBase, ISlotComponent<TabsSlots>
 	/// </summary>
 	[Parameter] public TabsSlots? Classes { get; set; }
 
-	internal TabsSlots Slots { get; private set; } = default!;
-
 	private readonly TabsContext _context;
-	private readonly Memoizer<TabsSlots> _slotsMemoizer;
+	private readonly Memoizer<Dictionary<string, ComponentSlot>> _slotsMemoizer;
 	private readonly RenderFragment _renderTabs;
 	private readonly string _layoutGroupId;
+
+	private Dictionary<string, ComponentSlot> _slots = [];
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="LumexTabs"/>.
@@ -95,7 +96,7 @@ public partial class LumexTabs : LumexComponentBase, ISlotComponent<TabsSlots>
 	public LumexTabs()
 	{
 		_context = new TabsContext( this );
-		_slotsMemoizer = new Memoizer<TabsSlots>();
+		_slotsMemoizer = new Memoizer<Dictionary<string, ComponentSlot>>();
 		_layoutGroupId = Identifier.New();
 		_renderTabs = RenderTabs;
 	}
@@ -104,7 +105,7 @@ public partial class LumexTabs : LumexComponentBase, ISlotComponent<TabsSlots>
 	protected override void OnParametersSet()
 	{
 		// Perform a re-building only if the dependencies have changed
-		Slots = _slotsMemoizer.Memoize( GetSlots, [
+		_slots = _slotsMemoizer.Memoize( GetSlots, [
 			DisabledItems,
 			FullWidth,
 			Disabled,
@@ -128,8 +129,37 @@ public partial class LumexTabs : LumexComponentBase, ISlotComponent<TabsSlots>
 		return Task.CompletedTask;
 	}
 
-	private TabsSlots GetSlots()
+	private Dictionary<string, ComponentSlot> GetSlots()
 	{
-		return Tabs.GetStyles( this, TwMerge );
+		var tabs = Styles.Tabs.Style( TwMerge );
+		return tabs( new()
+		{
+			[nameof( FullWidth )] = FullWidth.ToString(),
+			[nameof( Disabled )] = Disabled.ToString(),
+			[nameof( Variant )] = Variant.ToString(),
+			[nameof( Radius )] = Radius.ToString(),
+			[nameof( Color )] = Color.ToString(),
+			[nameof( Size )] = Size.ToString(),
+		} );
+	}
+
+	[ExcludeFromCodeCoverage]
+	internal string? GetStyles( string slot, string? @class = null )
+	{
+		if( !_slots.TryGetValue( slot, out var styles ) )
+		{
+			throw new NotImplementedException();
+		}
+
+		return slot switch
+		{
+			nameof( TabsSlots.Base ) => styles( Classes?.Base, Class ),
+			nameof( TabsSlots.Tab ) => styles( Classes?.Tab, @class ),
+			nameof( TabsSlots.TabPanel ) => styles( Classes?.TabPanel, @class ),
+			nameof( TabsSlots.TabList ) => styles( Classes?.TabList ),
+			nameof( TabsSlots.TabContent ) => styles( Classes?.TabContent),
+			nameof( TabsSlots.Cursor ) => styles( Classes?.Cursor ),
+			_ => throw new NotImplementedException()
+		};
 	}
 }

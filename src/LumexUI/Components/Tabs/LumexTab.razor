@@ -1,6 +1,8 @@
 ﻿@namespace LumexUI
 @inherits LumexComponentBase
 
+@using S = TabsSlots;
+
 @{
     Context.Register(this);
 }
@@ -9,7 +11,7 @@
     internal void Render(RenderTreeBuilder __builder)
     {
         <LumexComponent As="@As"
-                        Class="@Slots.Tab"
+                        Class="@GetStyles( nameof( S.Tab ) )"
                         Style="@Style"
                         type="@(As == "button" ? "button" : null)"
                         data-slot="tab"
@@ -22,11 +24,11 @@
                 <Motion As="span"
                         LayoutId="cursor"
                         Transition="@_motionProps.Transition"
-                        class="@Slots.Cursor"
+                        class="@GetStyles( nameof( S.Cursor ) )"
                         data-slot="cursor" />
             }
 
-            <div class="@Slots.TabContent" data-slot="tab-content">
+            <div class="@GetStyles( nameof( S.TabContent ) )" data-slot="tab-content">
                 @if (!string.IsNullOrEmpty(Title))
                 {
                     @Title
