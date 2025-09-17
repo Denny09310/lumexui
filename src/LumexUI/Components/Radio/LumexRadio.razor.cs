@@ -145,6 +145,7 @@ public partial class LumexRadio<TValue> : LumexComponentBase, ISlotComponent<Rad
 			nameof( RadioSlots.Base ) => styles( Classes?.Base, Class ),
 			nameof( RadioSlots.ControlWrapper ) => styles( Classes?.ControlWrapper ),
 			nameof( RadioSlots.LabelWrapper ) => styles( Classes?.LabelWrapper ),
+			nameof( RadioSlots.Control ) => styles( Classes?.Control ),
 			nameof( RadioSlots.Label ) => styles( Classes?.Label ),
 			nameof( RadioSlots.Description ) => styles( Classes?.Description ),
 			_ => throw new NotImplementedException()
