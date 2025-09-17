@@ -1,13 +1,15 @@
 ﻿@namespace LumexUI
 @inherits LumexComponentBase
 
+@using S = NavbarSlots;
+
 <LumexComponent As="@As"
-                Class="@RootClass"
+                Class="@GetStyles( nameof( S.Toggle ) )"
                 Style="@RootStyle"
                 type="button"
                 data-slot="toggle"
                 data-expanded="@Context.Menu?.Expanded"
                 @attributes="@AdditionalAttributes"
                 @onclick="@Toggle">
-    <span class="@ToggleIconClass" data-slot="toggle-icon" />
+    <span class="@GetStyles( nameof( S.ToggleIcon ) )" data-slot="toggle-icon" />
 </LumexComponent>

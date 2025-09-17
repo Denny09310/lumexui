@@ -2,8 +2,9 @@
 // LumexUI licenses this file to you under the MIT license
 // See the license here https://github.com/LumexUI/lumexui/blob/main/LICENSE
 
+using System.Diagnostics.CodeAnalysis;
+
 using LumexUI.Common;
-using LumexUI.Styles;
 using LumexUI.Utilities;
 
 using Microsoft.AspNetCore.Components;
@@ -15,77 +16,102 @@ namespace LumexUI;
 /// </summary>
 public partial class LumexNavbar : LumexComponentBase, ISlotComponent<NavbarSlots>
 {
-    /// <summary>
-    /// Gets or sets content to be rendered inside the navbar.
-    /// </summary>
-    [Parameter] public RenderFragment? ChildContent { get; set; }
+	/// <summary>
+	/// Gets or sets content to be rendered inside the navbar.
+	/// </summary>
+	[Parameter] public RenderFragment? ChildContent { get; set; }
 
-    /// <summary>
-    /// Gets or sets the maximum width of the navbar wrapper.
-    /// </summary>
-    /// <remarks>
-    /// The default value is <see cref="MaxWidth.XLarge"/>
-    /// </remarks>
-    [Parameter] public MaxWidth MaxWidth { get; set; } = MaxWidth.XLarge;
+	/// <summary>
+	/// Gets or sets the maximum width of the navbar wrapper.
+	/// </summary>
+	/// <remarks>
+	/// The default value is <see cref="MaxWidth.XLarge"/>
+	/// </remarks>
+	[Parameter] public MaxWidth MaxWidth { get; set; } = MaxWidth.XLarge;
 
-    /// <summary>
-    /// Gets or sets the height of the navbar.
-    /// The value should be a valid CSS unit (e.g., 'px', 'rem', '%').
-    /// </summary>
-    /// <remarks>
-    /// The default value is `4rem (64px)`
-    /// </remarks>
-    [Parameter] public string Height { get; set; } = "4rem";
+	/// <summary>
+	/// Gets or sets the height of the navbar.
+	/// The value should be a valid CSS unit (e.g., 'px', 'rem', '%').
+	/// </summary>
+	/// <remarks>
+	/// The default value is `4rem (64px)`
+	/// </remarks>
+	[Parameter] public string Height { get; set; } = "4rem";
 
-    /// <summary>
-    /// Gets or sets a value indicating whether the navbar is sticky.
-    /// </summary>
-    /// <remarks>
-    /// The default value is <see langword="false"/>
-    /// </remarks>
-    [Parameter] public bool Sticky { get; set; }
+	/// <summary>
+	/// Gets or sets a value indicating whether the navbar is sticky.
+	/// </summary>
+	/// <remarks>
+	/// The default value is <see langword="false"/>
+	/// </remarks>
+	[Parameter] public bool Sticky { get; set; }
 
-    /// <summary>
-    /// Gets or sets a value indicating whether the navbar has a bottom border.
-    /// </summary>
-    /// <remarks>
-    /// The default value is <see langword="false"/>
-    /// </remarks>
-    [Parameter] public bool Bordered { get; set; }
+	/// <summary>
+	/// Gets or sets a value indicating whether the navbar has a bottom border.
+	/// </summary>
+	/// <remarks>
+	/// The default value is <see langword="false"/>
+	/// </remarks>
+	[Parameter] public bool Bordered { get; set; }
 
-    /// <summary>
-    /// Gets or sets a value indicating whether the navbar background is blurred.
-    /// </summary>
-    /// <remarks>
-    /// The default value is <see langword="true"/>
-    /// </remarks>
-    [Parameter] public bool Blurred { get; set; } = true;
+	/// <summary>
+	/// Gets or sets a value indicating whether the navbar background is blurred.
+	/// </summary>
+	/// <remarks>
+	/// The default value is <see langword="true"/>
+	/// </remarks>
+	[Parameter] public bool Blurred { get; set; } = true;
 
-    /// <summary>
-    /// Gets or sets the CSS class names for the navbar slots.
-    /// </summary>
-    [Parameter] public NavbarSlots? Classes { get; set; }
+	/// <summary>
+	/// Gets or sets the CSS class names for the navbar slots.
+	/// </summary>
+	[Parameter] public NavbarSlots? Classes { get; set; }
 
-    private protected override string? RootClass =>
-        TwMerge.Merge( Navbar.GetStyles( this ) );
+	private protected override string? RootStyle =>
+		new ElementStyle()
+			.Add( "--navbar-height", $"{Height}", when: !string.IsNullOrEmpty( Height ) )
+			.ToString();
 
-    private string? WrapperClass =>
-        TwMerge.Merge( Navbar.GetWrapperStyles( this ) );
+	private readonly NavbarContext _context;
 
-    private protected override string? RootStyle =>
-        new ElementStyle()
-            .Add( "--navbar-height", $"{Height}", when: !string.IsNullOrEmpty( Height ) )
-            .ToString();
+	private Dictionary<string, ComponentSlot> _slots = [];
 
-    private readonly NavbarContext _context;
+	/// <summary>
+	/// Initializes a new instance of the <see cref="LumexNavbar"/>.
+	/// </summary>
+	public LumexNavbar()
+	{
+		_context = new( this );
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="LumexNavbar"/>.
-    /// </summary>
-    public LumexNavbar()
-    {
-        _context = new( this );
+		As = "header";
+	}
 
-        As = "header";
-    }
+	/// <inheritdoc />
+	protected override void OnParametersSet()
+	{
+		var navbar = Styles.Navbar.Style( TwMerge );
+		_slots = navbar( new()
+		{
+			[nameof(Sticky)] = Sticky.ToString(),
+			[nameof(Bordered)] = Bordered.ToString(),
+			[nameof(Blurred)] = Blurred.ToString(),
+			[nameof(MaxWidth)] = MaxWidth.ToString(),
+		} );
+	}
+
+	[ExcludeFromCodeCoverage]
+	private string? GetStyles( string slot )
+	{
+		if( !_slots.TryGetValue( slot, out var styles ) )
+		{
+			throw new NotImplementedException();
+		}
+
+		return slot switch
+		{
+			nameof( NavbarSlots.Base ) => styles( Classes?.Base, Class ),
+			nameof( NavbarSlots.Wrapper ) => styles( Classes?.Wrapper ),
+			_ => throw new NotImplementedException()
+		};
+	}
 }

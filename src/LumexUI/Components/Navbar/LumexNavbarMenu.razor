@@ -1,8 +1,10 @@
 ﻿@namespace LumexUI
 @inherits LumexComponentBase
 
+@using S = NavbarSlots;
+
 <LumexCollapse As="@As"
-               Class="@RootClass"
+               Class="@GetStyles( nameof( S.Menu ) )"
                Style="@RootStyle"
                Expanded="@Expanded"
                data-slot="menu"

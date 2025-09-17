@@ -2,8 +2,9 @@
 // LumexUI licenses this file to you under the MIT license
 // See the license here https://github.com/LumexUI/lumexui/blob/main/LICENSE
 
+using System.Diagnostics.CodeAnalysis;
+
 using LumexUI.Common;
-using LumexUI.Styles;
 using LumexUI.Utilities;
 
 using Microsoft.AspNetCore.Components;
@@ -28,14 +29,13 @@ public partial class LumexNavbarMenu : LumexComponentBase, IDisposable
 
 	internal bool Expanded { get; private set; }
 
-	private protected override string? RootClass =>
-		TwMerge.Merge( Navbar.GetMenuStyles( this ) );
-
 	private protected override string? RootStyle =>
 		ElementStyle.Empty()
 			.Add( "--navbar-height", $"{Context.Owner.Height}" )
 			.Add( base.RootStyle )
 			.ToString();
+
+	private Dictionary<string, ComponentSlot> _slots = [];
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="LumexNavbarMenu"/>.
@@ -66,6 +66,33 @@ public partial class LumexNavbarMenu : LumexComponentBase, IDisposable
 		{
 			Toggle();
 		}
+	}
+
+	/// <inheritdoc />
+	protected override void OnParametersSet()
+	{
+		var navbar = Styles.Navbar.Style( TwMerge );
+		_slots = navbar( new()
+		{
+			[nameof( Context.Owner.Blurred )] = Context.Owner.Blurred.ToString(),
+		} );
+	}
+
+	[ExcludeFromCodeCoverage]
+	private string? GetStyles( string slot )
+	{
+		if( !_slots.TryGetValue( slot, out var styles ) )
+		{
+			throw new NotImplementedException();
+		}
+
+		var classes = Context.Owner.Classes;
+
+		return slot switch
+		{
+			nameof( NavbarSlots.Menu ) => styles( classes?.Menu, Class ),
+			_ => throw new NotImplementedException()
+		};
 	}
 
 	/// <inheritdoc />

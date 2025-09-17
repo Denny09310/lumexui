@@ -2,8 +2,10 @@
 // LumexUI licenses this file to you under the MIT license
 // See the license here https://github.com/LumexUI/lumexui/blob/main/LICENSE
 
+using System.Diagnostics.CodeAnalysis;
+
 using LumexUI.Common;
-using LumexUI.Styles;
+using LumexUI.Utilities;
 
 using Microsoft.AspNetCore.Components;
 
@@ -30,13 +32,12 @@ public partial class LumexNavbarContent : LumexComponentBase
 
     [CascadingParameter] internal NavbarContext Context { get; set; } = default!;
 
-    private protected override string? RootClass =>
-        TwMerge.Merge( Navbar.GetContentStyles( this ) );
+	private Dictionary<string, ComponentSlot> _slots = [];
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="LumexNavbarContent"/>.
-    /// </summary>
-    public LumexNavbarContent()
+	/// <summary>
+	/// Initializes a new instance of the <see cref="LumexNavbarContent"/>.
+	/// </summary>
+	public LumexNavbarContent()
     {
         As = "ul";
     }
@@ -46,4 +47,31 @@ public partial class LumexNavbarContent : LumexComponentBase
     {
         ContextNullException.ThrowIfNull( Context, nameof( LumexNavbarContent ) );
     }
+
+	/// <inheritdoc />
+	protected override void OnParametersSet()
+	{
+		var navbar = Styles.Navbar.Style( TwMerge );
+		_slots = navbar( new()
+		{
+			[nameof( Align )] = Align?.ToString() ?? "",
+		} );
+	}
+
+	[ExcludeFromCodeCoverage]
+	private string? GetStyles( string slot )
+	{
+		if( !_slots.TryGetValue( slot, out var styles ) )
+		{
+			throw new NotImplementedException();
+		}
+
+		var classes = Context.Owner.Classes;
+
+		return slot switch
+		{
+			nameof( NavbarSlots.Content ) => styles( classes?.Content, Class ),
+			_ => throw new NotImplementedException()
+		};
+	}
 }

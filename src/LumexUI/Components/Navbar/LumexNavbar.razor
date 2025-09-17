@@ -1,13 +1,15 @@
 ﻿@namespace LumexUI
 @inherits LumexComponentBase
 
+@using S = NavbarSlots;
+
 <CascadingValue TValue="NavbarContext" Value="@_context" IsFixed="@true">
     <LumexComponent As="@As"
-                    Class="@RootClass"
+                    Class="@GetStyles( nameof( S.Base ) )"
                     Style="@RootStyle"
                     data-slot="base"
                     @attributes="@AdditionalAttributes">
-        <nav class="@WrapperClass" data-slot="wrapper">
+        <nav class="@GetStyles( nameof( S.Wrapper ) )" data-slot="wrapper">
             @ChildContent
         </nav>
     </LumexComponent>

@@ -1,8 +1,10 @@
 ﻿@namespace LumexUI
 @inherits LumexComponentBase
 
+@using S = NavbarSlots;
+
 <LumexComponent As="@As"
-                Class="@RootClass"
+                Class="@GetStyles( nameof( S.Content ) )"
                 Style="@RootStyle"
                 data-slot="content"
                 @attributes="@AdditionalAttributes">
