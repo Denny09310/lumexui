@@ -14,32 +14,6 @@ namespace LumexUI.Styles;
 [ExcludeFromCodeCoverage]
 internal static class Button
 {
-	private static readonly CompoundVariantCollection _themeVariants = [..Enum.GetValues<Variant>()
-		.SelectMany( variant => Enum.GetValues<ThemeColor>()
-			.Where( color => color != ThemeColor.None )
-			.Select( color =>
-			{
-				var colorClass = GetColorClass( variant, color );
-				var hoverClass = GetHoverClass( variant, color );
-
-				var slotCollection = new SlotCollection
-				{
-					[nameof( SlotBase.Base )] = string.Join( " ",
-						new[] { colorClass, hoverClass }.Where( s => !string.IsNullOrWhiteSpace( s ) ) )
-				};
-
-				return new CompoundVariant
-				{
-					Conditions = new()
-					{
-						[nameof( LumexButton.Variant )] = variant.ToString(),
-						[nameof( LumexButton.Color )] = color.ToString()
-					},
-					Classes = slotCollection
-				};
-			} ) )
-		.Where( cv => !string.IsNullOrEmpty( cv.Classes[nameof( SlotBase.Base )] ) )];
-
 	private static ComponentVariant? _variant;
 
 	public static ComponentVariant Style( TwMerge twMerge )
@@ -153,9 +127,512 @@ internal static class Button
 					}
 				}
 			},
-
-			CompoundVariants = [.. _themeVariants, ..new CompoundVariantCollection
-			{
+			CompoundVariants =
+			[
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Solid),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Default)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Solid[ThemeColor.Default]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Solid),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Primary)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Solid[ThemeColor.Primary]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Solid),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Secondary)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Solid[ThemeColor.Secondary]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Solid),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Success)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Solid[ThemeColor.Success]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Solid),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Warning)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Solid[ThemeColor.Warning]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Solid),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Danger)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Solid[ThemeColor.Danger]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Solid),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Info)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Solid[ThemeColor.Info]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Outlined),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Default)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Outlined[ThemeColor.Default]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Outlined),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Primary)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Outlined[ThemeColor.Primary]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Outlined),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Secondary)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Outlined[ThemeColor.Secondary]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Outlined),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Success)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Outlined[ThemeColor.Success]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Outlined),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Warning)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Outlined[ThemeColor.Warning]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Outlined),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Danger)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Outlined[ThemeColor.Danger]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Outlined),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Info)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Outlined[ThemeColor.Info]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Flat),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Default)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Flat[ThemeColor.Default]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Flat),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Primary)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Flat[ThemeColor.Primary]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Flat),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Secondary)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Flat[ThemeColor.Secondary]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Flat),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Success)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Flat[ThemeColor.Success]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Flat),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Warning)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Flat[ThemeColor.Warning]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Flat),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Danger)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Flat[ThemeColor.Danger]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Flat),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Info)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Flat[ThemeColor.Info]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Shadow),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Default)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Shadow[ThemeColor.Default]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Shadow),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Primary)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Shadow[ThemeColor.Primary]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Shadow),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Secondary)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Shadow[ThemeColor.Secondary]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Shadow),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Success)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Shadow[ThemeColor.Success]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Shadow),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Warning)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Shadow[ThemeColor.Warning]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Shadow),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Danger)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Shadow[ThemeColor.Danger]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Shadow),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Info)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Shadow[ThemeColor.Info]} hover:opacity-hover"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Ghost),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Default)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Ghost[ThemeColor.Default]} hover:!bg-default hover:!text-default-foreground"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Ghost),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Primary)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Ghost[ThemeColor.Primary]} hover:!bg-primary hover:!text-primary-foreground"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Ghost),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Secondary)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Ghost[ThemeColor.Secondary]} hover:!bg-secondary hover:!text-secondary-foreground"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Ghost),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Success)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Ghost[ThemeColor.Success]} hover:!bg-success hover:!text-success-foreground"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Ghost),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Warning)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Ghost[ThemeColor.Warning]} hover:!bg-warning hover:!text-warning-foreground"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Ghost),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Danger)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Ghost[ThemeColor.Danger]} hover:!bg-danger hover:!text-danger-foreground"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Ghost),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Info)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Ghost[ThemeColor.Info]} hover:!bg-info hover:!text-info-foreground"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Light),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Default)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Light[ThemeColor.Default]} hover:bg-default/40"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Light),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Primary)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Light[ThemeColor.Primary]} hover:bg-primary/20"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Light),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Secondary)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Light[ThemeColor.Secondary]} hover:bg-secondary/20"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Light),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Success)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Light[ThemeColor.Success]} hover:bg-success/20"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Light),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Warning)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Light[ThemeColor.Warning]} hover:bg-warning/20"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Light),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Danger)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Light[ThemeColor.Danger]} hover:bg-danger/20"
+					}
+				},
+				new CompoundVariant
+				{
+					Conditions = new()
+					{
+						[nameof(LumexButton.Variant)] = nameof(Variant.Light),
+						[nameof(LumexButton.Color)] = nameof(ThemeColor.Info)
+					},
+					Classes = new SlotCollection
+					{
+						[nameof(SlotBase.Base)] = $"{ColorVariants.Light[ThemeColor.Info]} hover:bg-info/20"
+					}
+				},
 				new CompoundVariant
 				{
 					Conditions = new()
@@ -165,7 +642,7 @@ internal static class Button
 					},
 					Classes = new SlotCollection
 					{
-						[nameof(SlotBase.Base)] = "min-w-8 w-8 h-8",
+						[nameof(SlotBase.Base)] = "min-w-8 w-8 h-8"
 					}
 				},
 				new CompoundVariant
@@ -177,7 +654,7 @@ internal static class Button
 					},
 					Classes = new SlotCollection
 					{
-						[nameof(SlotBase.Base)] = "min-w-10 w-10 h-10",
+						[nameof(SlotBase.Base)] = "min-w-10 w-10 h-10"
 					}
 				},
 				new CompoundVariant
@@ -189,59 +666,10 @@ internal static class Button
 					},
 					Classes = new SlotCollection
 					{
-						[nameof(SlotBase.Base)] = "min-w-12 w-12 h-12",
+						[nameof(SlotBase.Base)] = "min-w-12 w-12 h-12"
 					}
-				},
-			}]
+				}
+			]
 		} );
-	}
-
-	private static string GetColorClass( Variant variant, ThemeColor color )
-	{
-		var theme = variant switch
-		{
-			Variant.Solid => ColorVariants.Solid,
-			Variant.Outlined => ColorVariants.Outlined,
-			Variant.Flat => ColorVariants.Flat,
-			Variant.Shadow => ColorVariants.Shadow,
-			Variant.Ghost => ColorVariants.Ghost,
-			Variant.Light => ColorVariants.Light,
-			_ => []
-		};
-
-		return theme.TryGetValue( color, out var classes ) ? classes : "";
-	}
-
-	// Moved hover rules into a helper that returns the hover class snippet for a variant/color
-	private static string GetHoverClass( Variant variant, ThemeColor color )
-	{
-		return variant switch
-		{
-			Variant.Light => color switch
-			{
-				ThemeColor.Default => "hover:bg-default/40",
-				ThemeColor.Primary => "hover:bg-primary/20",
-				ThemeColor.Secondary => "hover:bg-secondary/20",
-				ThemeColor.Success => "hover:bg-success/20",
-				ThemeColor.Warning => "hover:bg-warning/20",
-				ThemeColor.Danger => "hover:bg-danger/20",
-				ThemeColor.Info => "hover:bg-info/20",
-				_ => ""
-			},
-
-			Variant.Ghost => color switch
-			{
-				ThemeColor.Default => "hover:!bg-default hover:!text-default-foreground",
-				ThemeColor.Primary => "hover:!bg-primary hover:!text-primary-foreground",
-				ThemeColor.Secondary => "hover:!bg-secondary hover:!text-secondary-foreground",
-				ThemeColor.Success => "hover:!bg-success hover:!text-success-foreground",
-				ThemeColor.Warning => "hover:!bg-warning hover:!text-warning-foreground",
-				ThemeColor.Danger => "hover:!bg-danger hover:!text-danger-foreground",
-				ThemeColor.Info => "hover:!bg-info hover:!text-info-foreground",
-				_ => ""
-			},
-
-			_ => "hover:opacity-hover"
-		};
 	}
 }
