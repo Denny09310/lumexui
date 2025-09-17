@@ -16,7 +16,7 @@ internal static class Link
 {
 	private static ComponentVariant? _variant;
 
-	public static ComponentVariant Style(TwMerge twMerge)
+	public static ComponentVariant Style( TwMerge twMerge )
 	{
 		var twVariants = new TwVariants( twMerge );
 

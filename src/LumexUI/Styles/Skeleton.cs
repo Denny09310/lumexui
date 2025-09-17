@@ -39,7 +39,7 @@ internal static class Skeleton
 					.Add( "before:via-default-300" )
 					.Add( "before:to-transparent" )
 					.Add( "before:animate-shimmer" )
-					  //after
+					//after
 					.Add( "after:-z-10" )
 					.Add( "after:absolute" )
 					.Add( "after:inset-0" )

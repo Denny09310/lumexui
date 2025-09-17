@@ -24,7 +24,7 @@ internal static class Navbar
 		{
 			Slots = new SlotCollection
 			{
-				[nameof(NavbarSlots.Base)] = ElementClass.Empty()
+				[nameof( NavbarSlots.Base )] = ElementClass.Empty()
 					.Add( "z-40" )
 					.Add( "relative" )
 					.Add( "flex" )
@@ -32,7 +32,7 @@ internal static class Navbar
 					.Add( "items-center" )
 					.Add( "justify-center" ),
 
-				[nameof(NavbarSlots.Wrapper)] = ElementClass.Empty()
+				[nameof( NavbarSlots.Wrapper )] = ElementClass.Empty()
 					.Add( "z-40" )
 					.Add( "flex" )
 					.Add( "px-6" )
@@ -41,7 +41,7 @@ internal static class Navbar
 					.Add( "items-center" )
 					.Add( "h-[var(--navbar-height)]" ),
 
-				[nameof(NavbarSlots.Toggle)] = ElementClass.Empty()
+				[nameof( NavbarSlots.Toggle )] = ElementClass.Empty()
 					.Add( "group" )
 					.Add( "w-6" )
 					.Add( "h-full" )
@@ -50,7 +50,7 @@ internal static class Navbar
 					// focus
 					.Add( Utils.FocusVisible ),
 
-				[nameof(NavbarSlots.ToggleIcon)] = ElementClass.Empty()
+				[nameof( NavbarSlots.ToggleIcon )] = ElementClass.Empty()
 					.Add( "w-full" )
 					.Add( "h-full" )
 					.Add( "pointer-events-none" )
@@ -82,26 +82,26 @@ internal static class Navbar
 					.Add( "group-data-[expanded]:after:translate-y-0" )
 					.Add( "group-data-[expanded]:after:-rotate-45" ),
 
-				[nameof(NavbarSlots.Brand)] = ElementClass.Empty()
+				[nameof( NavbarSlots.Brand )] = ElementClass.Empty()
 					.Add( "flex" )
 					.Add( "items-center" )
 					.Add( "justify-start" )
 					.Add( "text-medium" ),
 
-				[nameof(NavbarSlots.Content)] = ElementClass.Empty()
+				[nameof( NavbarSlots.Content )] = ElementClass.Empty()
 					.Add( "flex" )
 					.Add( "gap-6" )
 					.Add( "h-full" )
 					.Add( "flex-nowrap" )
 					.Add( "items-center" ),
 
-				[nameof(NavbarSlots.Item)] = ElementClass.Empty()
+				[nameof( NavbarSlots.Item )] = ElementClass.Empty()
 					.Add( "leading-medium" )
 					.Add( "text-small" )
 					.Add( "font-semibold" )
 					.Add( "list-none" ),
 
-				[nameof(NavbarSlots.Menu)] = ElementClass.Empty()
+				[nameof( NavbarSlots.Menu )] = ElementClass.Empty()
 					.Add( "z-30" )
 					.Add( "px-6" )
 					.Add( "pt-2" )
@@ -114,34 +114,34 @@ internal static class Navbar
 					.Add( "inset-x-0" )
 					.Add( "overflow-y-auto" ),
 
-				[nameof(NavbarSlots.MenuItem)] = ElementClass.Empty()
+				[nameof( NavbarSlots.MenuItem )] = ElementClass.Empty()
 					.Add( "text-large" ),
 			},
 
 			Variants = new VariantCollection
 			{
-				[nameof(LumexNavbar.Sticky)] = new VariantValueCollection
+				[nameof( LumexNavbar.Sticky )] = new VariantValueCollection
 				{
 					[bool.TrueString] = new SlotCollection
 					{
-						[nameof(NavbarSlots.Base)] = "sticky top-0 inset-x-0"
+						[nameof( NavbarSlots.Base )] = "sticky top-0 inset-x-0"
 					}
 				},
 
-				[nameof(LumexNavbar.Bordered)] = new VariantValueCollection
+				[nameof( LumexNavbar.Bordered )] = new VariantValueCollection
 				{
 					[bool.TrueString] = new SlotCollection
 					{
-						[nameof(NavbarSlots.Base)] = "border-b border-divider"
+						[nameof( NavbarSlots.Base )] = "border-b border-divider"
 					}
 				},
 
-				[nameof(LumexNavbar.Blurred)] = new VariantValueCollection
+				[nameof( LumexNavbar.Blurred )] = new VariantValueCollection
 				{
 					[bool.FalseString] = new SlotCollection
 					{
-						[nameof(NavbarSlots.Base)] = "bg-background",
-						[nameof(NavbarSlots.Menu)] = "bg-background"
+						[nameof( NavbarSlots.Base )] = "bg-background",
+						[nameof( NavbarSlots.Menu )] = "bg-background"
 					},
 					[bool.TrueString] = new SlotCollection
 					{
@@ -160,39 +160,39 @@ internal static class Navbar
 					}
 				},
 
-				[nameof(LumexNavbar.MaxWidth)] = new VariantValueCollection
+				[nameof( LumexNavbar.MaxWidth )] = new VariantValueCollection
 				{
-					[nameof(MaxWidth.Small)] = new SlotCollection
+					[nameof( MaxWidth.Small )] = new SlotCollection
 					{
-						[nameof(NavbarSlots.Wrapper)] = "max-w-screen-sm",
+						[nameof( NavbarSlots.Wrapper )] = "max-w-screen-sm",
 					},
-					[nameof(MaxWidth.Medium)] = new SlotCollection
+					[nameof( MaxWidth.Medium )] = new SlotCollection
 					{
-						[nameof(NavbarSlots.Wrapper)] = "max-w-screen-md",
+						[nameof( NavbarSlots.Wrapper )] = "max-w-screen-md",
 					},
-					[nameof(MaxWidth.Large)] = new SlotCollection
+					[nameof( MaxWidth.Large )] = new SlotCollection
 					{
-						[nameof(NavbarSlots.Wrapper)] = "max-w-screen-lg",
+						[nameof( NavbarSlots.Wrapper )] = "max-w-screen-lg",
 					},
-					[nameof(MaxWidth.XLarge)] = new SlotCollection
+					[nameof( MaxWidth.XLarge )] = new SlotCollection
 					{
-						[nameof(NavbarSlots.Wrapper)] = "max-w-screen-xl",
+						[nameof( NavbarSlots.Wrapper )] = "max-w-screen-xl",
 					},
-					[nameof(MaxWidth.XXLarge)] = new SlotCollection
+					[nameof( MaxWidth.XXLarge )] = new SlotCollection
 					{
-						[nameof(NavbarSlots.Wrapper)] = "max-w-screen-2xl",
+						[nameof( NavbarSlots.Wrapper )] = "max-w-screen-2xl",
 					},
 				},
 
-				[nameof(LumexNavbarContent.Align)] = new VariantValueCollection
+				[nameof( LumexNavbarContent.Align )] = new VariantValueCollection
 				{
-					[nameof(Align.Start)] = new SlotCollection
+					[nameof( Align.Start )] = new SlotCollection
 					{
-						[nameof(NavbarSlots.Content)] = "me-auto"
+						[nameof( NavbarSlots.Content )] = "me-auto"
 					},
-					[nameof(Align.End)] = new SlotCollection
+					[nameof( Align.End )] = new SlotCollection
 					{
-						[nameof(NavbarSlots.Content)] = "ms-auto"
+						[nameof( NavbarSlots.Content )] = "ms-auto"
 					},
 				}
 			}

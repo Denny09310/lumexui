@@ -88,51 +88,51 @@ internal static class Card
 					}
 				},
 
-				[nameof(LumexCard.Shadow)] = new VariantValueCollection
+				[nameof( LumexCard.Shadow )] = new VariantValueCollection
 				{
-					[nameof(Shadow.None)] = new SlotCollection
+					[nameof( Shadow.None )] = new SlotCollection
 					{
-						[nameof(CardSlots.Base)] = "shadow-none"
+						[nameof( CardSlots.Base )] = "shadow-none"
 					},
-					[nameof(Shadow.Small)] = new SlotCollection
+					[nameof( Shadow.Small )] = new SlotCollection
 					{
-						[nameof(CardSlots.Base)] = "shadow-small"
+						[nameof( CardSlots.Base )] = "shadow-small"
 					},
-					[nameof(Shadow.Medium)] = new SlotCollection
+					[nameof( Shadow.Medium )] = new SlotCollection
 					{
-						[nameof(CardSlots.Base)] = "shadow-medium"
+						[nameof( CardSlots.Base )] = "shadow-medium"
 					},
-					[nameof(Shadow.Large)] = new SlotCollection
+					[nameof( Shadow.Large )] = new SlotCollection
 					{
-						[nameof(CardSlots.Base)] = "shadow-large"
+						[nameof( CardSlots.Base )] = "shadow-large"
 					},
 				},
 
 				[nameof( LumexCard.Radius )] = new VariantValueCollection
 				{
-					[nameof(Radius.None)] = new SlotCollection
+					[nameof( Radius.None )] = new SlotCollection
 					{
-						[nameof(CardSlots.Base)] = "rounded-none",
-						[nameof(CardSlots.Header)] = "rounded-none",
-						[nameof(CardSlots.Footer)] = "rounded-none",
+						[nameof( CardSlots.Base )] = "rounded-none",
+						[nameof( CardSlots.Header )] = "rounded-none",
+						[nameof( CardSlots.Footer )] = "rounded-none",
 					},
-					[nameof(Radius.Small)] = new SlotCollection
+					[nameof( Radius.Small )] = new SlotCollection
 					{
-						[nameof(CardSlots.Base)] = "rounded-small",
-						[nameof(CardSlots.Header)] = "rounded-t-small",
-						[nameof(CardSlots.Footer)] = "rounded-b-small",
+						[nameof( CardSlots.Base )] = "rounded-small",
+						[nameof( CardSlots.Header )] = "rounded-t-small",
+						[nameof( CardSlots.Footer )] = "rounded-b-small",
 					},
-					[nameof(Radius.Medium)] = new SlotCollection
+					[nameof( Radius.Medium )] = new SlotCollection
 					{
-						[nameof(CardSlots.Base)] = "rounded-medium",
-						[nameof(CardSlots.Header)] = "rounded-t-medium",
-						[nameof(CardSlots.Footer)] = "rounded-b-medium",
+						[nameof( CardSlots.Base )] = "rounded-medium",
+						[nameof( CardSlots.Header )] = "rounded-t-medium",
+						[nameof( CardSlots.Footer )] = "rounded-b-medium",
 					},
-					[nameof(Radius.Large)] = new SlotCollection
+					[nameof( Radius.Large )] = new SlotCollection
 					{
-						[nameof(CardSlots.Base)] = "rounded-large",
-						[nameof(CardSlots.Header)] = "rounded-t-large",
-						[nameof(CardSlots.Footer)] = "rounded-b-large",
+						[nameof( CardSlots.Base )] = "rounded-large",
+						[nameof( CardSlots.Header )] = "rounded-t-large",
+						[nameof( CardSlots.Footer )] = "rounded-b-large",
 					},
 				}
 			}

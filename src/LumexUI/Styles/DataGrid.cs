@@ -192,7 +192,7 @@ internal static class DataGrid
 				{
 					[bool.TrueString] = new SlotCollection
 					{
-						[nameof(DataGridSlots.Td)] = "group-even:bg-default-100",
+						[nameof( DataGridSlots.Td )] = "group-even:bg-default-100",
 					}
 				},
 

@@ -88,39 +88,39 @@ internal static class AccordionItem
 					.Add( "outline-hidden" )
 					.Add( "cursor-pointer" ),
 
-				[nameof(AccordionItemSlots.StartContent)] = ElementClass.Empty()
+				[nameof( AccordionItemSlots.StartContent )] = ElementClass.Empty()
 					.Add( "flex-shrink-0" ),
 
-				[nameof(AccordionItemSlots.TitleWrapper)] = ElementClass.Empty()
+				[nameof( AccordionItemSlots.TitleWrapper )] = ElementClass.Empty()
 					.Add( "flex" )
 					.Add( "flex-1" )
 					.Add( "flex-col" )
 					.Add( "text-start" ),
 
-				[nameof(AccordionItemSlots.Title)] = ElementClass.Empty()
+				[nameof( AccordionItemSlots.Title )] = ElementClass.Empty()
 					.Add( "text-foreground" ),
 
-				[nameof(AccordionItemSlots.Subtitle)]= ElementClass.Empty()
+				[nameof( AccordionItemSlots.Subtitle )] = ElementClass.Empty()
 					.Add( "text-foreground-500" )
 					.Add( "text-small" ),
 
-				[nameof(AccordionItemSlots.Indicator)]= ElementClass.Empty()
+				[nameof( AccordionItemSlots.Indicator )] = ElementClass.Empty()
 					.Add( "text-default-400" )
 					.Add( "rotate-0" )
 					.Add( "data-[opened]:-rotate-90" )
 					.Add( "transition-transform" ),
 
-				[nameof(AccordionItemSlots.Content)]= ElementClass.Empty()
+				[nameof( AccordionItemSlots.Content )] = ElementClass.Empty()
 					.Add( "pb-4" ),
 			},
 
 			Variants = new VariantCollection
 			{
-				[nameof(LumexAccordionItem.Disabled)] = new VariantValueCollection
+				[nameof( LumexAccordionItem.Disabled )] = new VariantValueCollection
 				{
 					[bool.TrueString] = new SlotCollection
 					{
-						[nameof(AccordionItemSlots.Base)] = Utils.Disabled
+						[nameof( AccordionItemSlots.Base )] = Utils.Disabled
 					}
 				}
 			}

@@ -115,31 +115,31 @@ internal static class Switch
 				{
 					[nameof( ThemeColor.Default )] = new SlotCollection
 					{
-						[nameof(SwitchSlots.Wrapper)] = "group-data-[checked=true]:bg-default-400 group-data-[checked=true]:text-default-foreground"
+						[nameof( SwitchSlots.Wrapper )] = "group-data-[checked=true]:bg-default-400 group-data-[checked=true]:text-default-foreground"
 					},
 					[nameof( ThemeColor.Primary )] = new SlotCollection
 					{
-						[nameof(SwitchSlots.Wrapper)] = "group-data-[checked=true]:bg-primary group-data-[checked=true]:text-primary-foreground"
+						[nameof( SwitchSlots.Wrapper )] = "group-data-[checked=true]:bg-primary group-data-[checked=true]:text-primary-foreground"
 					},
 					[nameof( ThemeColor.Secondary )] = new SlotCollection
 					{
-						[nameof(SwitchSlots.Wrapper)] = "group-data-[checked=true]:bg-secondary group-data-[checked=true]:text-secondary-foreground"
+						[nameof( SwitchSlots.Wrapper )] = "group-data-[checked=true]:bg-secondary group-data-[checked=true]:text-secondary-foreground"
 					},
 					[nameof( ThemeColor.Success )] = new SlotCollection
 					{
-						[nameof(SwitchSlots.Wrapper)] = "group-data-[checked=true]:bg-success group-data-[checked=true]:text-success-foreground"
+						[nameof( SwitchSlots.Wrapper )] = "group-data-[checked=true]:bg-success group-data-[checked=true]:text-success-foreground"
 					},
 					[nameof( ThemeColor.Warning )] = new SlotCollection
 					{
-						[nameof(SwitchSlots.Wrapper)] = "group-data-[checked=true]:bg-warning group-data-[checked=true]:text-warning-foreground"
+						[nameof( SwitchSlots.Wrapper )] = "group-data-[checked=true]:bg-warning group-data-[checked=true]:text-warning-foreground"
 					},
 					[nameof( ThemeColor.Danger )] = new SlotCollection
 					{
-						[nameof(SwitchSlots.Wrapper)] = "group-data-[checked=true]:bg-danger group-data-[checked=true]:text-danger-foreground"
+						[nameof( SwitchSlots.Wrapper )] = "group-data-[checked=true]:bg-danger group-data-[checked=true]:text-danger-foreground"
 					},
 					[nameof( ThemeColor.Info )] = new SlotCollection
 					{
-						[nameof(SwitchSlots.Wrapper)] = "group-data-[checked=true]:bg-info group-data-[checked=true]:text-info-foreground"
+						[nameof( SwitchSlots.Wrapper )] = "group-data-[checked=true]:bg-info group-data-[checked=true]:text-info-foreground"
 					},
 				},
 
