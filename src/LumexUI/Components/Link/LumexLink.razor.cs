@@ -64,7 +64,6 @@ public partial class LumexLink : LumexComponentBase
 	/// </remarks>
 	[Parameter] public bool External { get; set; }
 
-
 	private IReadOnlyDictionary<string, object> Attributes
 	{
 		get
@@ -102,6 +101,7 @@ public partial class LumexLink : LumexComponentBase
 		As = "a";
 	}
 
+	/// <inheritdoc />
 	protected override void OnParametersSet()
 	{
 		var link = Styles.Link.Style( TwMerge );
