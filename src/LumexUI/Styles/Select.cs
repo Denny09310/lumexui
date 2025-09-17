@@ -128,7 +128,7 @@ internal static class Select
 				{
 					[bool.TrueString] = new SlotCollection
 					{
-						[nameof( SelectSlots.Base )] = "opacity-disabled pointer-events-none",
+						[nameof( SelectSlots.Base )] = Utils.Disabled,
 						[nameof( SelectSlots.Trigger )] = "pointer-events-none"
 					}
 				},

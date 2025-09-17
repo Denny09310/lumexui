@@ -89,7 +89,7 @@ internal static class Radio
 				{
 					[nameof( bool.TrueString )] = new SlotCollection
 					{
-						[nameof( RadioSlots.Base )] = "opacity-disabled pointer-events-none"
+						[nameof( RadioSlots.Base )] = Utils.Disabled
 					}
 				},
 

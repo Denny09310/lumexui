@@ -166,7 +166,7 @@ internal static class MenuItem
 				{
 					[bool.TrueString] = new SlotCollection()
 					{
-						[nameof( DropdownItemSlots.Base )] = "opacity-disabled pointer-events-none"
+						[nameof( DropdownItemSlots.Base )] = Utils.Disabled
 					}
 				}
 			},
