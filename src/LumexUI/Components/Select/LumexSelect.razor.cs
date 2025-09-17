@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 using LumexUI.Common;
-using LumexUI.Styles;
 using LumexUI.Utilities;
 
 using Microsoft.AspNetCore.Components;
@@ -154,7 +153,7 @@ public partial class LumexSelect<TValue> : LumexInputBase<TValue>, ISlotComponen
 		!string.IsNullOrEmpty( Placeholder );
 
 	private readonly SelectContext<TValue> _context;
-	private readonly Memoizer<SelectSlots> _slotsMemoizer;
+	private readonly Memoizer<Dictionary<string, ComponentSlot>> _slotsMemoizer;
 	private readonly Memoizer<PopoverSlots> _popoverSlotsMemoizer;
 	private readonly Memoizer<ListboxSlots> _listboxSlotsMemoizer;
 	private readonly RenderFragment _renderMenu;
@@ -162,7 +161,7 @@ public partial class LumexSelect<TValue> : LumexInputBase<TValue>, ISlotComponen
 	private readonly RenderFragment _renderValue;
 	private readonly RenderFragment _renderHelperWrapper;
 
-	private SelectSlots _slots = default!;
+	private Dictionary<string, ComponentSlot> _slots = [];
 	private PopoverSlots _popoverSlots = default!;
 	private ListboxSlots _listboxSlots = default!;
 	private LumexPopover? _popoverRef;
@@ -176,7 +175,7 @@ public partial class LumexSelect<TValue> : LumexInputBase<TValue>, ISlotComponen
 	public LumexSelect()
 	{
 		_context = new SelectContext<TValue>( this );
-		_slotsMemoizer = new Memoizer<SelectSlots>();
+		_slotsMemoizer = new Memoizer<Dictionary<string, ComponentSlot>>();
 		_popoverSlotsMemoizer = new Memoizer<PopoverSlots>();
 		_listboxSlotsMemoizer = new Memoizer<ListboxSlots>();
 
@@ -248,14 +247,12 @@ public partial class LumexSelect<TValue> : LumexInputBase<TValue>, ISlotComponen
 
 		// Perform a re-building only if the dependencies have changed
 		_popoverSlots = _popoverSlotsMemoizer.Memoize( GetPopoverSlots, [
-			_slots.PopoverContent,
 			Classes?.PopoverContent,
 			PopoverClasses
 		] );
 
 		// Perform a re-building only if the dependencies have changed
 		_listboxSlots = _listboxSlotsMemoizer.Memoize( GetListboxSlots, [
-			_slots.Listbox,
 			Classes?.Listbox,
 			ListboxClasses
 		] );
@@ -300,9 +297,21 @@ public partial class LumexSelect<TValue> : LumexInputBase<TValue>, ISlotComponen
 		return ValuesChanged.InvokeAsync( Values );
 	}
 
-	private SelectSlots GetSlots()
+	private Dictionary<string, ComponentSlot> GetSlots()
 	{
-		return Select.GetStyles( this, TwMerge );
+		var select = Styles.Select.Styles( TwMerge );
+		return select( new()
+		{
+			[nameof( LabelPlacement )] = LabelPlacement.ToString(),
+			[nameof( FullWidth )] = FullWidth.ToString(),
+			[nameof( Required )] = Required.ToString(),
+			[nameof( Disabled )] = Disabled.ToString(),
+			[nameof( Invalid )] = Invalid.ToString(),
+			[nameof( Variant )] = Variant.ToString(),
+			[nameof( Radius )] = Radius.ToString() ?? "",
+			[nameof( Color )] = Color.ToString(),
+			[nameof( Size )] = Size.ToString()
+		} );
 	}
 
 	private PopoverSlots GetPopoverSlots()
@@ -314,7 +323,7 @@ public partial class LumexSelect<TValue> : LumexInputBase<TValue>, ISlotComponen
 				.ToString(),
 
 			Content = ElementClass.Empty()
-				.Add( _slots.PopoverContent )
+				.Add( GetStyles( nameof( SelectSlots.PopoverContent ) ) )
 				.Add( Classes?.PopoverContent )
 				.Add( PopoverClasses?.Content )
 				.ToString(),
@@ -334,7 +343,7 @@ public partial class LumexSelect<TValue> : LumexInputBase<TValue>, ISlotComponen
 		return new ListboxSlots
 		{
 			Base = ElementClass.Empty()
-				.Add( _slots.Listbox )
+				.Add( GetStyles( nameof( SelectSlots.Listbox ) ) )
 				.Add( Classes?.Listbox )
 				.Add( ListboxClasses?.Base )
 				.ToString(),
@@ -346,6 +355,32 @@ public partial class LumexSelect<TValue> : LumexInputBase<TValue>, ISlotComponen
 			EmptyContent = ElementClass.Empty()
 				.Add( ListboxClasses?.EmptyContent )
 				.ToString()
+		};
+	}
+
+	[ExcludeFromCodeCoverage]
+	private string? GetStyles( string slot )
+	{
+		if( !_slots.TryGetValue( slot, out var styles ) )
+		{
+			throw new NotImplementedException();
+		}
+
+		return slot switch
+		{
+			nameof( SelectSlots.Base ) => styles( Classes?.Base, Class ),
+			nameof( SelectSlots.Label ) => styles( Classes?.Label ),
+			nameof( SelectSlots.MainWrapper ) => styles( Classes?.MainWrapper ),
+			nameof( SelectSlots.Trigger ) => styles( Classes?.Trigger ),
+			nameof( SelectSlots.InnerWrapper ) => styles( Classes?.InnerWrapper ),
+			nameof( SelectSlots.SelectorIcon ) => styles( Classes?.SelectorIcon ),
+			nameof( SelectSlots.Value ) => styles( Classes?.Value ),
+			nameof( SelectSlots.Listbox ) => styles( Classes?.Listbox ),
+			nameof( SelectSlots.PopoverContent ) => styles( Classes?.PopoverContent ),
+			nameof( SelectSlots.HelperWrapper ) => styles( Classes?.HelperWrapper ),
+			nameof( SelectSlots.Description ) => styles( Classes?.Description ),
+			nameof( SelectSlots.ErrorMessage ) => styles( Classes?.ErrorMessage ),
+			_ => throw new NotImplementedException()
 		};
 	}
 }

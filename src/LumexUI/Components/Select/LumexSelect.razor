@@ -2,6 +2,8 @@
 @inherits LumexInputBase<TValue>
 @typeparam TValue
 
+@using S = SelectSlots;
+
 <CascadingValue TValue="SelectContext<TValue>" Value="@_context" IsFixed="@true">
     @{
         _context.StartCollectingItems();
@@ -15,7 +17,7 @@
         }
         <ItemsCollectedNotifier TValue="TValue" />
 
-        <div class="@_slots.Base"
+        <div class="@GetStyles( nameof( S.Base ) )"
              style="@RootStyle"
              data-slot="base"
              data-focus="@Utils.GetDataAttributeValue( Focused )"
@@ -29,9 +31,9 @@
              @attributes="@AdditionalAttributes"
              @onclick:stopPropagation="@true">
             @(ShouldLabelBeOutside ? _renderLabel : null)
-            <div class="@_slots.MainWrapper" data-slot="main-wrapper">
+            <div class="@GetStyles( nameof( S.MainWrapper ) )" data-slot="main-wrapper">
                 <LumexComponent As="@As"
-                                Class="@_slots.Trigger"
+                                Class="@GetStyles( nameof( S.Trigger ) )"
                                 type="button"
                                 data-slot="trigger"
                                 data-popovertarget="@_popoverRef?.Id"
@@ -40,12 +42,12 @@
                                 @onfocus="@OnFocusAsync"
                                 @onblur="@OnBlurAsync">
                     @(!ShouldLabelBeOutside ? _renderLabel : null)
-                    <div class="@_slots.InnerWrapper" data-slot="inner-wrapper">
+                    <div class="@GetStyles( nameof( S.InnerWrapper ) )" data-slot="inner-wrapper">
                         @StartContent
-                        <span class="@_slots.Value" data-slot="value">@_renderValue</span>
+                        <span class="@GetStyles( nameof( S.Value ) )" data-slot="value">@_renderValue</span>
                         @EndContent
                     </div>
-                    <ChevronDownIcon class="@_slots.SelectorIcon"
+                    <ChevronDownIcon class="@GetStyles( nameof( S.SelectorIcon ) )"
                                      data-slot="selector-icon"
                                      data-open="@Utils.GetDataAttributeValue( _isOpen )" />
                 </LumexComponent>
@@ -81,7 +83,7 @@
     {
         if( !string.IsNullOrEmpty( Label ) )
         {
-            <label class="@_slots.Label" data-slot="label">@Label</label>
+            <label class="@GetStyles( nameof( S.Label ) )" data-slot="label">@Label</label>
         }
     }
 
@@ -165,14 +167,14 @@
             return;
         }
 
-        <div class="@_slots.HelperWrapper" data-slot="helper-wrapper">
+        <div class="@GetStyles( nameof( S.HelperWrapper ) )" data-slot="helper-wrapper">
             @if( shouldShowError )
             {
-                <div class="@_slots.ErrorMessage" data-slot="error-message">@ErrorMessage</div>
+                <div class="@GetStyles( nameof( S.ErrorMessage ) )" data-slot="error-message">@ErrorMessage</div>
             }
             else
             {
-                <div class="@_slots.Description" data-slot="description">@Description</div>
+                <div class="@GetStyles( nameof( S.Description ) )" data-slot="description">@Description</div>
             }
         </div>
     }

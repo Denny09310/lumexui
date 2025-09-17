@@ -1,8 +1,10 @@
 ﻿@namespace LumexUI
 @inherits LumexBooleanInputBase
 
+@using S = SwitchSlots;
+
 <LumexComponent As="label"
-                Class="@RootClass"
+                Class="@GetStyles( nameof( S.Base ) )"
                 Style="@RootStyle"
                 tabindex="0"
                 data-slot="base"
@@ -18,18 +20,18 @@
                @onchange="@OnChangeAsync" />
     </span>
 
-    <span class="@WrapperClass" data-slot="wrapper">
+    <span class="@GetStyles( nameof( S.Wrapper ) )" data-slot="wrapper">
         @if( StartContent is not null )
         {
-            <span class="@StartIconClass" data-slot="start-icon">
+            <span class="@GetStyles( nameof( S.StartIcon ) )" data-slot="start-icon">
                 @StartContent
             </span>
         }
 
-        <span class="@ThumbClass" data-slot="thumb">
+        <span class="@GetStyles( nameof( S.Thumb ) )" data-slot="thumb">
             @if( ThumbContent is not null )
             {
-                <span class="@ThumbIconClass" data-slot="thumb-icon">
+                <span class="@GetStyles( nameof( S.ThumbIcon ) )" data-slot="thumb-icon">
                     @ThumbContent( CurrentValue )
                 </span>
             }
@@ -37,7 +39,7 @@
 
         @if( EndContent is not null )
         {
-            <span class="@EndIconClass" data-slot="end-icon">
+            <span class="@GetStyles( nameof( S.EndIcon ) )" data-slot="end-icon">
                 @EndContent
             </span>
         }
@@ -45,7 +47,7 @@
 
     @if( ChildContent is not null )
     {
-        <span class="@LabelClass" data-slot="label">
+        <span class="@GetStyles( nameof( S.Label ) )" data-slot="label">
             @ChildContent
         </span>
     }

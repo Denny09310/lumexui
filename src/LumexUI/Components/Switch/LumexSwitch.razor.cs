@@ -2,8 +2,10 @@
 // LumexUI licenses this file to you under the MIT license
 // See the license here https://github.com/LumexUI/lumexui/blob/main/LICENSE
 
+using System.Diagnostics.CodeAnalysis;
+
 using LumexUI.Common;
-using LumexUI.Styles;
+using LumexUI.Utilities;
 
 using Microsoft.AspNetCore.Components;
 
@@ -34,26 +36,7 @@ public partial class LumexSwitch : LumexBooleanInputBase, ISlotComponent<SwitchS
 	/// </summary>
 	[Parameter] public SwitchSlots? Classes { get; set; }
 
-	private protected override string? RootClass =>
-		TwMerge.Merge( Switch.GetStyles( this ) );
-
-	private string? WrapperClass =>
-		TwMerge.Merge( Switch.GetWrapperStyles( this ) );
-
-	private string? ThumbClass =>
-		TwMerge.Merge( Switch.GetThumbStyles( this ) );
-
-	private string? ThumbIconClass =>
-		TwMerge.Merge( Switch.GetThumbIconStyles( this ) );
-
-	private string? StartIconClass =>
-		TwMerge.Merge( Switch.GetStartIconStyles( this ) );
-
-	private string? EndIconClass =>
-		TwMerge.Merge( Switch.GetEndIconStyles( this ) );
-
-	private string? LabelClass =>
-		TwMerge.Merge( Switch.GetLabelStyles( this ) );
+	private Dictionary<string, ComponentSlot> _slots = [];
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="LumexSwitch"/>.
@@ -61,5 +44,38 @@ public partial class LumexSwitch : LumexBooleanInputBase, ISlotComponent<SwitchS
 	public LumexSwitch()
 	{
 		Color = ThemeColor.Primary;
+	}
+
+	/// <inheritdoc />
+	protected override void OnParametersSet()
+	{
+		var @switch = Styles.Switch.Style( TwMerge );
+		_slots = @switch( new()
+		{
+			[nameof(Disabled)] = Disabled.ToString(),
+			[nameof(Size)] = Size.ToString(),
+			[nameof(Color)] = Color.ToString(),
+		} );
+	}
+
+	[ExcludeFromCodeCoverage]
+	private string? GetStyles( string slot )
+	{
+		if( !_slots.TryGetValue( slot, out var styles ) )
+		{
+			throw new NotImplementedException();
+		}
+
+		return slot switch
+		{
+			nameof( SwitchSlots.Base ) => styles( Classes?.Base, Class ),
+			nameof( SwitchSlots.Wrapper ) => styles( Classes?.Wrapper ),
+			nameof( SwitchSlots.Thumb ) => styles( Classes?.Thumb ),
+			nameof( SwitchSlots.ThumbIcon ) => styles( Classes?.ThumbIcon ),
+			nameof( SwitchSlots.StartIcon ) => styles( Classes?.StartIcon ),
+			nameof( SwitchSlots.EndIcon ) => styles( Classes?.EndIcon ),
+			nameof( SwitchSlots.Label ) => styles( Classes?.Label ),
+			_ => throw new NotImplementedException()
+		};
 	}
 }
