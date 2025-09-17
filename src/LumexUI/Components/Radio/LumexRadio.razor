@@ -2,8 +2,10 @@
 @inherits LumexComponentBase
 @typeparam TValue
 
+@using S = RadioSlots;
+
 <LumexComponent As="label"
-                Class="@RootClass"
+                Class="@GetStyles( nameof( S.Base ) )"
                 Style="@RootStyle"
                 tabindex="0"
                 data-slot="base"
@@ -21,21 +23,21 @@
                @onchange="@Context.ChangeEventCallback" />
     </span>
 
-    <span class="@ControlWrapperClass" data-slot="wrapper">
-        <span class="@ControlClass" data-slot="control" />
+    <span class="@GetStyles( nameof( S.ControlWrapper ) )" data-slot="wrapper">
+        <span class="@GetStyles( nameof( S.Control ) )" data-slot="control" />
     </span>
 
-    <div class="@LabelWrapperClass" data-slot="label-wrapper">
+    <div class="@GetStyles( nameof( S.LabelWrapper ) )" data-slot="label-wrapper">
         @if (ChildContent is not null)
         {
-            <span class="@LabelClass" data-slot="label">
+            <span class="@GetStyles( nameof( S.Label ) )" data-slot="label">
                 @ChildContent
             </span>
         }
 
         @if (Description is not null)
         {
-            <span class="@DescriptionClass" data-slot="description">
+            <span class="@GetStyles( nameof( S.Description ) )" data-slot="description">
                 @Description
             </span>
         }

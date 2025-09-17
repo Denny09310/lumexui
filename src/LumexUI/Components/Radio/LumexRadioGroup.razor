@@ -2,23 +2,25 @@
 @inherits LumexInputBase<TValue>
 @typeparam TValue
 
+@using S = RadioGroupSlots;
+
 @* 
 Note that we must not set IsFixed=true on the CascadingValue, because the mutations to _context 
 are what cause the descendant InputRadio components to re-render themselves
 *@
 <CascadingValue Value="@_context" Name="Context" TValue="RadioGroupContext<TValue>">
-    <div class="@RootClass" 
+    <div class="@GetStyles( nameof( S.Base ) )" 
          style="@RootStyle" 
          data-slot="base" 
          @attributes="@AdditionalAttributes">
         @if( !string.IsNullOrEmpty( Label ) )
         {
-            <span class="@LabelClass" data-slot="label">
+            <span class="@GetStyles( nameof( S.Label ) )" data-slot="label">
                 @Label
             </span>
         }
 
-        <div class="@WrapperClass" 
+        <div class="@GetStyles( nameof( S.Wrapper ) )" 
              data-slot="wrapper" 
              data-orientation="@Orientation.ToString().ToLowerInvariant()">
             @ChildContent
@@ -26,7 +28,7 @@ are what cause the descendant InputRadio components to re-render themselves
 
         @if( !string.IsNullOrEmpty( Description ) )
         {
-            <div class="@DescriptionClass" data-slot="description">
+            <div class="@GetStyles( nameof( S.Description ) )" data-slot="description">
                 @Description
             </div>
         }

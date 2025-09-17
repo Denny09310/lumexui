@@ -2,8 +2,10 @@
 // LumexUI licenses this file to you under the MIT license
 // See the license here https://github.com/LumexUI/lumexui/blob/main/LICENSE
 
+using System.Diagnostics.CodeAnalysis;
+
 using LumexUI.Common;
-using LumexUI.Styles;
+using LumexUI.Utilities;
 
 using Microsoft.AspNetCore.Components;
 
@@ -74,23 +76,7 @@ public partial class LumexRadio<TValue> : LumexComponentBase, ISlotComponent<Rad
 
 	[CascadingParameter( Name = "Context" )] internal RadioGroupContext<TValue> Context { get; set; } = default!;
 
-	private protected override string? RootClass =>
-		TwMerge.Merge( Radio.GetStyles( this ) );
-
-	private string? ControlWrapperClass =>
-		TwMerge.Merge( Radio.GetControlWrapperStyles( this ) );
-
-	private string? ControlClass =>
-		TwMerge.Merge( Radio.GetControlStyles( this ) );
-
-	private string? LabelWrapperClass =>
-		TwMerge.Merge( Radio.GetLabelWrapperStyles( this ) );
-
-	private string? LabelClass =>
-		TwMerge.Merge( Radio.GetLabelStyles( this ) );
-
-	private string? DescriptionClass =>
-		TwMerge.Merge( Radio.GetDescriptionStyles( this ) );
+	private Dictionary<string, ComponentSlot> _slots = [];
 
 	/// <inheritdoc />
 	public override async Task SetParametersAsync( ParameterView parameters )
@@ -132,5 +118,36 @@ public partial class LumexRadio<TValue> : LumexComponentBase, ISlotComponent<Rad
 	protected override void OnInitialized()
 	{
 		ContextNullException.ThrowIfNull( Context, nameof( LumexRadio<TValue> ) );
+	}
+
+	/// <inheritdoc />
+	protected override void OnParametersSet()
+	{
+		var navbar = Styles.Radio.Style( TwMerge );
+		_slots = navbar( new()
+		{
+			[nameof(Disabled)] = Disabled.ToString(),
+			[nameof(Color)] = Color.ToString(),
+			[nameof(Size)] = Size.ToString(),
+		} );
+	}
+
+	[ExcludeFromCodeCoverage]
+	private string? GetStyles( string slot )
+	{
+		if( !_slots.TryGetValue( slot, out var styles ) )
+		{
+			throw new NotImplementedException();
+		}
+
+		return slot switch
+		{
+			nameof( RadioSlots.Base ) => styles( Classes?.Base, Class ),
+			nameof( RadioSlots.ControlWrapper ) => styles( Classes?.ControlWrapper ),
+			nameof( RadioSlots.LabelWrapper ) => styles( Classes?.LabelWrapper ),
+			nameof( RadioSlots.Label ) => styles( Classes?.Label ),
+			nameof( RadioSlots.Description ) => styles( Classes?.Description ),
+			_ => throw new NotImplementedException()
+		};
 	}
 }

@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 using LumexUI.Common;
-using LumexUI.Styles;
+using LumexUI.Utilities;
 
 using Microsoft.AspNetCore.Components;
 
@@ -62,21 +62,10 @@ public partial class LumexRadioGroup<TValue> : LumexInputBase<TValue>,
 	/// <inheritdoc />
 	TValue? IRadioGroupValueProvider<TValue>.CurrentValue => Value;
 
-	private protected override string? RootClass =>
-		TwMerge.Merge( RadioGroup.GetStyles( this ) );
-
-	private string? LabelClass =>
-		TwMerge.Merge( RadioGroup.GetLabelStyles( this ) );
-
-	private string? WrapperClass =>
-		TwMerge.Merge( RadioGroup.GetWrapperStyles( this ) );
-
-	private string? DescriptionClass =>
-		TwMerge.Merge( RadioGroup.GetDescriptionStyles( this ) );
-
 	private readonly string _defaultGroupName = Guid.NewGuid().ToString( "N" );
 
 	private RadioGroupContext<TValue>? _context;
+	private Dictionary<string, ComponentSlot> _slots = [];
 
 	/// <inheritdoc />
 	public override async Task SetParametersAsync( ParameterView parameters )
@@ -105,6 +94,9 @@ public partial class LumexRadioGroup<TValue> : LumexInputBase<TValue>,
 		// Prefer the explicitly-specified group name over anything else.
 		// Otherwise, just use a GUID to disambiguate this group's radio inputs from any others on the page.
 		_context!.GroupName = !string.IsNullOrEmpty( Name ) ? Name : _defaultGroupName;
+
+		var radioGroup = Styles.RadioGroup.Style( TwMerge );
+		_slots = radioGroup();
 
 		base.OnParametersSet();
 	}
@@ -190,5 +182,23 @@ public partial class LumexRadioGroup<TValue> : LumexInputBase<TValue>,
 		}
 
 		return TryConvertToBool( value, out result );
+	}
+
+	[ExcludeFromCodeCoverage]
+	private string? GetStyles( string slot )
+	{
+		if( !_slots.TryGetValue( slot, out var styles ) )
+		{
+			throw new NotImplementedException();
+		}
+
+		return slot switch
+		{
+			nameof( RadioGroupSlots.Base ) => styles( Classes?.Base, Class ),
+			nameof( RadioGroupSlots.Wrapper ) => styles( Classes?.Wrapper ),
+			nameof( RadioGroupSlots.Label ) => styles( Classes?.Label ),
+			nameof( RadioGroupSlots.Description ) => styles( Classes?.Description ),
+			_ => throw new NotImplementedException()
+		};
 	}
 }
