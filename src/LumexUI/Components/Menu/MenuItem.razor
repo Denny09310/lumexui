@@ -1,6 +1,8 @@
 ﻿@namespace LumexUI
 @inherits LumexComponentBase
 
+@using S = MenuItemSlots;
+
 @{
     Context.Register( this );
 }
@@ -9,7 +11,7 @@
     protected internal virtual void Render( RenderTreeBuilder __builder )
     {
         <LumexComponent As="@As"
-                        Class="@_slots["Base"]( Menu.ItemClasses?.Base, Classes?.Base, Class )"
+                        Class="@GetStyles( nameof( S.Base ) )"
                         Style="@Style"
                         data-slot="base"
                         data-disabled="@_disabled.ToAttributeValue()"
@@ -20,13 +22,13 @@
 
             @if( !string.IsNullOrEmpty( Description ) )
             {
-                <div class="@_slots["Wrapper"]( Menu.ItemClasses?.Wrapper, Classes?.Wrapper )"
+                <div class="@GetStyles( nameof( S.Wrapper ) )"
                      data-slot="wrapper">
-                    <span class="@_slots["Title"]( Menu.ItemClasses?.Title, Classes?.Title )"
+                    <span class="@GetStyles( nameof( S.Title ) )"
                           data-slot="title">
                         @ChildContent
                     </span>
-                    <span class="@_slots["Description"]( Menu.ItemClasses?.Description, Classes?.Description )"
+                    <span class="@GetStyles( nameof( S.Description ) )"
                           data-slot="description">
                         @Description
                     </span>
@@ -34,7 +36,7 @@
             }
             else
             {
-                <span class="@_slots["Title"]( Menu.ItemClasses?.Title, Classes?.Title )"
+                <span class="@GetStyles( nameof( S.Title ) )"
                       data-slot="title">
                     @ChildContent
                 </span>

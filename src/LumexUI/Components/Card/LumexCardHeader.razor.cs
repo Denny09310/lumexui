@@ -5,7 +5,6 @@
 using System.Diagnostics.CodeAnalysis;
 
 using LumexUI.Common;
-using LumexUI.Utilities;
 
 using Microsoft.AspNetCore.Components;
 
@@ -24,7 +23,7 @@ public partial class LumexCardHeader : LumexComponentBase
 
 	[CascadingParameter] internal CardContext Context { get; set; } = default!;
 
-	private Dictionary<string, ComponentSlot> _slots = [];
+	private LumexCard Card => Context.Owner;
 
 	/// <inheritdoc />
 	protected override void OnInitialized()
@@ -32,20 +31,10 @@ public partial class LumexCardHeader : LumexComponentBase
 		ContextNullException.ThrowIfNull( Context, nameof( LumexCardFooter ) );
 	}
 
-	/// <inheritdoc />
-	protected override void OnParametersSet()
-	{
-		var card = Styles.Card.Style( TwMerge );
-		_slots = card( new()
-		{
-			[nameof( Radius )] = Context.Owner.Radius.ToString(),
-		} );
-	}
-
 	[ExcludeFromCodeCoverage]
 	private string? GetStyles( string slot )
 	{
-		if( !_slots.TryGetValue( slot, out var styles ) )
+		if( !Card.Slots.TryGetValue( slot, out var styles ) )
 		{
 			throw new NotImplementedException();
 		}

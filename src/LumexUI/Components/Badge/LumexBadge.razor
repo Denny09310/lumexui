@@ -3,11 +3,11 @@
 
 @using S = BadgeSlots;
 
-<div class="@GetStyles(nameof(S.Base))" data-slot="base">
+<div class="@GetStyles( nameof( S.Base ) )" data-slot="base">
     @ChildContent
 
     <LumexComponent As="@As"
-                    Class="@GetStyles(nameof(S.Badge))"
+                    Class="@GetStyles( nameof( S.Badge ) )"
                     Style="@Style"
                     data-slot="badge"
                     data-invisible="@Invisible.ToAttributeValue()"

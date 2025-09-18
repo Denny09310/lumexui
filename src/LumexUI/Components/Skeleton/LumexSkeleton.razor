@@ -4,12 +4,12 @@
 @using S = SkeletonSlots;
 
 <LumexComponent As="@As"
-                Class="@GetStyles(nameof(S.Base))"
+                Class="@GetStyles( nameof( S.Base ) )"
                 Style="@Style"
                 data-slot="base"
                 data-loading="@Loading.ToAttributeValue()"
                 @attributes="@AdditionalAttributes">
-    <div class="@GetStyles(nameof(S.Content))" data-slot="content">
+    <div class="@GetStyles( nameof( S.Content ) )" data-slot="content">
         @ChildContent
     </div>
 </LumexComponent>

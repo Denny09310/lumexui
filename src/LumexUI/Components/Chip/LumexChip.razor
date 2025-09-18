@@ -4,7 +4,7 @@
 @using S = ChipSlots;
 
 <LumexComponent As="@As"
-                Class="@GetStyles(nameof(S.Base))"
+                Class="@GetStyles( nameof( S.Base ) )"
                 Style="@Style"
                 data-slot="base"
                 data-has-start-content="@HasStartContent.ToAttributeValue()"
@@ -16,21 +16,21 @@
     }
     else if( Variant is ChipVariant.Dot && StartContent is null )
     {
-        <span class="@GetStyles(nameof(S.Dot))" data-slot="dot" />
+        <span class="@GetStyles( nameof( S.Dot ) )" data-slot="dot" />
     }
     else
     {
         @StartContent
     }
 
-    <span class="@GetStyles(nameof(S.Content))" data-slot="content">
+    <span class="@GetStyles( nameof( S.Content ) )" data-slot="content">
         @ChildContent
     </span>
 
     @if( OnClose.HasDelegate )
     {
         <span role="button"
-              class="@GetStyles(nameof(S.CloseButton))"
+              class="@GetStyles( nameof( S.CloseButton ) )"
               tabindex="0"
               data-slot="close-button"
               aria-label="Close chip"

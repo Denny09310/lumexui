@@ -52,9 +52,9 @@ public partial class LumexCard : LumexComponentBase, ISlotComponent<CardSlots>
 	/// </summary>
 	[Parameter] public CardSlots? Classes { get; set; }
 
-	private readonly CardContext _context;
+	internal Dictionary<string, ComponentSlot> Slots { get; private set; } = [];
 
-	private Dictionary<string, ComponentSlot> _slots = [];
+	private readonly CardContext _context;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="LumexCard"/>.
@@ -68,7 +68,7 @@ public partial class LumexCard : LumexComponentBase, ISlotComponent<CardSlots>
 	protected override void OnParametersSet()
 	{
 		var card = Styles.Card.Style( TwMerge );
-		_slots = card( new()
+		Slots = card( new()
 		{
 			[nameof( Blurred )] = Blurred.ToString(),
 			[nameof( FullWidth )] = FullWidth.ToString(),
@@ -80,7 +80,7 @@ public partial class LumexCard : LumexComponentBase, ISlotComponent<CardSlots>
 	[ExcludeFromCodeCoverage]
 	private string? GetStyles( string slot )
 	{
-		if( !_slots.TryGetValue( slot, out var styles ) )
+		if( !Slots.TryGetValue( slot, out var styles ) )
 		{
 			throw new NotImplementedException();
 		}

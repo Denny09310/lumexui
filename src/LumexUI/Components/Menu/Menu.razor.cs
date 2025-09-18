@@ -2,7 +2,10 @@
 // LumexUI licenses this file to you under the MIT license
 // See the license here https://github.com/LumexUI/lumexui/blob/main/LICENSE
 
+using System.Diagnostics.CodeAnalysis;
+
 using LumexUI.Common;
+using LumexUI.Styles;
 using LumexUI.Utilities;
 
 using Microsoft.AspNetCore.Components;
@@ -76,5 +79,22 @@ public abstract partial class Menu : LumexComponentBase
 	{
 		var menu = Styles.Menu.Style( TwMerge );
 		_slots = menu();
+	}
+
+	[ExcludeFromCodeCoverage]
+	private string? GetStyles( string slot )
+	{
+		if( !_slots.TryGetValue( slot, out var style ) )
+		{
+			throw new NotImplementedException();
+		}
+
+		return slot switch
+		{
+			nameof( MenuSlots.Base ) => style( Classes?.Base, Class ),
+			nameof( MenuSlots.List ) => style( Classes?.List ),
+			nameof( MenuSlots.EmptyContent ) => style( Classes?.EmptyContent ),
+			_ => throw new NotImplementedException()
+		};
 	}
 }

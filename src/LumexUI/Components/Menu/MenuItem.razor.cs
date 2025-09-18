@@ -2,8 +2,11 @@
 // LumexUI licenses this file to you under the MIT license
 // See the license here https://github.com/LumexUI/lumexui/blob/main/LICENSE
 
+using System.Diagnostics.CodeAnalysis;
+
 using LumexUI.Common;
 using LumexUI.Extensions;
+using LumexUI.Styles;
 using LumexUI.Utilities;
 
 using Microsoft.AspNetCore.Components;
@@ -132,6 +135,26 @@ public abstract partial class MenuItem : LumexComponentBase
 			[nameof( ReadOnly )] = ReadOnly.ToString(),
 			[nameof( ShowDivider )] = ShowDivider.ToString(),
 		} );
+	}
+
+	[ExcludeFromCodeCoverage]
+	private string? GetStyles( string slot )
+	{
+		if( !_slots.TryGetValue( slot, out var style ) )
+		{
+			throw new NotImplementedException();
+		}
+
+		var classes = Menu.ItemClasses;
+
+		return slot switch
+		{
+			nameof( MenuItemSlots.Base ) => style( classes?.Base, Classes?.Base, Class ),
+			nameof( MenuItemSlots.Wrapper ) => style( classes?.Wrapper, Classes?.Wrapper ),
+			nameof( MenuItemSlots.Title ) => style( classes?.Title, Classes?.Title ),
+			nameof( MenuItemSlots.Description ) => style( classes?.Description, Classes?.Description ),
+			_ => throw new NotImplementedException()
+		};
 	}
 
 	private protected abstract Task OnClickAsync( MouseEventArgs args );

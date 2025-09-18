@@ -1,7 +1,9 @@
 ﻿@namespace LumexUI
 @inherits LumexComponentBase
 
-<span class="@Class"
+@using S = PopoverSlots;
+
+<span class="@GetStyles( nameof( S.Trigger ) )"
       data-slot="trigger"
       data-popovertarget="@Popover.Id"
       aria-expanded="@Popover.Open.ToAttributeValue()"

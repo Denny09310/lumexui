@@ -3,6 +3,7 @@
 // See the license here https://github.com/LumexUI/lumexui/blob/main/LICENSE
 
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 
 using LumexUI.Common;
 
@@ -27,11 +28,26 @@ public partial class TabPanel : LumexComponentBase
 
 	[CascadingParameter] internal TabsContext Context { get; set; } = default!;
 
+	private LumexTabs Tabs => Context.Owner;
+
 	/// <inheritdoc />
 	protected override void OnInitialized()
 	{
 		ContextNullException.ThrowIfNull( Context, nameof( TabPanel ) );
 	}
 
-	private string? GetStyles( string slot ) => Context.Owner.GetStyles( slot, Class );
+	[ExcludeFromCodeCoverage]
+	private string? GetStyles( string slot )
+	{
+		if( !Tabs.Slots.TryGetValue( slot, out var style ) )
+		{
+			throw new NotImplementedException();
+		}
+
+		return slot switch
+		{
+			nameof( TabsSlots.TabPanel ) => style( Tabs.Classes?.TabPanel, Class ),
+			_ => throw new NotImplementedException()
+		};
+	}
 }

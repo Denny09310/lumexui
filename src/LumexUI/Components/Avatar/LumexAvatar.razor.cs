@@ -238,13 +238,15 @@ public partial class LumexAvatar : LumexComponentBase, ISlotComponent<AvatarSlot
 			throw new NotImplementedException();
 		}
 
+		var classes = Group?.AvatarClasses;
+
 		return slot switch
 		{
-			nameof( AvatarSlots.Base ) => styles( Group?.AvatarClasses?.Base, Classes?.Base, Class ),
-			nameof( AvatarSlots.Img ) => styles( Group?.AvatarClasses?.Img, Classes?.Img ),
-			nameof( AvatarSlots.Fallback ) => styles( Group?.AvatarClasses?.Fallback, Classes?.Fallback ),
-			nameof( AvatarSlots.Name ) => styles( Group?.AvatarClasses?.Name, Classes?.Name ),
-			nameof( AvatarSlots.Icon ) => styles( Group?.AvatarClasses?.Icon, Classes?.Icon ),
+			nameof( AvatarSlots.Base ) => styles( classes?.Base, Classes?.Base, Class ),
+			nameof( AvatarSlots.Img ) => styles( classes?.Img, Classes?.Img ),
+			nameof( AvatarSlots.Fallback ) => styles( classes?.Fallback, Classes?.Fallback ),
+			nameof( AvatarSlots.Name ) => styles( classes?.Name, Classes?.Name ),
+			nameof( AvatarSlots.Icon ) => styles( classes?.Icon, Classes?.Icon ),
 			_ => throw new NotImplementedException()
 		};
 	}

@@ -9,8 +9,6 @@ using LumexUI.Utilities;
 
 using Microsoft.AspNetCore.Components;
 
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
 namespace LumexUI;
 
 /// <summary>

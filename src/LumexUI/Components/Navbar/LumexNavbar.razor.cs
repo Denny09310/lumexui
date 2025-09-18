@@ -67,14 +67,14 @@ public partial class LumexNavbar : LumexComponentBase, ISlotComponent<NavbarSlot
 	/// </summary>
 	[Parameter] public NavbarSlots? Classes { get; set; }
 
+	internal Dictionary<string, ComponentSlot> Slots { get; private set; } = [];
+
 	private protected override string? RootStyle =>
 		new ElementStyle()
 			.Add( "--navbar-height", $"{Height}", when: !string.IsNullOrEmpty( Height ) )
 			.ToString();
 
 	private readonly NavbarContext _context;
-
-	private Dictionary<string, ComponentSlot> _slots = [];
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="LumexNavbar"/>.
@@ -90,7 +90,7 @@ public partial class LumexNavbar : LumexComponentBase, ISlotComponent<NavbarSlot
 	protected override void OnParametersSet()
 	{
 		var navbar = Styles.Navbar.Style( TwMerge );
-		_slots = navbar( new()
+		Slots = navbar( new()
 		{
 			[nameof(Sticky)] = Sticky.ToString(),
 			[nameof(Bordered)] = Bordered.ToString(),
@@ -102,7 +102,7 @@ public partial class LumexNavbar : LumexComponentBase, ISlotComponent<NavbarSlot
 	[ExcludeFromCodeCoverage]
 	private string? GetStyles( string slot )
 	{
-		if( !_slots.TryGetValue( slot, out var styles ) )
+		if( !Slots.TryGetValue( slot, out var styles ) )
 		{
 			throw new NotImplementedException();
 		}

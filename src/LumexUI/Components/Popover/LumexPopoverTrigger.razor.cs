@@ -2,7 +2,10 @@
 // LumexUI licenses this file to you under the MIT license
 // See the license here https://github.com/LumexUI/lumexui/blob/main/LICENSE
 
+using System.Diagnostics.CodeAnalysis;
+
 using LumexUI.Common;
+using LumexUI.Styles;
 
 using Microsoft.AspNetCore.Components;
 
@@ -37,7 +40,20 @@ public partial class LumexPopoverTrigger : LumexComponentBase
 			throw new InvalidOperationException(
 				$"{GetType()} requires a value for the {nameof( ChildContent )} parameter." );
 		}
+	}
 
-		Class = Popover.Slots["Trigger"]( Popover.Classes?.Trigger, Class );
+	[ExcludeFromCodeCoverage]
+	private string? GetStyles( string slot )
+	{
+		if( !Popover.Slots.TryGetValue( slot, out var style ) )
+		{
+			throw new NotImplementedException();
+		}
+
+		return slot switch
+		{
+			nameof( PopoverSlots.Trigger ) => style( Popover.Classes?.Trigger, Class ),
+			_ => throw new NotImplementedException()
+		};
 	}
 }

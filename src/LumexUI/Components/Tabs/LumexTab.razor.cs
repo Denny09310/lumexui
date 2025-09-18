@@ -2,6 +2,8 @@
 // LumexUI licenses this file to you under the MIT license
 // See the license here https://github.com/LumexUI/lumexui/blob/main/LICENSE
 
+using System.Diagnostics.CodeAnalysis;
+
 using LumexUI.Common;
 using LumexUI.Motion.Types;
 using LumexUI.Utilities;
@@ -49,6 +51,7 @@ public partial class LumexTab : LumexComponentBase
 	[Inject] private NavigationManager NavigationManager { get; set; } = default!;
 
 	private bool Selected => Context.GetSelectedTab() == this;
+	private LumexTabs Tabs => Context.Owner;
 
 	private readonly MotionProps _motionProps;
 
@@ -135,5 +138,20 @@ public partial class LumexTab : LumexComponentBase
 		Context.Owner.Disabled ||
 		Context.Owner.DisabledItems?.Contains( Id ) is true;
 
-	private string? GetStyles( string slot ) => Context.Owner.GetStyles( slot, Class );
+	[ExcludeFromCodeCoverage]
+	private string? GetStyles( string slot )
+	{
+		if (!Tabs.Slots.TryGetValue(slot, out var style ) )
+		{
+			throw new NotImplementedException();
+		}
+
+		return slot switch
+		{
+			nameof( TabsSlots.Tab ) => style( Tabs.Classes?.Tab, Class ),
+			nameof( TabsSlots.TabContent ) => style( Tabs.Classes?.TabContent ),
+			nameof( TabsSlots.Cursor ) => style( Tabs.Classes?.Cursor ),
+			_ => throw new NotImplementedException()
+		};
+	}
 }

@@ -1,17 +1,19 @@
 ﻿@namespace LumexUI
 @inherits LumexComponentBase
 
+@using S = PopoverSlots
+
 @if( Popover.Open )
 {
-    <PopoverWrapper Class="@Popover.Slots["Wrapper"]()">
+    <PopoverWrapper Class="@GetStyles( "Wrapper" )">
         <div role="dialog"
-             class="@Popover.Slots["Base"]( Popover.Classes?.Base, Popover.Class )"
+             class="@GetStyles( nameof(S.Base) )"
              tabindex="-1"
              data-slot="base"
              data-open="@Popover.Open.ToAttributeValue()"
              @attributes="@Popover.AdditionalAttributes">
             <LumexComponent As="@As"
-                            Class="@Popover.Slots["Content"](Popover.Classes?.Content, Class)"
+                            Class="@GetStyles( nameof( S.Content ) )"
                             Style="@RootStyle"
                             data-slot="content"
                             @attributes="@AdditionalAttributes">
@@ -20,7 +22,7 @@
 
             @if( Popover.ShowArrow )
             {
-                <span class="@Popover.Slots["Arrow"]( Popover.Classes?.Arrow )"
+                <span class="@GetStyles( nameof(S.Arrow) )"
                       data-slot="arrow" />
             }
         </div>

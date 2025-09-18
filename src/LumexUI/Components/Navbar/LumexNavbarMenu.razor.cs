@@ -29,13 +29,13 @@ public partial class LumexNavbarMenu : LumexComponentBase, IDisposable
 
 	internal bool Expanded { get; private set; }
 
+	private LumexNavbar Navbar => Context.Owner;
+
 	private protected override string? RootStyle =>
 		ElementStyle.Empty()
 			.Add( "--navbar-height", $"{Context.Owner.Height}" )
 			.Add( base.RootStyle )
 			.ToString();
-
-	private Dictionary<string, ComponentSlot> _slots = [];
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="LumexNavbarMenu"/>.
@@ -68,20 +68,10 @@ public partial class LumexNavbarMenu : LumexComponentBase, IDisposable
 		}
 	}
 
-	/// <inheritdoc />
-	protected override void OnParametersSet()
-	{
-		var navbar = Styles.Navbar.Style( TwMerge );
-		_slots = navbar( new()
-		{
-			[nameof( Context.Owner.Blurred )] = Context.Owner.Blurred.ToString(),
-		} );
-	}
-
 	[ExcludeFromCodeCoverage]
 	private string? GetStyles( string slot )
 	{
-		if( !_slots.TryGetValue( slot, out var styles ) )
+		if( !Navbar.Slots.TryGetValue( slot, out var styles ) )
 		{
 			throw new NotImplementedException();
 		}

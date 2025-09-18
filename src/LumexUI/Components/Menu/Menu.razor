@@ -1,6 +1,8 @@
 ﻿@namespace LumexUI
 @inherits LumexComponentBase
 
+@using S = MenuSlots;
+
 <CascadingValue TValue="MenuContext" Value="@_context" IsFixed="@true">
     @{
         _context.StartCollectingItems();
@@ -11,12 +13,12 @@
         @{
             _context.StopCollectingItems();
         }
-        <div class="@_slots["Base"]( Classes?.Base, Class )"
+        <div class="@GetStyles( nameof( S.Base ) )"
              style="@Style"
              data-slot="base"
              @attributes="@AdditionalAttributes">
             <LumexComponent As="@As"
-                            Class="@_slots["List"]( Classes?.List )"
+                            Class="@GetStyles( nameof( S.List ) )"
                             data-slot="list">
                 @if( _context.Items.Count > 0 )
                 {
@@ -45,7 +47,7 @@
         var content = EmptyContent ?? _emptyContent;
 
         <li>
-            <div class="@_slots["EmptyContent"]( Classes?.EmptyContent )"
+            <div class="@GetStyles( nameof( S.EmptyContent ) )"
                  data-slot="empty-content">
                 @content
             </div>

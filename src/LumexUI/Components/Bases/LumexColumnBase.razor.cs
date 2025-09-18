@@ -2,7 +2,10 @@
 // LumexUI licenses this file to you under the MIT license
 // See the license here https://github.com/LumexUI/lumexui/blob/main/LICENSE
 
+using System.Diagnostics.CodeAnalysis;
+
 using LumexUI.Common;
+using LumexUI.Styles;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
@@ -80,4 +83,21 @@ public abstract partial class LumexColumnBase<T> : LumexComponentBase
 
         return State.Sort.Ascending ? "ascending" : "descending";
     }
+
+	[ExcludeFromCodeCoverage]
+	private string? GetStyles( string slot )
+	{
+		if( !DataGrid.Slots.TryGetValue( slot, out var style ) )
+		{
+			throw new NotImplementedException();
+		}
+
+		var classes = DataGrid.Classes;
+
+		return slot switch
+		{
+			nameof( DataGridSlots.SortIcon ) => style( classes?.SortIcon, Class ),
+			_ => throw new NotImplementedException()
+		};
+	}
 }

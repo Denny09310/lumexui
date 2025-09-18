@@ -83,12 +83,12 @@ public partial class LumexTabs : LumexComponentBase, ISlotComponent<TabsSlots>
 	/// </summary>
 	[Parameter] public TabsSlots? Classes { get; set; }
 
+	internal Dictionary<string, ComponentSlot> Slots { get; private set; } = [];
+
 	private readonly TabsContext _context;
 	private readonly Memoizer<Dictionary<string, ComponentSlot>> _slotsMemoizer;
 	private readonly RenderFragment _renderTabs;
 	private readonly string _layoutGroupId;
-
-	private Dictionary<string, ComponentSlot> _slots = [];
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="LumexTabs"/>.
@@ -105,7 +105,7 @@ public partial class LumexTabs : LumexComponentBase, ISlotComponent<TabsSlots>
 	protected override void OnParametersSet()
 	{
 		// Perform a re-building only if the dependencies have changed
-		_slots = _slotsMemoizer.Memoize( GetSlots, [
+		Slots = _slotsMemoizer.Memoize( GetSlots, [
 			DisabledItems,
 			FullWidth,
 			Disabled,
@@ -144,9 +144,9 @@ public partial class LumexTabs : LumexComponentBase, ISlotComponent<TabsSlots>
 	}
 
 	[ExcludeFromCodeCoverage]
-	internal string? GetStyles( string slot, string? @class = null )
+	internal string? GetStyles( string slot )
 	{
-		if( !_slots.TryGetValue( slot, out var styles ) )
+		if( !Slots.TryGetValue( slot, out var styles ) )
 		{
 			throw new NotImplementedException();
 		}
@@ -154,11 +154,7 @@ public partial class LumexTabs : LumexComponentBase, ISlotComponent<TabsSlots>
 		return slot switch
 		{
 			nameof( TabsSlots.Base ) => styles( Classes?.Base, Class ),
-			nameof( TabsSlots.Tab ) => styles( Classes?.Tab, @class ),
-			nameof( TabsSlots.TabPanel ) => styles( Classes?.TabPanel, @class ),
 			nameof( TabsSlots.TabList ) => styles( Classes?.TabList ),
-			nameof( TabsSlots.TabContent ) => styles( Classes?.TabContent),
-			nameof( TabsSlots.Cursor ) => styles( Classes?.Cursor ),
 			_ => throw new NotImplementedException()
 		};
 	}

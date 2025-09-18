@@ -52,9 +52,9 @@ public partial class LumexSwitch : LumexBooleanInputBase, ISlotComponent<SwitchS
 		var @switch = Styles.Switch.Style( TwMerge );
 		_slots = @switch( new()
 		{
-			[nameof(Disabled)] = Disabled.ToString(),
-			[nameof(Size)] = Size.ToString(),
-			[nameof(Color)] = Color.ToString(),
+			[nameof( Disabled )] = Disabled.ToString(),
+			[nameof( Size )] = Size.ToString(),
+			[nameof( Color )] = Color.ToString(),
 		} );
 	}
 

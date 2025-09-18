@@ -2,7 +2,10 @@
 // LumexUI licenses this file to you under the MIT license
 // See the license here https://github.com/LumexUI/lumexui/blob/main/LICENSE
 
+using System.Diagnostics.CodeAnalysis;
+
 using LumexUI.Common;
+using LumexUI.Styles;
 
 using Microsoft.AspNetCore.Components;
 
@@ -27,5 +30,23 @@ public partial class LumexPopoverContent : LumexComponentBase
 	protected override void OnInitialized()
 	{
 		ContextNullException.ThrowIfNull( Context, nameof( LumexPopoverContent ) );
+	}
+
+	[ExcludeFromCodeCoverage]
+	private string? GetStyles( string slot )
+	{
+		if( !Popover.Slots.TryGetValue( slot, out var style ) )
+		{
+			throw new NotImplementedException();
+		}
+
+		return slot switch
+		{
+			"Wrapper" => style(),
+			nameof( PopoverSlots.Base ) => style( Popover.Classes?.Base, Popover.Class ),
+			nameof( PopoverSlots.Content ) => style( Popover.Classes?.Content, Class ),
+			nameof( PopoverSlots.Arrow ) => style( Popover.Classes?.Arrow ),
+			_ => throw new NotImplementedException()
+		};
 	}
 }

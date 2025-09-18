@@ -24,7 +24,7 @@ public partial class LumexNavbarMenuItem : LumexComponentBase
 
 	[CascadingParameter] internal NavbarContext Context { get; set; } = default!;
 
-	private Dictionary<string, ComponentSlot> _slots = [];
+	private LumexNavbar Navbar => Context.Owner;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="LumexNavbarMenuItem"/>.
@@ -40,17 +40,10 @@ public partial class LumexNavbarMenuItem : LumexComponentBase
 		ContextNullException.ThrowIfNull( Context, nameof( LumexNavbarMenuItem ) );
 	}
 
-	/// <inheritdoc />
-	protected override void OnParametersSet()
-	{
-		var navbar = Styles.Navbar.Style( TwMerge );
-		_slots = navbar();
-	}
-
 	[ExcludeFromCodeCoverage]
 	private string? GetStyles( string slot )
 	{
-		if( !_slots.TryGetValue( slot, out var styles ) )
+		if( !Navbar.Slots.TryGetValue( slot, out var styles ) )
 		{
 			throw new NotImplementedException();
 		}

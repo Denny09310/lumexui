@@ -189,6 +189,7 @@ public partial class LumexDataGrid<T> : LumexComponentBase, IAsyncDisposable, IS
 	[Inject] private IJSRuntime JSRuntime { get; set; } = default!;
 
 	internal DataGridState<T> State { get; }
+	internal Dictionary<string, ComponentSlot> Slots { get; private set; } = [];
 
 	private string? RowStyles => ElementStyle.Empty()
 		.Add( "height", $"{ItemSize}px", when: Virtualize )
@@ -212,8 +213,6 @@ public partial class LumexDataGrid<T> : LumexComponentBase, IAsyncDisposable, IS
 	private bool _collectingColumns; // Columns might re-render themselves arbitrarily. We only want to capture them at a defined time.
 	private ICollection<T> _currentNonVirtualizedItems;
 	private CancellationTokenSource? _pendingDataLoadCts;
-
-	private Dictionary<string, ComponentSlot> _slots = [];
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="LumexDataGrid{T}"/>.
@@ -298,7 +297,7 @@ public partial class LumexDataGrid<T> : LumexComponentBase, IAsyncDisposable, IS
 		}
 
 		// Perform a re-building only if the dependencies have changed
-		_slots = _slotsMemoizer.Memoize( GetSlots, [
+		Slots = _slotsMemoizer.Memoize( GetSlots, [
 			SelectionMode,
 			StickyHeader,
 			Hoverable,
@@ -336,32 +335,6 @@ public partial class LumexDataGrid<T> : LumexComponentBase, IAsyncDisposable, IS
 		}
 
 		_columns.Add( column );
-	}
-
-	[ExcludeFromCodeCoverage]
-	internal string? GetStyles( string slot )
-	{
-		if( !_slots.TryGetValue( slot, out var styles ) )
-		{
-			throw new NotImplementedException();
-		}
-
-		return slot switch
-		{
-			nameof( DataGridSlots.Base ) => styles( Classes?.Base, Class ),
-			nameof( DataGridSlots.Wrapper ) => styles( Classes?.Wrapper ),
-			nameof( DataGridSlots.EmptyWrapper ) => styles( Classes?.EmptyWrapper ),
-			nameof( DataGridSlots.LoadingWrapper ) => styles( Classes?.LoadingWrapper ),
-			nameof( DataGridSlots.Table ) => styles( Classes?.Table ),
-			nameof( DataGridSlots.Thead ) => styles( Classes?.Thead ),
-			nameof( DataGridSlots.Tbody ) => styles( Classes?.Tbody ),
-			nameof( DataGridSlots.Th ) => styles( Classes?.Th ),
-			nameof( DataGridSlots.Tr ) => styles( Classes?.Tr ),
-			nameof( DataGridSlots.Td ) => styles( Classes?.Td ),
-			nameof( DataGridSlots.Placeholder ) => styles( Classes?.Placeholder ),
-			nameof( DataGridSlots.SortIcon ) => styles( Classes?.SortIcon ),
-			_ => throw new NotImplementedException()
-		};
 	}
 
 	private void StartCollectingColumns()
@@ -531,6 +504,32 @@ public partial class LumexDataGrid<T> : LumexComponentBase, IAsyncDisposable, IS
 			[nameof( Striped )] = Striped.ToString(),
 			[nameof( StickyHeader )] = StickyHeader.ToString(),
 		} );
+	}
+
+	[ExcludeFromCodeCoverage]
+	private string? GetStyles( string slot )
+	{
+		if( !Slots.TryGetValue( slot, out var styles ) )
+		{
+			throw new NotImplementedException();
+		}
+
+		return slot switch
+		{
+			nameof( DataGridSlots.Base ) => styles( Classes?.Base, Class ),
+			nameof( DataGridSlots.Wrapper ) => styles( Classes?.Wrapper ),
+			nameof( DataGridSlots.EmptyWrapper ) => styles( Classes?.EmptyWrapper ),
+			nameof( DataGridSlots.LoadingWrapper ) => styles( Classes?.LoadingWrapper ),
+			nameof( DataGridSlots.Table ) => styles( Classes?.Table ),
+			nameof( DataGridSlots.Thead ) => styles( Classes?.Thead ),
+			nameof( DataGridSlots.Tbody ) => styles( Classes?.Tbody ),
+			nameof( DataGridSlots.Th ) => styles( Classes?.Th ),
+			nameof( DataGridSlots.Tr ) => styles( Classes?.Tr ),
+			nameof( DataGridSlots.Td ) => styles( Classes?.Td ),
+			nameof( DataGridSlots.Placeholder ) => styles( Classes?.Placeholder ),
+			nameof( DataGridSlots.SortIcon ) => styles( Classes?.SortIcon ),
+			_ => throw new NotImplementedException()
+		};
 	}
 
 	/// <inheritdoc />

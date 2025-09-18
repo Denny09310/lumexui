@@ -22,7 +22,7 @@ public partial class LumexNavbarMenuToggle : LumexComponentBase, IDisposable
 
 	[Inject] private NavigationManager NavigationManager { get; set; } = default!;
 
-	private Dictionary<string, ComponentSlot> _slots = [];
+	private LumexNavbar Navbar => Context.Owner;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="LumexNavbarMenuToggle"/>.
@@ -48,17 +48,10 @@ public partial class LumexNavbarMenuToggle : LumexComponentBase, IDisposable
 		Context.Menu?.Toggle();
 	}
 
-	/// <inheritdoc />
-	protected override void OnParametersSet()
-	{
-		var navbar = Styles.Navbar.Style( TwMerge );
-		_slots = navbar();
-	}
-
 	[ExcludeFromCodeCoverage]
 	private string? GetStyles( string slot )
 	{
-		if( !_slots.TryGetValue( slot, out var styles ) )
+		if( !Navbar.Slots.TryGetValue( slot, out var styles ) )
 		{
 			throw new NotImplementedException();
 		}
