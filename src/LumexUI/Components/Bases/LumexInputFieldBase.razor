@@ -2,8 +2,10 @@
 @inherits LumexDebouncedInputBase<TValue>
 @typeparam TValue
 
+@using S = InputFieldSlots;
+
 <LumexComponent As="@As"
-                Class="@RootClass"
+                Class="@GetStyles( nameof( S.Base ) )"
                 Style="@RootStyle"
                 data-slot="base"
                 data-invalid="@Utils.GetDataAttributeValue( Invalid )"
@@ -22,7 +24,7 @@
     {
         if( LabelPlacement is LabelPlacement.Outside )
         {
-            <div class="@MainWrapperClass" data-slot="main-wrapper">
+            <div class="@GetStyles( nameof( S.MainWrapper ) )" data-slot="main-wrapper">
                 @_renderInputWrapper
                 @_renderHelperWrapper
             </div>
@@ -36,22 +38,22 @@
 
     private void RenderInputWrapper( RenderTreeBuilder __builder )
     {
-        <div class="@InputWrapperClass"
+        <div class="@GetStyles( nameof( S.InputWrapper ) )"
              data-slot="input-wrapper"
              @onclick="@FocusInputAsync">
 
             @if( !string.IsNullOrEmpty( Label ) )
             {
-                <label class="@LabelClass" data-slot="label">@Label</label>
+                <label class="@GetStyles( nameof( S.Label ) )" data-slot="label">@Label</label>
             }
 
-            <div class="@InnerWrapperClass"
+            <div class="@GetStyles( nameof( S.InnerWrapper ) )"
                  data-slot="inner-wrapper"
                  data-has-clear-button="@Utils.GetDataAttributeValue( ClearButtonVisible )">
                 @StartContent
 
                 <input type="@_inputType"
-                       class="@InputClass"
+                       class="@GetStyles( nameof( S.Input ) )"
                        value="@CurrentValueAsString"
                        placeholder="@Placeholder"
                        disabled="@Disabled"
@@ -73,7 +75,7 @@
                 @if( ClearButtonVisible )
                 {
                     <span role="button"
-                          class="@ClearButtonClass"
+                          class="@GetStyles( nameof( S.ClearButton ) )"
                           tabindex="0"
                           data-slot="clear-button"
                           @onclick="@ClearAsync"
@@ -92,10 +94,10 @@
             return;
         }
 
-        <div class="@HelperWrapperClass" data-slot="helper-wrapper">
+        <div class="@GetStyles( nameof( S.HelperWrapper ) )" data-slot="helper-wrapper">
             @if( Invalid && (!string.IsNullOrEmpty( ErrorMessage ) || !string.IsNullOrEmpty( ValidationMessage )) )
             {
-                <div class="@ErrorMessageClass" data-slot="error-message">
+                <div class="@GetStyles( nameof( S.ErrorMessage ) )" data-slot="error-message">
                     @if( !string.IsNullOrEmpty( ErrorMessage ) )
                     {
                         @ErrorMessage
@@ -108,7 +110,7 @@
             }
             else if( !string.IsNullOrEmpty( Description ) )
             {
-                <div class="@DescriptionClass" data-slot="description">
+                <div class="@GetStyles( nameof( S.Description ) )" data-slot="description">
                     @Description
                 </div>
             }
