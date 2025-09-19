@@ -567,7 +567,7 @@ internal static class InputField
 					},
 					Classes = new SlotCollection
 					{
-						[nameof(InputFieldSlots.Base)] = "has-[label]:mt-[calc(var(--text-small))_+_8px)]",
+						[nameof(InputFieldSlots.Base)] = "has-[label]:mt-[calc(var(--text-small)_+_8px)]",
 						[nameof(InputFieldSlots.Label)] = "text-tiny left-2 group-data-[filled-focused=true]:-translate-y-[calc(100%_+_var(--text-tiny)/2_+_16px)]",
 					}
 				},
