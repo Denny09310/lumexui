@@ -32,6 +32,8 @@ public partial class LumexNavbarContent : LumexComponentBase
 
     [CascadingParameter] internal NavbarContext Context { get; set; } = default!;
 
+	private LumexNavbar Navbar => Context.Owner;
+
 	private Dictionary<string, ComponentSlot> _slots = [];
 
 	/// <summary>
@@ -51,8 +53,8 @@ public partial class LumexNavbarContent : LumexComponentBase
 	/// <inheritdoc />
 	protected override void OnParametersSet()
 	{
-		var navbar = Styles.Navbar.Style( TwMerge );
-		_slots = navbar( new()
+		var navbarContent = Styles.NavbarContent.Style( TwMerge );
+		_slots = navbarContent( new()
 		{
 			[nameof( Align )] = Align?.ToString() ?? "",
 		} );
@@ -66,11 +68,11 @@ public partial class LumexNavbarContent : LumexComponentBase
 			throw new NotImplementedException();
 		}
 
-		var classes = Context.Owner.Classes;
+		var classes = Navbar.Classes;
 
 		return slot switch
 		{
-			nameof( NavbarSlots.Content ) => styles( classes?.Content, Class ),
+			nameof( SlotBase.Base ) => styles( classes?.Content, Class ),
 			_ => throw new NotImplementedException()
 		};
 	}

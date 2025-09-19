@@ -88,13 +88,6 @@ internal static class Navbar
 					.Add( "justify-start" )
 					.Add( "text-medium" ),
 
-				[nameof( NavbarSlots.Content )] = ElementClass.Empty()
-					.Add( "flex" )
-					.Add( "gap-6" )
-					.Add( "h-full" )
-					.Add( "flex-nowrap" )
-					.Add( "items-center" ),
-
 				[nameof( NavbarSlots.Item )] = ElementClass.Empty()
 					.Add( "leading-medium" )
 					.Add( "text-small" )
@@ -183,19 +176,43 @@ internal static class Navbar
 						[nameof( NavbarSlots.Wrapper )] = "max-w-screen-2xl",
 					},
 				},
+			}
+		} );
+	}
+}
 
+[ExcludeFromCodeCoverage]
+internal static class NavbarContent
+{
+	private static ComponentVariant? _variant;
+
+	public static ComponentVariant Style( TwMerge twMerge )
+	{
+		var twVariant = new TwVariants( twMerge );
+
+		return _variant ??= twVariant.Create( new VariantConfig()
+		{
+			Base = ElementClass.Empty()
+					.Add( "flex" )
+					.Add( "gap-6" )
+					.Add( "h-full" )
+					.Add( "flex-nowrap" )
+					.Add( "items-center" ),
+
+			Variants = new VariantCollection
+			{
 				[nameof( LumexNavbarContent.Align )] = new VariantValueCollection
 				{
 					[nameof( Align.Start )] = new SlotCollection
 					{
-						[nameof( NavbarSlots.Content )] = "me-auto"
+						[nameof( SlotBase.Base )] = "me-auto"
 					},
 					[nameof( Align.End )] = new SlotCollection
 					{
-						[nameof( NavbarSlots.Content )] = "ms-auto"
+						[nameof( SlotBase.Base )] = "ms-auto"
 					},
 				}
 			}
 		} );
-	}
+	} 
 }
