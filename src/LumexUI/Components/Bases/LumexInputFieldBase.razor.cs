@@ -178,20 +178,7 @@ public abstract partial class LumexInputFieldBase<TValue> : LumexDebouncedInputB
 				$" to be used when '{nameof( DebounceDelay )}' is not zero." );
 		}
 
-		var inputField = Styles.InputField.Style( TwMerge );
-		_slots = inputField( new()
-		{
-			[nameof( Size )] = Size.ToString(),
-			[nameof( Radius )] = Radius.ToString() ?? "",
-			[nameof( Disabled )] = Disabled.ToString(),
-			[nameof( Invalid )] = Invalid.ToString(),
-			[nameof( FullWidth )] = FullWidth.ToString(),
-			[nameof( Clearable )] = Clearable.ToString(),
-			[nameof( Required )] = Required.ToString(),
-			[nameof( Variant )] = Variant.ToString(),
-			[nameof( Color )] = Color.ToString(),
-			[nameof( LabelPlacement )] = LabelPlacement.ToString(),
-		} );
+		UpdateSlots();
 	}
 
 	/// <inheritdoc />
@@ -242,6 +229,9 @@ public abstract partial class LumexInputFieldBase<TValue> : LumexDebouncedInputB
 		ValidationMessage = await _jsModule.InvokeAsync<string>( "input.getValidationMessage", ElementReference );
 		Invalid = !string.IsNullOrEmpty( ErrorMessage ) ||
 				  !string.IsNullOrEmpty( ValidationMessage );
+
+		// Re-render to add validation classes
+		UpdateSlots();
 	}
 
 	/// <summary>
@@ -279,6 +269,24 @@ public abstract partial class LumexInputFieldBase<TValue> : LumexDebouncedInputB
 		await SetCurrentValueAsync( default );
 		await OnCleared.InvokeAsync();
 		await FocusAsync();
+	}
+
+	private void UpdateSlots()
+	{
+		var inputField = Styles.InputField.Style( TwMerge );
+		_slots = inputField( new()
+		{
+			[nameof( Size )] = Size.ToString(),
+			[nameof( Radius )] = Radius.ToString() ?? "",
+			[nameof( Disabled )] = Disabled.ToString(),
+			[nameof( Invalid )] = Invalid.ToString(),
+			[nameof( FullWidth )] = FullWidth.ToString(),
+			[nameof( Clearable )] = Clearable.ToString(),
+			[nameof( Required )] = Required.ToString(),
+			[nameof( Variant )] = Variant.ToString(),
+			[nameof( Color )] = Color.ToString(),
+			[nameof( LabelPlacement )] = LabelPlacement.ToString(),
+		} );
 	}
 
 	[ExcludeFromCodeCoverage]

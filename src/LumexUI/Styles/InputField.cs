@@ -193,6 +193,15 @@ internal static class InputField
 					}
 				},
 
+				[nameof( LumexInputFieldBase<object>.Invalid )] = new VariantValueCollection
+				{
+					[bool.TrueString] = new SlotCollection
+					{
+						[nameof( InputFieldSlots.Input )] = "text-danger! placeholder:text-danger!",
+						[nameof( InputFieldSlots.Label )] = "text-danger!"
+					}
+				},
+
 				[nameof( LumexInputFieldBase<object>.Variant )] = new VariantValueCollection
 				{
 					[nameof( InputVariant.Flat )] = new SlotCollection
