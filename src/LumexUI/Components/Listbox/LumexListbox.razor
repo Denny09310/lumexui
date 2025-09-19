@@ -2,6 +2,8 @@
 @inherits LumexComponentBase
 @typeparam TValue
 
+@using S = ListboxSlots;
+
 <CascadingValue TValue="ListboxContext<TValue>" Value="@_context" IsFixed="@true">
     @{
         _context.StartCollectingItems();
@@ -14,12 +16,12 @@
             _context.FinishCollectingItems();
         }
 
-        <div class="@_slots.Base"
+        <div class="@GetStyles( nameof( S.Base ) )"
              style="@RootStyle"
              data-slot="base"
              @attributes="@AdditionalAttributes">
             <LumexComponent As="@As"
-                            Class="@_slots.List"
+                            Class="@GetStyles( nameof( S.List ) )"
                             data-slot="list">
                 @if (_context.Items.Count > 0)
                 {
@@ -48,7 +50,7 @@
         var content = EmptyContent ?? _emptyContent;
 
         <li>
-            <div class="@_slots.EmptyContent" data-slot="empty-content">
+            <div class="@GetStyles( nameof( S.EmptyContent ) )" data-slot="empty-content">
                 @content
             </div>
         </li>

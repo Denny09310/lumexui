@@ -2,6 +2,8 @@
 @inherits LumexComponentBase
 @typeparam TValue
 
+@using S = ListboxItemSlots;
+
 @{
     Context?.Register(this);
 }
@@ -15,7 +17,7 @@
     protected internal virtual void Render(RenderTreeBuilder __builder)
     {
         <LumexComponent As="@As"
-                        Class="@_slots.Base"
+                        Class="@GetStyles( nameof( S.Base ) )"
                         Style="@RootStyle"
                         data-slot="base"
                         data-selected="@GetSelectedState().ToAttributeValue()"
@@ -26,19 +28,19 @@
 
             @if (!string.IsNullOrEmpty(Description))
             {
-                <div class="@_slots.Wrapper" data-slot="wrapper">
-                    <span class="@_slots.Title" data-slot="title">@ChildContent</span>
-                    <span class="@_slots.Description" data-slot="description">@Description</span>
+                <div class="@GetStyles( nameof( S.Wrapper ) )" data-slot="wrapper">
+                    <span class="@GetStyles( nameof( S.Title ) )" data-slot="title">@ChildContent</span>
+                    <span class="@GetStyles( nameof( S.Description ) )" data-slot="description">@Description</span>
                 </div>
             }
             else
             {
-                <span class="@_slots.Title" data-slot="title">@ChildContent</span>
+                <span class="@GetStyles( nameof( S.Title ) )" data-slot="title">@ChildContent</span>
             }
 
             @if (Context?.SelectionMode is not SelectionMode.None)
             {
-                <span class="@_slots.SelectedIcon" data-slot="selected-icon">
+                <span class="@GetStyles( nameof( S.SelectedIcon ) )" data-slot="selected-icon">
                     @_renderSelectedIcon
                 </span>
             }
