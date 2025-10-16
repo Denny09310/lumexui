@@ -2,24 +2,20 @@
 // LumexUI licenses this file to you under the MIT license
 // See the license here https://github.com/LumexUI/lumexui/blob/main/LICENSE
 
-using System.Diagnostics.CodeAnalysis;
-
 using LumexUI.Common;
-using LumexUI.Utilities;
+using LumexUI.Styles;
 
 using Microsoft.AspNetCore.Components;
 
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using TailwindVariants.NET;
 
 namespace LumexUI;
 
 /// <summary>
 /// A component that represents a badge for displaying contextual information or status indicators.
 /// </summary>
-public partial class LumexBadge : LumexComponentBase, ISlotComponent<BadgeSlots>
+public partial class LumexBadge : LumexComponentBase, ISlotted<Badge.Slots>
 {
-	internal const string Dot = "Dot";
-
 	/// <summary>
 	/// Gets or sets the content around which the badge is rendered.
 	/// </summary>
@@ -89,12 +85,12 @@ public partial class LumexBadge : LumexComponentBase, ISlotComponent<BadgeSlots>
 	/// <summary>
 	/// Gets or sets the CSS class names for the badge slots.
 	/// </summary>
-	[Parameter] public BadgeSlots? Classes { get; set; }
+	[Parameter] public Badge.Slots? Classes { get; set; }
 
-	private Dictionary<string, ComponentSlot> _slots = [];
+	private SlotsMap<Badge.Slots> _slots = new();
 
-	private bool _isOneChar;
-	private bool _isDot;
+	internal bool IsDot { get; set; }
+	internal bool IsOneChar { get; set; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="LumexBadge"/>.
@@ -120,7 +116,7 @@ public partial class LumexBadge : LumexComponentBase, ISlotComponent<BadgeSlots>
 			);
 		}
 
-		_isOneChar = OneChar || Text switch
+		IsOneChar = OneChar || Text switch
 		{
 			string str => str.Length == 1,
 			int i => i.ToString().Length == 1,
@@ -129,7 +125,7 @@ public partial class LumexBadge : LumexComponentBase, ISlotComponent<BadgeSlots>
 
 		if( Content is null )
 		{
-			_isDot = Text switch
+			IsDot = Text switch
 			{
 				string str => str.Length == 0,
 				null => true,
@@ -137,32 +133,6 @@ public partial class LumexBadge : LumexComponentBase, ISlotComponent<BadgeSlots>
 			};
 		}
 
-		var badge = Styles.Badge.Style( TwMerge );
-		_slots = badge( new()
-		{
-			[nameof( Size )] = Size.ToString(),
-			[nameof( Color )] = Color.ToString(),
-			[nameof( Variant )] = Variant.ToString(),
-			[nameof( Placement )] = Placement.ToString(),
-			[nameof( ShowOutline )] = ShowOutline.ToString(),
-			[nameof( OneChar )] = _isOneChar.ToString(),
-			[nameof( Dot )] = _isDot.ToString(),
-		} );
-	}
-
-	[ExcludeFromCodeCoverage]
-	private string? GetStyles( string slot )
-	{
-		if( !_slots.TryGetValue( slot, out var styles ) )
-		{
-			throw new NotImplementedException();
-		}
-
-		return slot switch
-		{
-			nameof( BadgeSlots.Base ) => styles( Classes?.Base ),
-			nameof( BadgeSlots.Badge ) => styles( Classes?.Badge, Class ),
-			_ => throw new NotImplementedException()
-		};
+		_slots = Badge.Style( this, TwVariants );
 	}
 }

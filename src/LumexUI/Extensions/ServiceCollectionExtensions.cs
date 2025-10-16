@@ -27,7 +27,7 @@ public static class ServiceCollectionExtensions
 	/// <param name="services">The <see cref="IServiceCollection"/>.</param>
 	public static void AddLumexServices( this IServiceCollection services )
 	{
-		services.AddTwMerge();
+		services.AddTwVariants();
 		services.AddLumexMotion();
 		services.AddThemeService();
 	}
@@ -44,9 +44,9 @@ public static class ServiceCollectionExtensions
 		services.AddThemeService();
 	}
 
-	private static void AddTwMerge( this IServiceCollection services )
+	private static void AddTwVariants( this IServiceCollection services )
 	{
-		services.AddTailwindMerge( options =>
+		services.AddTailwindVariants( options =>
 		{
 			options.Extend( new ExtendedConfig()
 			{
@@ -64,7 +64,7 @@ public static class ServiceCollectionExtensions
 
 	private static void AddTwMerge( this IServiceCollection services, Action<TwMergeConfig> options )
 	{
-		services.AddTwMerge();
+		services.AddTwVariants();
 		services.Configure( options );
 	}
 

@@ -39,6 +39,7 @@ public abstract class LumexComponentBase : ComponentBase
 	public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
 
 	[Inject] internal TwMerge TwMerge { get; set; } = default!;
+	[Inject] internal TailwindVariants.NET.TwVariants TwVariants { get; set; } = default!;
 
 	/// <summary>
 	/// Gets or sets the associated <see cref="ElementReference"/>.
