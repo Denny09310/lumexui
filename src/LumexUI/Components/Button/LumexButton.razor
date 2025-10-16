@@ -2,7 +2,7 @@
 @inherits LumexComponentBase
 
 <LumexComponent As="@As"
-                Class="@RootClass"
+                Class="@_slots.GetBase()"
                 Style="@RootStyle"
                 type="@Type.ToDescription()"
                 disabled="@Disabled"

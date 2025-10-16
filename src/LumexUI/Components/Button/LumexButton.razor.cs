@@ -8,14 +8,14 @@ using LumexUI.Styles;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
-using TailwindMerge;
+using TailwindVariants.NET;
 
 namespace LumexUI;
 
 /// <summary>
 /// A component representing a button.
 /// </summary>
-public partial class LumexButton : LumexComponentBase
+public partial class LumexButton : LumexComponentBase, ISlotted<LumexButton.Slots>
 {
 	/// <summary>
 	/// Gets or sets content to be rendered inside the button.
@@ -92,8 +92,9 @@ public partial class LumexButton : LumexComponentBase
 	/// </summary>
 	[Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
 
-	private protected override string? RootClass => 
-        TwMerge.Merge( Button.GetStyles( this ) );
+	[Parameter] public Slots? Classes { get; set; }
+
+	private SlotsMap<Slots> _slots = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="LumexButton"/>.
@@ -103,7 +104,13 @@ public partial class LumexButton : LumexComponentBase
         As = "button";
     }
 
-    private protected virtual Task OnClickAsync( MouseEventArgs args )
+	/// <inheritdoc />
+	protected override void OnParametersSet()
+	{
+		_slots = TwVariants.Invoke( this, _descriptor );
+	}
+
+	private protected virtual Task OnClickAsync( MouseEventArgs args )
     {
         return Disabled ? Task.CompletedTask : OnClick.InvokeAsync( args );
     }

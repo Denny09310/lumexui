@@ -56,7 +56,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="LumexUI.Motion" Version="0.0.4" />
-		<PackageReference Include="TailwindVariants.NET" Version="0.2.3" />
+		<PackageReference Include="TailwindVariants.NET" Version="0.2.4" />
 	</ItemGroup>
 
 	<ItemGroup>
